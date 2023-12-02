@@ -1,0 +1,328 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="#">Danh mục</a></li>
+        <li class="breadcrumb-item active">Đơn vị phát động</li>
+    </ol>
+    <div class="col-md-12">
+        <button class="btn btn-primary" id="btnThemMoi" type="button"><i class="fa fa-save"></i> Thêm mới</button>
+        <button class="btn btn-danger" id="btnDeleteSelected" type="button"><i class="fa fa-trash"></i> Xóa lựa chọn</button>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <h4 class="header-title mb-4">Danh sách đơn vị phát động</h4>
+                    <table id="table_dvpd" class="table table-bordered table-responsive" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkall" /></th>
+                                <th class="text-nowrap" width="55%">Tên đơn vị phát động</th>
+                                <th class="text-nowrap" width="30%">Mô tả</th>
+                                <th class="text-nowrap" width="15%">Thao tác</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="DVPD" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Cập nhật đơn vị phát động</h4>
+                        <button type="button" class="close" id="btnClose" data-dismiss="modal">×</button>
+                    </div>
+                    <div class="modal-body" id="frmDVPD">
+                        <div class="form-group row m-b-15">
+                            <label for="tenPhatDong" class="col-md-3 col-form-label">Tên đơn vị phát động: </label>
+                            <div class="col-md-9">
+                                <input type="hidden" id="id" />
+                                <input class="form-control" id="tenPhatDong" name="tenPhatDong" type="text" onkeyup="ExistTenDVPhatDong()" />
+                                <label id="txtTenPhatDong" name="txtTenPhatDong" style="color:red; font-size:10px;"></label>
+
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label for="moTa" class="col-md-3 col-form-label">Mô tả: </label>
+                            <div class="col-md-9">
+                                <input class="form-control" id="moTa" name="moTa" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnUpdate"><i class="fa fa-sync"></i> Cập nhật</button>
+                        <button type="button" class="btn btn-danger" id="btnCloseModal" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script>
+    var flag = 0;
+    $(document).ready(function () {
+        activeMenu("liDanhMuc", "liDonViPhatDong");
+        $.noConflict();
+        validator();
+        loadData();
+    });
+
+    function loadData() {
+        flag = 0;
+        $("#table_dvpd").DataTable({
+            "ajax": {
+                "url": "/DonViPhatDong/GetListDVPD",
+                "type": "GET",
+                "datatype": "json",
+                "contentType": "application/json;charset=UTF-8"
+            },
+            "columns": [
+                {
+                    "data": "id", "render": function (data) {
+                        return "<input type='checkbox' class='checkitem' value='" + data + "' />";
+                    }
+                },
+                { "data": "tenPhatDong" },
+                { "data": "moTa" },
+                {
+                    "data": "id", "render": function (data) {
+                        return "<a class='fa fa-lg fa-edit' href='#' data-toggle='tooltip' title='Cập nhật' onclick='return GetById(" + data + ")'></a>&nbsp;&nbsp;<a class='fa fa-lg fa-trash' href='#' data-toggle='tooltip' title='Xóa' onclick='DeleteById(" + data + ")'></a>"
+                    }
+                }
+            ],
+            destroy: true,
+            ordering: false,
+            paging: true,
+            searching: true,
+            bInfo: false,
+            deferRender: true
+        });
+    }
+
+    //Xử lý nút check all
+    $("#checkall").change(function () {
+        $(".checkitem").prop("checked", $(this).prop("checked"))
+    })
+
+    $("#btnThemMoi").click(function () {
+        flag = 1;
+        $("#DVPD").modal('show');
+        $("#id").val(0);
+        $("#tenPhatDong").val('');
+        $("#moTa").val('');
+        $("#myModalLabel").text("Thêm mới đơn vị phát động");
+        $("#btnUpdate").text('Thêm mới');
+        $("#txtTenPhatDong").text("");
+        $('#frmDVPD').bootstrapValidator('resetForm', true);
+        document.getElementById("btnUpdate").disabled = false;
+
+
+
+
+    })
+    function ExistTenDVPhatDong() {
+        var to = null;
+        if (to) { clearTimeout(to); }
+        to = setTimeout(function () {
+            $.get("/DonViPhatDong/ExistTenDVPhatDong", { label: $("#tenPhatDong").val() }, function (data) {
+                console.log(data);
+                if (data == "True") {
+                    $("#txtTenPhatDong").text("");
+                    document.getElementById("btnUpdate").disabled = false;
+                }
+                else {
+                    if ($("#tenPhatDong").val() == "") {
+                        $("#txtTenPhatDong").text("");
+                        document.getElementById("btnUpdate").disabled = false;
+                    }
+                    else {
+
+                        $("#txtTenPhatDong").text("Tên phát động đã trùng");
+
+                        document.getElementById("btnUpdate").disabled = true;
+                    }
+
+
+                }
+            })
+        }, 500);
+
+    }
+
+    $("#btnClose").click(function () {
+        flag = 0;
+        $("#DVPD").modal('hide');
+        $('#frmDVPD').bootstrapValidator('resetForm', true);
+
+    })
+    $("#btnCloseModal").click(function () {
+        flag = 0;
+        $("#DVPD").modal('hide');
+        $('#frmDVPD').bootstrapValidator('resetForm', true);
+
+    })
+    function GetById(Id) {
+        flag = 1;
+        $("#DVPD").modal('show');
+
+        $("#id").val(Id);
+        $('#frmDVPD').bootstrapValidator('resetForm', true);
+
+        $.ajax({
+            url: "DonViPhatDong/GetCVById",
+            data: { id: Id },
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                console.log(data);
+                $("#tenPhatDong").val(data.tenPhatDong);
+                $("#moTa").val(data.moTa);
+
+                $("#txtTenPhatDong").text("");
+                $("#myModalLabel").text("Cập nhật đơn vị phát động");
+                $("#btnUpdate").text("Cập nhật");
+                document.getElementById("btnUpdate").disabled = false;
+            }
+            //,
+            //error: function (errormessage) {
+            //    showToast("error", errormessage.responseText, "Thông báo lỗi");
+            //}
+        });
+    }
+
+    //Reset bootstrap validator
+    $('#DVPD').on('hide.bs.modal', function () {
+        $('#frmDVPD').bootstrapValidator('resetForm', true);
+    });
+    //Validate
+    function validator() {
+        $('#frmDVPD').bootstrapValidator({
+            message: 'Giá trị không hợp lệ',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                tenPhatDong: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập tên đơn vị phát động!'
+                        }
+                    }
+                }
+            }
+        });
+        var validatorObj = $('#frmDVPD').data('bootstrapValidator');
+        validatorObj.validate();
+        if (validatorObj.isValid()) {
+            return true;
+        }
+        return false;
+    }
+    $(document).keypress(function (e) {
+        if (e.which == 13 || event.keyCode == 13) {
+            if (flag == 1) {
+                $("#btnUpdate").click();
+
+                document.getElementById("tenPhatDong").focus();
+
+                $("#tenPhatDong").val('');
+                $("#moTa").val('');
+            }
+
+        }
+    });
+    $("#btnUpdate").click(function () {
+        var isValid = validator();
+        if (isValid) {
+            var obj = {
+                id: $("#id").val(),
+                tenPhatDong: $("#tenPhatDong").val(),
+                moTa: $("#moTa").val(),
+            }
+            $.ajax({
+                url: "/DonViPhatDong/UpdateDVPD",
+                data: JSON.stringify(obj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    if (data == "addsuccess") {
+                        showToast("success", "Thêm mới quyền thành công!", "Thông báo")
+                    }
+                    else if (data == "updatesuccess") {
+                        showToast("success", "Cập nhật quyền thành công!", "Thông báo")
+                        $("#DVPD").modal('hide');
+
+                    }
+                    else {
+                        showToast("warning", "Có lỗi khi cập nhật quyền!", "Cảnh báo")
+                    }
+                    loadData();
+                },
+                error: function (errormessage) {
+                    showToast("error", error.responseText, "Thông báo lỗi");
+                }
+            });
+        }
+    });
+
+    function DeleteById(Id) {
+        var ans = confirm("Bạn chắc chắn muốn xóa bản ghi?");
+        if (ans) {
+            $.post('/DonViPhatDong/DeleteByID/', { id: Id }, function (data) {
+                if (data == "success") {
+                    showToast("success", "Xóa bản ghi thành công!", "Thông báo")
+                    loadData();
+                }
+                else if (data == "warning") {
+                    showToast("warning", "Tên đơn vị phát động này đã tồn tại trong nghiệp vụ thi đua!", "Cảnh báo")
+                }
+            }).fail(function (error) {
+                showToast("error", error.responseText, "Thông báo lỗi");
+            })
+        }
+    }
+
+    //Xóa khi check nhiều dòng
+    $("#btnDeleteSelected").click(function () {
+        var id = $('.checkitem:checked').map(function () {
+            return $(this).val()
+        }).get().join(' ')
+        if (id == "") {
+            showToast("warning", "Bạn chưa chọn đối tượng để xóa", "Cảnh báo")
+        }
+        else {
+            var ans = confirm("Bạn chắc chắn muốn xóa các bản ghi đã chọn?");
+            if (ans) {
+                $.post('/DonViPhatDong/DeleteByArrayId/', { id: id }, function (data) {
+                    if (data == "True") {
+                        showToast("success", "Xóa bản ghi thành công!", "Thông báo")
+                    }
+                    else {
+                        showToast("error", "Có lỗi khi xóa!", "Thông báo lỗi");
+                    }
+                    loadData();
+                }).fail(function (error) {
+                    showToast("error", error.responseText, "Thông báo lỗi");
+                });
+            }
+        }
+    });
+
+
+</script>
+

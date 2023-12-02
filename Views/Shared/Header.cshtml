@@ -1,0 +1,138 @@
+﻿@{
+    if (Session["token"] != null)
+    {
+        byte[] data = Convert.FromBase64String(Session["token"].ToString());
+        DateTime when = DateTime.FromBinary(BitConverter.ToInt64(data, 0));
+        if (when < DateTime.UtcNow.AddHours(-1))
+        {
+            Response.Redirect("~/Home/Login");
+        }
+
+    }
+
+    if (Session["userId"] == null)
+    {
+        Response.Redirect("~/Home/Login");
+    }
+
+
+
+}
+
+<!-- Navigation Bar-->
+<header id="topnav">
+    <!-- Topbar Start -->
+    <div class="navbar-custom" style="background-color:blue">
+        <div class="container-fluid">
+            <ul class="list-unstyled topnav-menu float-right mb-0">
+
+                <li class="dropdown notification-list">
+                    <!-- Mobile menu toggle-->
+                    <a class="navbar-toggle nav-link">
+                        <div class="lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </a>
+                    <!-- End mobile menu toggle-->
+                </li>
+
+                
+
+                <li class="dropdown notification-list">
+                    <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <img src="/assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
+
+
+                        <label>@Session["email"]</label>
+
+
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+                        <!-- item-->
+                        <div class="dropdown-header noti-title">
+                            <h4 class="text-overflow m-0">Xin chào: @Session["tenNhanVien"]</h4>
+                        </div>
+
+                        <!-- item-->
+                        <!--<a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <i class="mdi mdi-account-outline"></i>
+                            <span>Profile</span>
+                        </a>-->
+                        <!-- item-->
+                        <!--<a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <i class="mdi mdi-lock-outline"></i>
+                            <span>Lock Screen</span>
+                        </a>-->
+
+                        <div class="dropdown-divider"></div>
+
+                        <!-- item-->
+                        <a href="@Url.Action("Logout", "Home")" class="dropdown-item notify-item">
+                            <i class="mdi mdi-logout-variant"></i>
+                            <span>Đăng xuất</span>
+                        </a>
+
+                    </div>
+                </li>
+
+                <li class="dropdown notification-list">
+                    <a href="javascript:void(0);" class="nav-link right-bar-toggle waves-effect waves-light">
+                        <i class="mdi mdi-settings-outline noti-icon"></i>
+                    </a>
+                </li>
+
+
+            </ul>
+
+            <!-- LOGO -->
+            <div class="logo-box">
+                @*<a href="/" class="logo text-center logo-light">
+                        <span class="logo-lg">
+                            <img src="/assets/images/0.png" alt="" height="16">
+                    </span>
+                    <span class="logo-sm">
+                    <img src="/assets/images/2.png" alt="" height="22">
+                        </span>
+                    </a>
+
+                    <a href="/" class="logo text-center logo-dark">
+                        <span class="logo-lg">
+                            <img src="/assets/images/0.png" alt="" height="16">
+                    </span>
+                    <span class="logo-sm">
+                    <img src="/assets/images/2.png" alt="" height="22">
+                        </span>
+                    </a>*@
+                <a href="/" class="logo text-center logo-light">
+
+                    <span class="logo-lg" style="margin-top: 4px; margin-left: 3px; color: white; font-size: large; ">
+                        QUẢN LÝ THI ĐUA KHEN THƯỞNG
+                    </span>
+                    <span class="logo-sm" style="margin-top: 4px; margin-left: 3px; color: white; font-size: large;">
+                        TDKT
+                    </span>
+                </a>
+                <a href="/" class="logo text-center logo-dark">
+                    <span class="logo-lg" style="margin-top: 4px; margin-left: 3px; color: white; font-size: large;">
+                        QUẢN LÝ THI ĐUA KHEN THƯỞNG
+                    </span>
+                    <span class="logo-sm" style="margin-top: 4px; margin-left: 3px; color: white; font-size: large;">
+                        TDKT
+                    </span>
+                </a>
+            </div>
+
+            <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
+
+               
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!-- end Topbar -->
+    @{Html.RenderAction("Sidebar", "Home", new { userId = (Session["userId"] != null) ? Session["userId"] : 0 });}
+
+    <!-- end navbar-custom -->
+</header>

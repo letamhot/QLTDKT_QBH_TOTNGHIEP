@@ -1,0 +1,2733 @@
+﻿
+@{
+    ViewBag.Title = "getKhenThuongCM";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<style>
+    .has-feedback .form-control-feedback {
+        top: 0px;
+        right: 10px;
+    }
+</style>
+<br />
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="#">Nghiệp vụ</a></li>
+        <li class="breadcrumb-item active">Khen Thưởng</li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row form-horizontal" style="margin-bottom: 15px;">
+                        <div class="col-xl-6">
+                            <h4 class="header-title mb-4">Danh sách khen thưởng</h4>
+                        </div>
+
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="form-horizontal">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="cbxCapKhenThuongSearch">Cấp khen thưởng:</label>
+                                    <div class="col-md-9">
+                                        <select id="cbxCapKhenThuongSearch" class="form-control"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-horizontal">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="bophanSearch">Bộ phận:</label>
+                                    <div class="col-md-9">
+                                        <select id="bophanSearch" name="bophanSearch" class="form-control">
+                                            <option value="0">Tất cả</option>
+                                            <option value="1">Chuyên môn</option>
+                                            <option value="2">Đảng - Đoàn thể</option>
+                                            <option value="3">Công Đoàn</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-horizontal">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="txtSoHieuSearch">Số hiệu:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtSoHieuSearch" name="txtSoHieuSearch" class="form-control" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal">
+                        <div class="col-xl-4">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="dtNgayKhenThuongSearch_TuNgay">Từ ngày:</label>
+                                <div class="col-md-9">
+                                    <div id="dateNgayKhenThuong_TuNgay" class="input-group date" data-date-format="dd/mm/yyyy">
+                                        <input id="dtNgayKhenThuongSearch_TuNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text">
+                                        <span class="input-group-addon bg-primary text-white"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    @*<div id="dateNgayKhenThuong_TuNgay" class="input-group date" data-date-format="dd/mm/yyyy"> <input id="dtNgayKhenThuongSearch_TuNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text"> <span class="input-group-addon"></span></div>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="dtNgayKhenThuongSearch_DenNgay">Đến ngày:</label>
+                                <div class="col-md-9">
+                                    <div id="dateNgayKhenThuong_DenNgay" class="input-group date" data-date-format="dd/mm/yyyy">
+                                        <input id="dtNgayKhenThuongSearch_DenNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text">
+                                        <span class="input-group-addon bg-primary text-white"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    @*<div id="dateNgayKhenThuong_DenNgay" class="input-group date" data-date-format="dd/mm/yyyy"> <input id="dtNgayKhenThuongSearch_DenNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text"> <span class="input-group-addon"></span></div>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="cbxTrangThaiSearch">Trạng thái:</label>
+                                <div class="col-md-8">
+                                    <select id="cbxTrangThaiSearch" class="form-control">
+                                        <option value="2">Tất cả</option>
+                                        <option value="1">Đóng</option>
+                                        <option value="0">Mở</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-end mb-0">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-success" id="btnThemMoi"><i class="fa fa-lg fa-plus"></i> Thêm mới</button>
+                            <button class="btn btn-danger waves-effect waves-light" id="btnTimKiem"><i class="fa fa-search"></i> Tìm kiếm</button>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="file" id="inputFile" name="postedFile" class="form-control" value="" />
+                        </div>
+                        <div class="col-md-3">
+                            <input id="btnImportfile" type="button" value="Import File Excel" class="btn btn-success" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button class="btn btn-danger waves-effect waves-light" id="btnXuatExcel"><i class="fa fa-download"></i>File mẫu tham khảo</button>
+                        </div>
+                    </div>
+                    <br />
+                    <table id="table_KhenThuong" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%; ">
+                        <thead>
+                            <tr>
+                                <th class="text-nowrap" width="1%">STT</th>
+                                <th class="text-nowrap">Bộ Phận</th>
+                                <th class="text-nowrap">Cấp khen thưởng</th>
+                                <th class="text-nowrap">Số hiệu</th>
+                                <th class="text-nowrap">Ngày</th>
+                                <th class="text-nowrap">Quyết định</th>
+                                <th class="text-nowrap">Trạng thái</th>
+                                <th class="text-nowrap" width="20%">Thao tác</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal" id="mdlKhenThuong" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Thông tin khen thưởng</h4>
+                <button type="button" class="close" id="btnCloseModal" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" method="post" id="frmKhenThuong">
+                    <input type="hidden" id="idKhenThuong" />
+                    <input type="hidden" id="cbxTemp" />
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="input-append">
+                                    <span class="btn btn-outline btn-primary btn-file">
+                                        <span class="fileinput-new"><i class="fa fa-upload"></i>&nbsp;Chọn file QĐ</span>
+                                        <span class="fileinput-exists"><i class="fa fa-plus"></i>&nbsp;Thay đổi</span><input type="file" id="fileQD" multiple />
+                                    </span>
+                                    <span class="fileinput-filename"></span>
+                                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                </div>
+                            </div>
+                            <span id="linkFileQuyetDinh"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label for="bophan" class="col-md-3 col-form-label">Bộ phận: </label>
+                        <div class="col-md-9">
+                            <select id="bophan" name="bophan" class="form-control" onchange="loadDmHinhThucKhenThuong()">
+                                <option value="0">--Chọn bộ phận--</option>
+                                <option value="1">Chuyên môn</option>
+                                <option value="2">Đảng - Đoàn thể</option>
+                                <option value="3">Công Đoàn</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label for="loaiKT" class="col-md-3 col-form-label">Loại khen thưởng: </label>
+                        <div class="col-md-9">
+                            <select id="loaiKT" name="loaiKT" class="form-control" onchange="getCNTT()" onclick="loadDmHinhThucKhenThuong()">
+                                <option value="">--Chọn loại khen thưởng--</option>
+                                <option value="1">Cá nhân</option>
+                                <option value="0">Tập thể</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="cbxCapKhenThuong">Cấp khen thưởng: </label>
+                                <select id="cbxCapKhenThuong" name="cbxCapKhenThuong" class="form-control"></select>
+                            </div>
+
+                            @*<div class="form-group">
+                                    <label for="txtHinhThucKhenThuong">Hình thức khen thưởng: </label>
+                                    <input type="text" class="form-control" id="txtHinhThucKhenThuong" />
+                                </div>*@
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="txtSoHieu">(*) Số hiệu: </label>
+                                <input type="text" class="form-control" id="txtSoHieu" name="txtSoHieu" required />
+                            </div>
+                            @*<div class="form-group">
+                                    <label for="txtChiTieuKhenThuong">Chỉ tiêu khen thưởng: </label>
+                                    <input type="text" class="form-control" id="txtChiTieuKhenThuong" />
+                                </div>*@
+
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="txtNgayKhenThuong">Ngày: </label>
+                                <div id="dateNgayKhenThuong" class="input-group date" data-date-format="dd/mm/yyyy">
+                                    <input id="txtNgayKhenThuong" placeholder="dd/mm/yyyy..." class="form-control" type="text">
+                                    <span class="input-group-addon bg-primary text-white"><i class="fa fa-calendar"></i></span>
+                                </div>
+                                @*<div id="dateNgayKhenThuong" class="input-group date" data-date-format="dd/mm/yyyy">
+                                        <input id="txtNgayKhenThuong" class="form-control" type="text">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-primary b-0 text-white"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="form-group">
+                                <label for="txtNoiDungKhenThuong">Nội dung khen thưởng: </label>
+                                <input type="text" class="form-control" id="txtNoiDungKhenThuong" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="cntt">
+
+                        <div class="col-xl-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Chọn cá nhân/ tập thể:</label>
+                                <div class="card" id="dstapthe">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <h4>CHỌN TẬP THỂ</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xl-5">
+                                                        <div id="tree_tapthe"></div>
+                                                        <input type="hidden" id="selectedTreeTT" />
+                                                    </div>
+                                                    <div class="col-xl-7">
+                                                        <div class="row">
+                                                            <div class="col-lg-10">
+                                                                <div class="form-group">
+                                                                    <input type="text" id="txtTapTheSearch" name="txtTapTheSearch" class="form-control" placeholder="Tìm kiếm" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="form-group">
+                                                                    <button type="button" id="btnSearchTT" class="btn btn-primary waves-effect waves-light form-control"><i class="fas fa-search"></i></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br />
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinTapThe">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th width="20%" class="center"><input type="checkbox" class="checkitem" id="chkHeader" onchange="checkAll(this, 'chkRowModalTT')" /></th>
+                                                                            <th width="80%">Tên đơn vị</th>
+
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="bodyThongTinTapThe"></tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-primary" id="btnAddTapThe"><i class="fa fa-plus"></i> Thêm</button>
+                                    </div>
+                                </div>
+                                <div class="card" id="DSTT">
+                                    <div class="card-header">
+                                        <h4>DANH SÁCH TẬP THỂ ĐÃ CHỌN</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinTapTheCache">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="1%">STT</th>
+                                                            <th width="30%">Tên</th>
+                                                            <th width="50%">Đơn vị</th>
+                                                            <th width="10%">Tiền thưởng(VND)</th>
+                                                            <th width="9%">#</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bodyThongTinTapTheCache"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card" id="dscanhan">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <h4>CHỌN CÁ NHÂN</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div id="tree_donvi"></div>
+                                                        <input type="hidden" id="selectedTreeCN" />
+                                                    </div>
+                                                    <div class="col-lg-8">
+                                                        <div class="row">
+                                                            <div class="col-lg-10">
+                                                                <div class="form-group">
+                                                                    <input type="text" id="txtCaNhanSearch" name="txtCaNhanSearch" class="form-control" placeholder="Tìm kiếm" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="form-group">
+                                                                    <button type="button" id="btnSearchCN" class="btn btn-primary waves-effect waves-light form-control"><i class="fas fa-search"></i></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br />
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinCaNhan">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="center" width="3%"><input type="checkbox" id="chkHeader" onchange="checkAll(this, 'chkRowModal')" /></th>
+                                                                            <th width="10%">Mã nhân viên</th>
+                                                                            <th width="30%">Họ tên</th>
+                                                                            <th width="30%">Đơn vị</th>
+                                                                            <th width="27%">Chức danh</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="bodyThongTinCaNhan"></tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-primary" id="btnAddCaNhan"><i class="fa fa-plus"></i> Thêm</button>
+                                    </div>
+                                </div>
+                                <div class="card" id="DSCN">
+                                    <div class="card-header">
+                                        <h4>DANH SÁCH CÁ NHÂN ĐÃ CHỌN</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinCaNhanCache">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="1%">STT</th>
+                                                            <th width="30%">Họ tên</th>
+                                                            <th width="20%">Chức danh</th>
+                                                            <th width="30%">Đơn vị</th>
+                                                            <th width="10%">Tiền thưởng(VND)</th>
+                                                            <th width="9%">#</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bodyThongTinCaNhanCache"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<table id="table_CNTT" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    </table>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="cbxKieuKhenThuong">Kiểu khen thưởng: </label>
+                                <select id="cbxKieuKhenThuong" class="form-control">
+                                    <option value="1">Năm</option>
+                                    <option value="2">Đột xuất</option>
+                                    <option value="3">Chuyên đề</option>
+                                    <option value="4">Giai đoạn</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <div class="checkbox checkbox-info checkbox-circle" style="margin-top:25px;">
+                                    <input id="ckbDaTraoTang" type="checkbox" onclick="checkHT()">
+                                    <label for="ckbDaTraoTang" style="font-weight:bold; padding-top:3px;">
+                                        Đã khen thưởng
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label id="lblghiChuKhenThuong" for="lblghiChuKhenThuong">Ghi chú hình thức khen thưởng: </label>
+                                <input type="text" class="form-control" id="ghiChuKhenThuong" name="ghiChuKhenThuong" />
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group" style="display:none">
+                                <label for="txtienKhenThuong">Tiền thưởng: </label>
+                                <input type="text" class="form-control" id="txtienKhenThuong" />
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="form-group">
+                                <label id="lblHinhThuc" for="cbxHinhThucKhenThuong">Hình thức khen thưởng: </label>
+                                <select id="cbxHinhThucKhenThuong" name="cbxHinhThucKhenThuong" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="form-group">
+                                <label for="nguoiKy">Người Ký: </label>
+                                <input type="text" class="form-control" id="nguoiKy" name="nguoiKy" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnLuuKhenThuong"><i class="fa fa-save"></i> Lưu</button>
+                <button type="button" class="btn btn-primary" id="btnClose"><i class="fa fa-window-close"></i> Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="modal" id="mdlDanhSachCaNhanTapTheKT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <H2 class="modal-title" id="myModalLabel">DANH SÁCH TẬP THỂ, CÁ NHÂN</H2>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="frmKhenThuongAdd">
+                            <input type="hidden" id="idKhenThuongadd" />
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <div class="form-group">
+                                        <label for="cbxKieuKhenThuong">Loại khen thưởng: </label>
+                                        <select id="cbxLoaiKhenThuong" class="form-control">
+                                            <option value="-1">Chọn loại khen thưởng</option>
+                                            <option value="0">Tập thể</option>
+                                            <option value="1">Cá nhân</option>
+                                            <option value="2">Tập thể/Cá nhân</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4" style="display:none">
+                                    <div class="form-group">
+                                        <label for="txthtTraoTang">Hình thức trao tặng: </label>
+                                        <input type="text" class="form-control" id="txthtTraoTang" />
+
+                                    </div>
+                                </div>
+                                <div class="col-xl-4">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-primary" id="btnCaNhanTapThe"><i class="fa fa-users"></i> Thêm cá nhân</button>
+                                        <button type="button" class="btn btn-primary" id="btnTapThe"><i class="fa fa-users"></i> Thêm tập thể</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>-->
+@* <div class="card">
+        <div class="card-title">
+            <div class="col-lg-12"><h4>DANH SÁCH TẬP THỂ</h4></div>
+        </div>
+        <div class="card-body">
+            <div class="col-lg-12">
+                <div class="col-md-12" id="tapthe">
+                    <label for="txtTongCN">Tổng tập thể khen thưởng: </label>
+                    <label id="txttt" style="font-size:medium"></label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="text" id="txttientt" />
+                    <button type="button" class="btn btn-primary" id="btnTongTT"><i class="fa fa-plus"></i> Chia</button>
+                </div>
+                <div class="row" id="rowtabletapthe">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-title">
+            <div class="col-lg-12"><h4>DANH SÁCH CÁ NHÂN</h4></div>
+        </div>
+        <div class="card-body">
+            <div class="col-lg-12">
+                <div class="col-md-12" id="canhan">
+                    <label for="txtTongTT">Tổng cá nhân khen thưởng: </label>
+                    <label id="txtcn" style="font-size:medium"></label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="text" id="txttiencn" />
+                    <button type="button" class="btn btn-primary" id="btnTongCN"><i class="fa fa-plus"></i> Chia</button>
+                </div>
+                <div class="row" id="rowtablecanhan">
+
+                </div>
+            </div>
+        </div>
+    </div>*@
+<!--</div>
+        </div>
+    </div>
+</div>-->
+<div class="modal" id="mdlCaNhanTapTheKT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="myModalCaNhanTapTheKT"></h3>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4>CHỌN CÁ NHÂN</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div id="tree_donvi"></div>
+                                        <input type="hidden" id="selectedTreeCN" />
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <div class="form-group">
+                                                    <input type="text" id="txtCaNhanSearch" name="txtCaNhanSearch" class="form-control" placeholder="Tìm kiếm" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <button type="button" id="btnSearchCN" class="btn btn-primary waves-effect waves-light form-control"><i class="fas fa-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinCaNhan">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="center" width="3%"><input type="checkbox" id="chkHeader" onchange="checkAll(this, 'chkRowModal')" /></th>
+                                                            <th width="10%">Mã nhân viên</th>
+                                                            <th width="30%">Họ tên</th>
+                                                            <th width="30%">Đơn vị</th>
+                                                            <th width="27%">Chức danh</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bodyThongTinCaNhan"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary" id="btnAddCaNhan"><i class="fa fa-plus"></i> Thêm</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4>DANH SÁCH CÁ NHÂN ĐÃ CHỌN</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinCaNhanCache">
+                                    <thead>
+                                        <tr>
+                                            <th width="1%">STT</th>
+                                            <th width="30%">Họ tên</th>
+                                            <th width="20%">Chức danh</th>
+                                            <th width="30%">Đơn vị</th>
+                                            <th width="10%">Tiền thưởng(VND)</th>
+                                            <th width="9%">#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bodyThongTinCaNhanCache"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnThemCaNhanTapTheKT"><i class="fa fa-save"></i> Lưu</button>
+                <button type="button" class="btn btn-danger" id="btnCloseCaNhan" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="mdlTapTheKT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="myModalTapThe"></h3>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4>CHỌN TẬP THỂ</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-5">
+                                        <div id="tree_tapthe"></div>
+                                        <input type="hidden" id="selectedTreeTT" />
+                                    </div>
+                                    <div class="col-xl-7">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <div class="form-group">
+                                                    <input type="text" id="txtTapTheSearch" name="txtTapTheSearch" class="form-control" placeholder="Tìm kiếm" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <button type="button" id="btnSearchTT" class="btn btn-primary waves-effect waves-light form-control"><i class="fas fa-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinTapThe">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="20%" class="center"><input type="checkbox" class="checkitem" id="chkHeader" onchange="checkAll(this, 'chkRowModalTT')" /></th>
+                                                            <th width="80%">Tên đơn vị</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bodyThongTinTapThe"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary" id="btnAddTapThe"><i class="fa fa-plus"></i> Thêm</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4>DANH SÁCH TẬP THỂ ĐÃ CHỌN</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinTapTheCache">
+                                    <thead>
+                                        <tr>
+                                            <th width="1%">STT</th>
+                                            <th width="30%">Tên</th>
+                                            <th width="50%">Đơn vị</th>
+                                            <th width="10%">Tiền thưởng(VND)</th>
+                                            <th width="9%">#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bodyThongTinTapTheCache"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnThemTapThe"><i class="fa fa-plus"></i> Lưu</button>
+                <button type="button" class="btn btn-danger" id="btnCloseTapThe" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="mdlTraoTangKhenThuong" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="titleTraoTangKhenThuong">Khen thưởng </h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="idKhenThuongTraoTang" />
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label for="txtNgayTraoTang">Ngày khen thưởng: </label>
+                                <div id="dateNgayTraoTang" class="input-group date" data-date-format="dd/mm/yyyy">
+                                    <input id="txtNgayTraoTang" class="form-control" type="text">
+                                    <span class="input-group-addon bg-primary text-white"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label for="txttt">Kết thúc khen thưởng: </label>
+                                <select id="cbxTrangThaiKT" class="form-control">
+                                    <option value="0">Mở</option>
+                                    <option value="1">Đóng</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnTraoTang"><i class="fa fa-plus"></i> Xác nhận</button>
+                <button type="button" class="btn btn-danger" id="btnCloseTraoTang" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="mdlXemKhenThuong" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="titleXemKhenThuong">THÔNG TIN KHEN THƯỞNG</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="form-group">
+                            <label for="cbxCapKhenThuong" style="color:gray;font-style:italic">Cấp khen thưởng: </label>
+                            <label id="lblCapKhenThuong" style="font-size:medium"></label>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="txtSoHieu" style="color:gray;font-style:italic">Số hiệu: </label>
+                            <label id="lblSoHieu" style="font-size:medium"></label>
+                        </div>
+
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="form-group">
+                            <label for="txtNgayKhenThuong" style="color:gray;font-style:italic ">Ngày: </label>
+                            <label id="lblNgayKhenThuong" style="font-size:medium"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="form-group">
+                            <label for="txtNoiDungKhenThuong" style="color:gray;font-style:italic">Nội dung khen thưởng: </label>
+                            <label id="lblNoiDungKhenThuong" style="font-size:medium"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="txtCapKyKhenThuong" style="color:gray;font-style:italic">Hình thức khen thưởng: </label>
+                            <label id="lblHinhThucKhenThuong" style="font-size:medium"></label>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="ckbDaTraoTang" style="color:gray;font-style:italic">Trao tặng: </label>
+                            <label id="lblDaTraoTang" style="font-size:medium"></label>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="form-group">
+                            <label for="ckbDaTraoTang" style="color:gray;font-style:italic">Tổng tiền: </label>
+                            <label id="lblTongTien" style="font-size:medium"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="rowTableXemKhenThuongcn">
+                </div>
+                <div class="row" id="rowTableXemKhenThuongtt">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="btnCloseTraoTang" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+//import { json } from "modernizr";
+    var flag = 0;
+
+    $(document).ready(function () {
+        activeMenu("liNghiepVu", "liKhenThuong", "liKhenThuongCM");
+        $.noConflict();
+        $("#dateNgayKhenThuong").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker('update', new Date());
+        $("#dateNgayTraoTang").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker('update', new Date());
+        $("#dateNgayKhenThuong_TuNgay").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker('update');
+        $("#dateNgayKhenThuong_DenNgay").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker('update');
+        $('#mdlKhenThuong').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+
+        });
+        $('#mdlDanhSachCaNhanTapTheKT').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+        });
+        $('#mdlCaNhanTapTheKT').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+        });
+        $('#mdlTapTheKT').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+        });
+        $('#mdlTraoTangKhenThuong').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+        });
+        $('#mdlXemKhenThuong').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+        });
+        $('.quantity-input').bind("cut copy paste drag drop", function (e) {
+            e.preventDefault();
+        });
+        var load = "";
+       // loadDanhSachKhenThuong();
+        loadTenKhenThuong();
+        loadCapKhenThuong();
+        loadDanhSachKhenThuong();
+
+    });
+    function checkHT() {
+        if (document.getElementById("ckbDaTraoTang").checked == true) {
+            document.getElementById("cbxHinhThucKhenThuong").style.display = "block";
+            document.getElementById("lblHinhThuc").style.display = "block";
+            document.getElementById("lblghiChuKhenThuong").style.display = "block";
+            document.getElementById("ghiChuKhenThuong").style.display = "block";
+        }
+        else {
+            document.getElementById("cbxHinhThucKhenThuong").style.display = "none";
+            document.getElementById("lblHinhThuc").style.display = "none";
+            document.getElementById("lblghiChuKhenThuong").style.display = "none";
+            document.getElementById("ghiChuKhenThuong").style.display = "none";
+        }
+    }
+    function loadCapKhenThuong() {
+        $.ajax({
+            type: 'GET',
+            url: '/KhenThuong/GetListDVPD/',
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var html = '<option value = "0" >--Chọn Cấp khen thưởng--</option>';
+
+                $.each(result.data, function (key, item) {
+                    html += '<option value = ' + item.id + '>' + item.tenCapKyKhenThuong + '</option>';
+                });
+                $('#cbxCapKhenThuongSearch').html(html);
+                $('#cbxCapKhenThuong').html(html);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    //Import file excel
+    $("#btnImportfile").click(function () {
+        var fileUpload = $("#inputFile").get(0);
+        var files = fileUpload.files;
+        var fileData = new FormData();
+
+        fileData.append(files[0].name, files[0]);
+        $.ajax({
+            url: "/KhenThuong/ImportFile",
+            data: fileData,
+            type: "POST",
+            contentType: false,
+            processData: false,
+            enctype: 'multipart/form-data',
+            success: function (data) {
+                console.log(data);
+                if (data == 1) {
+                    showToast("success", "Import File thành công!", "Thông báo")
+                    loadDanhSachKhenThuong();
+                    $("#inputFile").val("");
+                }
+                else if (data == 0) {
+                    showToast("error", "Lỗi khi upload file đính kèm!", "Thông báo lỗi")
+                }
+
+            },
+            error: function (errormessage) {
+                showToast("error", errormessage.responseText, "Thông báo lỗi");
+            }
+        });
+    })
+    //Export file excel
+    $("#btnXuatExcel").click(function () {
+        if (confirm('Bạn có muốn xuất dữ liệu theo tiêu chí được chọn?')) {
+            window.location = "/KhenThuong/ExportDm";
+        }
+    });
+    $("#loaiKT").change(function () {
+        $.get("/KhenThuong/GetTenKhenThuong", { loaiKhenThuong: $("#loaiKT").val() }, function (data) {
+            var html = '';
+            //html = '<option value = "" selected>--Chọn tên khen thưởng--</option>';
+            $.each(data, function (key, item) {
+                html += '<option value = ' + item.id + '>' + item.tenHinhThucKhenThuong + '</option>';
+            });
+            $('#cbxTenKhenThuong').html(html);
+        });
+        if ($("#loaiKT").val() == -1) {
+            $("#btnCaNhanTapThe").hide();
+            $("#btnTapThe").hide();
+        }
+        else if ($("#loaiKT").val() == 1) {
+            $("#btnCaNhanTapThe").show();
+            $("#btnTapThe").hide();
+        }
+        else if ($("#loaiKT").val() == 0) {
+            $("#btnCaNhanTapThe").hide();
+            $("#btnTapThe").show();
+        }
+        else {
+            $("#btnCaNhanTapThe").show();
+            $("#btnTapThe").show();
+        }
+
+    });
+
+
+    function isNumberKey(e) {
+        var charCode = (e.which) ? e.which : e.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+    function loadTenKhenThuong() {
+        $.get('/KhenThuong/loadTenKhenThuong', function (data) {
+            var html = '';
+            html = '<option value = "" selected>--Chọn tên khen thưởng--</option>';
+            $.each(data, function (key, item) {
+                html += '<option value = ' + item.id + '>' + item.tenHinhThucKhenThuong + '</option>';
+            });
+            $('#cbxTenKhenThuong').html(html);
+        })
+    }
+
+    //Validate form nhập
+    function validator() {
+        $('#frmKhenThuong').bootstrapValidator({
+            message: 'Giá trị không hợp lệ',
+            feedbackIcons: {
+                valid: 'fa fa-lg fa-ok',
+                invalid: 'fa fa-lg fa-remove',
+                validating: 'fa fa-lg fa-refresh'
+            },
+            fields: {
+                txtSoHieu: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Số hiệu không được để trống!'
+                        }
+                    }
+                },
+                loaiKT: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn loại khen thưởng!'
+                        }
+                    }
+                },
+                cbxCapKhenThuong: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn cấp khen thưởng!'
+                        }
+                    }
+                }
+
+            }
+        });
+        var validatorObj = $('#frmKhenThuong').data('bootstrapValidator');
+        validatorObj.validate();
+        if (validatorObj.isValid()) {
+            return true;
+        }
+        return false;
+    }
+
+    $("#btnClose").click(function () {
+        $('#frmKhenThuong').bootstrapValidator('resetForm', true);
+        flag = 0;
+        $("#mdlKhenThuong").modal('hide');
+        $('#tblThongTinTapThe tbody tr').remove();
+        $('#tblThongTinCaNhan tbody tr').remove();
+        $('#tblThongTinCaNhanCache tbody tr').remove();
+        $('#tblThongTinTapTheCache tbody tr').remove();
+
+    })
+    $("#btnCloseModal").click(function () {
+        $('#frmKhenThuong').bootstrapValidator('resetForm', true);
+        flag = 0;
+        $("#mdlKhenThuong").modal('hide');
+        $('#tblThongTinTapThe tbody tr').remove();
+        $('#tblThongTinCaNhan tbody tr').remove();
+        $('#tblThongTinCaNhanCache tbody tr').remove();
+        $('#tblThongTinTapTheCache tbody tr').remove();
+
+    })
+
+    @*$("#btnTraoTang").click(function () {
+
+        var idkt = $("#idKhenThuongTraoTang").val();
+        var ngaytraotang = $("#txtNgayTraoTang").val();
+        var kt = $("#cbxTrangThaiKT").val();
+        if ($("#cbxHinhThucKhenThuong").val() != 0) {
+            var htkt = $("#cbxHinhThucKhenThuong").val();
+
+        }
+        else {
+            var htkt = 0;
+
+        }
+        loadHinhThucKhenThuongDT(idkt, htkt);
+
+        $.ajax({
+            url: "/KhenThuong/TraoTangKhenThuong",
+            data: { idkt: idkt, ngaytraotang: ngaytraotang, trangThai: kt, htkt: htkt },
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                if (data == 1) {
+                    $("#mdlTraoTangKhenThuong").modal('hide');
+                    loadDanhSachKhenThuong();
+
+                    showToast("success", "khen thưởng  thành công!", "Thông báo");
+                }
+                else {
+                    showToast("error", "Lỗi khi khen thưởng khen thưởng!", "Thông báo lỗi");
+                }
+            },
+            error: function (errormessage) {
+                showToast("error", errormessage.responseText, "Thông báo lỗi");
+            }
+        });
+    })*@
+    function loadHinhThucKhenThuongDT(loaiKhenThuong, bophan = "", idDmHTKT = 0) {
+        $.get("/KhenThuong/GetDmHinhThucKhenThuongDT", { loaiKhenThuong: loaiKhenThuong, bophan: bophan },  function (data) {
+            var html = '';
+
+            html = '<option value = "0" selected>--Chọn hình thức khen thưởng--</option>';
+            $.each(data.data, function (key, item) {
+                console.log(item.id);
+
+                if (item.id == idDmHTKT) {
+                    html += '<option value = ' + item.id + ' selected>' + item.tenHinhThucKhenThuong + '</option>';
+
+                }
+                else {
+                    html += '<option value = ' + item.id + '>' + item.tenHinhThucKhenThuong + '</option>';
+
+                }
+
+            });
+            $('#cbxHinhThucKhenThuong').html(html);
+        });
+
+    }
+
+    function loadDmHinhThucKhenThuong(loaiKhenThuong = "",bophan ="", idDmHTKT = 0, idcntt = 0) {
+        if (loaiKhenThuong == "") {
+            loaiKhenThuong = $("#loaiKT").val();
+        }
+        if (bophan == "") {
+            bophan = $("#bophan").val();
+        }
+        $.get("/KhenThuong/GetDmHinhThucKhenThuongByKieu", { loaiKhenThuong: loaiKhenThuong, bophan: bophan }, function (data) {
+            console.log(data.data);
+            var html = '';
+            html = '<option value = "0">--Chọn hình thức khen thưởng--</option>';
+            $.each(data.data, function (key, item) {
+                console.log("1111",item.bophan);
+                if (item.id == idDmHTKT && item.bophan == bophan) {
+                    html += '<option value = ' + item.id + ' selected>' + item.tenHinhThucKhenThuong + '</option>';
+                }
+                else {
+                    html += '<option value = ' + item.id + '>' + item.tenHinhThucKhenThuong + '</option>';
+                }
+
+
+
+            });
+            $('#cbxHinhThucKhenThuong').html(html);
+        });
+
+
+
+    }
+    function getCNTT(loaiKhenThuong = "") {
+        if (loaiKhenThuong == "") {
+            loaiKhenThuong = $("#loaiKT").val();
+        }
+        $.get("/KhenThuong/GetCaNhanTapTheByKieu", { loaiKhenThuong: loaiKhenThuong }, function (data) {
+            //console.log("dddd" + data);
+            if (loaiKhenThuong == 1) {
+                loadTreeCaNhan();
+                document.getElementById("dscanhan").style.display = "block";
+                document.getElementById("dstapthe").style.display = "none";
+
+                document.getElementById("DSCN").style.display = "block";
+                document.getElementById("DSTT").style.display = "none";
+            }
+            else if (loaiKhenThuong == 0) {
+                loadTreeDonVi();
+
+                document.getElementById("dstapthe").style.display = "block";
+                document.getElementById("dscanhan").style.display = "none";
+                document.getElementById("DSTT").style.display = "block";
+                document.getElementById("DSCN").style.display = "none";
+            }
+            else {
+
+
+                document.getElementById("dstapthe").style.display = "none";
+                document.getElementById("dscanhan").style.display = "none";
+                document.getElementById("DSTT").style.display = "none";
+                document.getElementById("DSCN").style.display = "none";
+            }
+
+
+        })
+    }
+    $("#btnCaNhanTapThe").click(function () {
+        var x = $("#idKhenThuong").val();
+        var idkt = $('#loaiKT option:selected').val();
+        var lkt = $('#loaiKT option:selected').text();
+        //var tkt = $('#txthtTraoTang').text();
+        var titleCaNhanTapThe = "Danh sách " + lkt.toUpperCase() + " đạt khen thưởng ";
+        $("#myModalCaNhanTapTheKT").text(titleCaNhanTapThe);
+        LoadCNCache("", "", idkt, x, "");
+
+        loadTreeCaNhan();
+        $("#mdlCaNhanTapTheKT").modal('show');
+
+
+    })
+    $("#btnTapThe").click(function () {
+        var x = $("#idKhenThuong").val();
+        var idkt = $('#loaiKT option:selected').val();
+        var lkt = $('#loaiKT option:selected').text();
+        //var tkt = $('txthtTraoTang').text();
+        var titleTapThe = "Danh sách " + lkt.toUpperCase() + " đạt khen thưởng ";
+        $("#myModalTapThe").text(titleTapThe);
+        LoadTTCache("", "", idkt, x, "");
+
+        loadTreeDonVi();
+        $("#mdlTapTheKT").modal('show');
+
+
+    })
+
+    $("#btnThemMoi").click(function () {
+        flag = 1;
+        $("#mdlKhenThuong").modal('show');
+        $("#bophan").val(0);
+        $("#linkFileQuyetDinh").html("");
+        $("#idKhenThuong").val(0);
+        $("#txtienKhenThuong")
+        $("#nguoiKy").val("");
+
+        document.getElementById("loaiKT").disabled = false;
+
+        //document.getElementById("table_CNTT").style.display = "none";
+        document.getElementById("cbxHinhThucKhenThuong").style.display = "none";
+        document.getElementById("lblHinhThuc").style.display = "none";
+        document.getElementById("lblghiChuKhenThuong").style.display = "none";
+        document.getElementById("ghiChuKhenThuong").style.display = "none";
+        document.getElementById("dscanhan").style.display = "none";
+        document.getElementById("dstapthe").style.display = "none";
+        document.getElementById("DSCN").style.display = "none";
+        document.getElementById("DSTT").style.display = "none";
+        $('#tblThongTinCaNhan tbody tr').remove();
+        $('#tblThongTinTapThe tbody tr').remove();
+
+    })
+
+    $("#btnTimKiem").click(function () {
+        loadDanhSachKhenThuong();
+    })
+    $(document).keypress(function (e) {
+        if (e.which == 13 || event.keyCode == 13) {
+            if (flag == 1) {
+                $("#btnLuuKhenThuong").click();
+
+
+            }
+        }
+    });
+    $("#btnLuuKhenThuong").click(function () {
+        if ($("#idKhenThuong").val() != 0) {
+            var fileUpload = $("#fileQD").get(0);
+            var files = fileUpload.files;
+            var fileData = new FormData();
+            var tiencn = [];
+            var tientt = [];
+            var selected = [];
+            if ($("#loaiKT").val() == 1) {
+
+                var checkboxes = document.getElementsByClassName("checkitem");
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked == true) {
+                        selected.push(checkboxes[i].id);
+                        if ($('#tiencn_' + checkboxes[i].id).val() != 0) {
+                            tiencn.push($('#tiencn_' + checkboxes[i].id).val());
+
+                        }
+                        else {
+                            tiencn.push(0);
+
+                        }
+                    }
+                }
+            }
+            else {
+                var checkboxes = document.getElementsByClassName("checkitem");
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked == true) {
+                        selected.push(checkboxes[i].id);
+                        if ($('#tiencn_' + checkboxes[i].id).val() != 0) {
+                            tientt.push($('#tientt_' + checkboxes[i].id).val());
+
+
+                        }
+                        else {
+                            tientt.push(0);
+
+                        }
+                    }
+                }
+            }
+
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            fileData.append('id', $("#idKhenThuong").val());
+            fileData.append('capKhenThuong', $("#cbxCapKhenThuong").val());
+            fileData.append('kieuKhenThuong', $("#cbxKieuKhenThuong").val());
+            fileData.append('doiTuongThamGia', $("#loaiKT").val());
+            fileData.append('bophan', $("#bophan").val());
+            fileData.append('soHieu', $("#txtSoHieu").val());
+            fileData.append('ngayKhenThuong', $("#txtNgayKhenThuong").val());
+            fileData.append('danhSachCaNhanTapThe', selected.toString());
+            fileData.append('noiDungKhenThuong', $("#txtNoiDungKhenThuong").val());
+            fileData.append('hinhThucKhenThuong', $("#cbxHinhThucKhenThuong").val());
+            if ($("#loaiKT").val() == 1) {
+                fileData.append('tienThuong', tiencn.toString());
+
+            }
+            else {
+
+                fileData.append('tienThuong', tientt.toString());
+
+
+            }
+            fileData.append('tongTienThuong', $("#txtienKhenThuong").val());
+            fileData.append('capKyKhenThuong', $('#nguoiKy').val());
+            fileData.append('ghichuHTKT', $('#ghiChuKhenThuong').val());
+            $('#loaiKT option:selected').val();
+            $('#bophan option:selected').val();
+            if ($("#ckbDaTraoTang").is(':checked')) {
+                fileData.append('daTraoTang', 1);
+
+            }
+            else {
+                fileData.append('daTraoTang', 0);
+            }
+
+            $.ajax({
+                url: "/KhenThuong/CapNhatKhenThuong",
+                data: fileData,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function (data) {
+                    if (data == 0) {
+                        showToast("success", "Nhập khen thưởng thành công!", "Thông báo")
+                        $("#mdlKhenThuong").modal('hide');
+                        $('#tblThongTinTapThe tbody tr').remove();
+                        $('#tblThongTinCaNhan tbody tr').remove();
+                        //$('#frmKhenThuong').bootstrapValidator('resetForm', true);
+                        loadDanhSachKhenThuong();
+                    }
+                    else if (data == -1) {
+                        showToast("error", "Lỗi khi upload file đính kèm!", "Thông báo lỗi")
+                    }
+                    else if (data == -2) {
+                        showToast("error", "Lỗi khi nhập khen thưởng!", "Thông báo lỗi")
+                    }
+                    else if (data == 1) {
+                        showToast("warning", "Trạng thái đã đóng, không thể cập nhật", "Cảnh báo")
+                    }
+                    else if (data == 2) {
+                        showToast("success", "Cập nhật khen thưởng thành công!", "Thông báo")
+                        $("#mdlKhenThuong").modal('hide');
+                        $('#tblThongTinTapThe tbody tr').remove();
+                        $('#tblThongTinCaNhan tbody tr').remove();
+                        $('#frmKhenThuong').bootstrapValidator('resetForm', true);
+                        loadDanhSachKhenThuong();
+                    }
+
+                },
+                error: function (errormessage) {
+                    showToast("error", errormessage.responseText, "Thông báo lỗi");
+                }
+            });
+        }
+        else {
+            var isValid = validator();
+            var tiencn = [];
+            var tientt = [];
+            var selected = [];
+            if ($("#loaiKT").val() == 1) {
+
+                var checkboxes = document.getElementsByClassName("checkitem");
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked == true) {
+                        selected.push(checkboxes[i].id);
+                        tiencn.push($('#tiencn_' + checkboxes[i].id).val());
+                    }
+                }
+            }
+            else {
+                var checkboxes = document.getElementsByClassName("checkitem");
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked == true) {
+                        selected.push(checkboxes[i].id);
+                        tientt.push($('#tientt_' + checkboxes[i].id).val());
+                    }
+                }
+            }
+            if (isValid) {
+                var fileUpload = $("#fileQD").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+                fileData.append('id', $("#idKhenThuong").val());
+                fileData.append('capKhenThuong', $("#cbxCapKhenThuong").val());
+                fileData.append('kieuKhenThuong', $("#cbxKieuKhenThuong").val());
+                fileData.append('doiTuongThamGia', $("#loaiKT").val());
+                fileData.append('bophan', $("#bophan").val());
+
+                fileData.append('soHieu', $("#txtSoHieu").val());
+                fileData.append('ngayKhenThuong', $("#txtNgayKhenThuong").val());
+                fileData.append('hinhThucKhenThuong', $("#cbxHinhThucKhenThuong").val());
+
+                fileData.append('danhSachCaNhanTapThe', selected.toString());
+                fileData.append('noiDungKhenThuong', $("#txtNoiDungKhenThuong").val());
+                if ($("#loaiKT").val() == 1) {
+                    fileData.append('tienThuong', tiencn.toString());
+
+                }
+                else {
+
+                    fileData.append('tienThuong', tientt.toString());
+
+
+                }
+                fileData.append('tongTienThuong', $("#txtienKhenThuong").val());
+
+                fileData.append('capKyKhenThuong', $('#nguoiKy').val());
+                fileData.append('ghichuHTKT', $('#ghiChuKhenThuong').val());
+                $('#loaiKT option:selected').val();
+                $('#bophan option:selected').val();
+                $('#cbxHinhThucKhenThuong option:selected').val();
+                if ($("#ckbDaTraoTang").is(':checked')) {
+                    fileData.append('daTraoTang', 1);
+                }
+                else {
+                    fileData.append('daTraoTang', 0);
+                }
+
+                $.ajax({
+                    url: "/KhenThuong/CapNhatKhenThuong",
+                    data: fileData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    enctype: 'multipart/form-data',
+                    success: function (data) {
+                        if (data == 0) {
+                            showToast("success", "Nhập khen thưởng thành công!", "Thông báo")
+                            $("#mdlKhenThuong").modal('hide');
+                            $('#tblThongTinTapThe tbody tr').remove();
+                            $('#tblThongTinCaNhan tbody tr').remove();
+                            loadDanhSachKhenThuong();
+                        }
+                        else if (data == -1) {
+                            showToast("error", "Lỗi khi upload file đính kèm!", "Thông báo lỗi")
+                        }
+                        else if (data == -2) {
+                            showToast("error", "Lỗi khi nhập khen thưởng!", "Thông báo lỗi")
+                        }
+                        else if (data == 1) {
+                            showToast("warning", "Trạng thái đã đóng, không thể cập nhật", "Cảnh báo")
+                        }
+                        else if (data == 2) {
+                            showToast("success", "Cập nhật khen thưởng thành công!", "Thông báo")
+                            $("#mdlKhenThuong").modal('hide');
+                            $('#tblThongTinTapThe tbody tr').remove();
+                            $('#tblThongTinCaNhan tbody tr').remove();
+                            loadDanhSachKhenThuong();
+                        }
+
+                    },
+                    error: function (errormessage) {
+                        showToast("error", errormessage.responseText, "Thông báo lỗi");
+                    }
+                });
+
+            }
+
+        }
+
+    })
+
+    //Hàm load danh sách ở lưới chính
+    function loadDanhSachKhenThuong() {
+        flag = 0;
+        var capKhenThuong = $("#cbxCapKhenThuongSearch").val();
+        var bophan = $("#bophanSearch").val();
+        var soHieu = $("#txtSoHieuSearch").val();
+        var ngayKhenThuong_TuNgay = $("#dtNgayKhenThuongSearch_TuNgay").val();
+        var ngayKhenThuong_DenNgay = $("#dtNgayKhenThuongSearch_DenNgay").val();
+        var trangThai = $("#cbxTrangThaiSearch").val();
+
+        $("#table_KhenThuong").DataTable({
+            "ajax": {
+                "url": "/KhenThuong/GetDanhSachKhenThuong",
+                "data": { capKhenThuong: capKhenThuong, bophan:bophan, soHieu: soHieu, ngayKhenThuong_TuNgay: ngayKhenThuong_TuNgay, ngayKhenThuong_DenNgay: ngayKhenThuong_DenNgay, trangThai: trangThai },
+                "type": "GET",
+                "datatype": "json",
+                "contentType": "application/json;charset=UTF-8"
+            },
+            "columns": [
+                { "data": "stt" },
+                {
+                    "data": "bophan", "render": function (data) {
+                        if (data == "3")
+                            return "Công Đoàn";
+                        if (data == "2")
+                            return "Đảng - Đoàn thể";
+                        if (data == "1")
+                            return "Chuyên môn";
+                    }
+
+                },
+                {
+                    "data": "capKhenThuong"
+                },
+                { "data": "soHieu" },
+
+                {
+                    "data": "ngayKhenThuong", "render": function (data) {
+                        //console.log(data);
+                        if (data != null || data != "") {
+                            return data.split(' ')[0];
+                        }
+                    }
+                },
+                {
+                    "data": "quyetDinh", "render": function (data) {
+
+                        if (data != "") {
+                            var objFile = JSON.parse(data);
+                            var spl = objFile[0].Key.split(/\\/);
+                            //console.log(spl);
+                            return "<a href='#' onclick='downloadfile(\"" + spl + "\", \"" + spl[spl.length - 1] + "\", \"" + objFile[0].Value + "\")'><i class='fa fa-download'></i> Tải file QĐ</a>";
+                        }
+                        else {
+                            return "<a href='#' >Chưa có file đính kèm</a>";
+                        }
+                    }
+                },
+                {
+                    "data": "daTraoTang", "render": function (data) {
+                        if (data == "0")
+                            return "Chưa khen thưởng";
+                        if (data == "1")
+                            return "Đã khen thưởng";
+                    }
+                },
+                {
+                    "data": "id", "render": function (data, type, row, meta) {
+                        if (row["trangThai"] == true) {
+                            return "<a class='fa fa-lg fa-eye' style='color: LimeGreen' href='#' data-toggle='tooltip' title='Xem khen thưởng' onclick='return xemKhenThuong(" + data + ")'></a>&nbsp;";
+                        }
+                        else if (row["daTraoTang"] == true)
+                        {
+                            return "<a class='fa fa-lg fa-eye' style='color: LimeGreen' href='#' data-toggle='tooltip' title='Xem khen thưởng' onclick='return xemKhenThuong(" + data + ")'></a>&nbsp;<a class='fa fa-lg fa-edit colorEdit' href='#' data-toggle='tooltip' title='Cập nhật' onclick='return editKhenThuong(" + data + ")'></a>&nbsp;<a class='fa fa-lg fa-times colorCommon' href='#' data-toggle='tooltip' title='Hủy khen thưởng' onclick='huyTraoTangKhenThuong(" + data + ")'></a>&nbsp;<a class='fa fa-lg fa-trash' href='#' data-toggle='tooltip' title='Xóa' onclick='xoaKhenThuong(" + data + ")'></a>";
+                        }
+                        ;
+                        return "<a class='fa fa-lg fa-eye' style='color: LimeGreen' href='#' data-toggle='tooltip' title='Xem' onclick='return xemKhenThuong(" + data + ")'></a>&nbsp;<a class='fa fa-lg fa-edit colorEdit' href='#' data-toggle='tooltip' title='Cập nhật' onclick='return editKhenThuong(" + data + ")'></a>&nbsp;<a class='fa fa-lg fa-trash' href='#' data-toggle='tooltip' title='Xóa' onclick='xoaKhenThuong(" + data + ")'></a>";
+                    }
+                },
+            ],
+            destroy: true,
+            ordering: false,
+            paging: true,
+            searching: false,
+            bInfo: false,
+            deferRender: true
+        });
+    }
+    // đăng ký khrn thưởng
+    function dangKyKhenThuong(idKhenThuong) {
+        $("#mdlDanhSachCaNhanTapTheKT").modal('show');
+        $("#idKhenThuong").val(idKhenThuong);
+        loadDsCaNhanTapThe(idKhenThuong);
+    }
+
+    //modal trao tặng khen thưởng
+    function traoTangKhenThuong(idKhenThuong, bophan) {
+        $("#mdlTraoTangKhenThuong").modal('show');
+        $("#idKhenThuongTraoTang").val(idKhenThuong);
+        var to = null;
+        if (to) { clearTimeout(to); }
+        to = setTimeout(function () {
+            loadHinhThucKhenThuongDT(idKhenThuong, bophan);
+
+
+        }, 250);
+    }
+
+    //huỷ trao tặng
+    function huyTraoTangKhenThuong(idKhenThuong) {
+        var confirmation = confirm("Bạn chắc chắn muốn hủy khen thưởng khen thưởng này?");
+        if (confirmation) {
+            $.ajax({
+                url: "/KhenThuong/huyTraoTangKhenThuong",
+                data: { idKhenThuong: idKhenThuong },
+                type: "GET",
+                datatype: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == 1) {
+                        loadDanhSachKhenThuong();
+                        $('#mdlKhenThuong').on('hidden.bs.modal', function () {
+                            $(this).find('form').trigger('reset');
+
+                        });
+                        showToast("success", "Hủy khen thưởng khen thưởng thành công!", "Thông báo");
+
+                    }
+                    else {
+                        showToast("error", "Lỗi khi hủy khen thưởng khen thưởng!", "Thông báo lỗi");
+                    }
+                },
+                error: function (errormessage) {
+                    showToast("error", errormessage.responseText, "Thông báo lỗi");
+                }
+            });
+        }
+    }
+
+    //xem trao tặng
+    function xemKhenThuong(idKhenThuong) {
+        $("#mdlXemKhenThuong").modal('show');
+
+        $.ajax({
+            url: "/KhenThuong/xemKhenThuong",
+            data: { idKhenThuong: idKhenThuong },
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                $('#rowTableXemKhenThuongcn').empty();
+                $('#rowTableXemKhenThuongtt').empty();
+                $("#lblCapKhenThuong").text(data.capKhenThuong);
+                $("#lblSoHieu").text(data.soHieu);
+                $("#lblNgayKhenThuong").text(data.ngayKhenThuong);
+                $("#lblNoiDungKhenThuong").text(data.noidungKhenThuong);
+                if (data.hinhThucKhenThuong != null) {
+                    $("#lblHinhThucKhenThuong").text(data.hinhThucKhenThuong);
+
+                }
+                else {
+                    $("#lblHinhThucKhenThuong").text("Chưa có hình thức khen thưởng/ Trao tiền mặt");
+
+                }
+                $("#lblDaTraoTang").text(data.daTraoTang);
+                $("#lblTongTien").text(numberWithCommas(data.tongTienThuong) + ' VND');
+                if (data.danhSachCaNhanTapThe.loaiKhenThuong == 1) {
+                    var _drawtable = document.getElementById("rowTableXemKhenThuongcn");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemKhenThuongcn'>";
+                    var nodetable = $(table).appendTo('#rowTableXemKhenThuongcn');
+                    var _drawtable = document.getElementById("tblXemKhenThuongcn");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Họ tên</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Chức danh</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    thead.append(trhead);
+                    $('#tblXemKhenThuongcn').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong.length; i++) {
+                        if (data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].loaiKT == 1) {
+                            var trbody = $('<tr/>');
+                            trbody.append("<td>" + stt + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].chucDanh + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                            trbody.append("<td>" + numberWithCommas(data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tienThuong) + "</td>");
+                            body.append(trbody);
+                            stt++;
+                        }
+                    }
+                    $('#tblXemKhenThuongcn').append(body);
+                }
+                else if (data.danhSachCaNhanTapThe.loaiKhenThuong == 0) {
+                    var _drawtable = document.getElementById("rowTableXemKhenThuongtt");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemKhenThuongtt'>";
+                    var nodetable = $(table).appendTo('#rowTableXemKhenThuongtt');
+                    var _drawtable = document.getElementById("tblXemKhenThuongtt");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Tên</th>");
+                    trhead.append("<th class='text-nowrap' width='40%'>Tên đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    thead.append(trhead);
+                    $('#tblXemKhenThuongtt').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong.length; i++) {
+                        if (data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].loaiKT == 0) {
+                            var trbody = $('<tr/>');
+                            trbody.append("<td>" + stt + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                            trbody.append("<td>" + numberWithCommas(data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tienThuong) + "</td>");
+                            body.append(trbody);
+                            stt++;
+                        }
+                    }
+                    $('#tblXemKhenThuongtt').append(body);
+                }
+                else {
+                    var _drawtable = document.getElementById("rowTableXemKhenThuongcn");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemKhenThuongcn'>";
+                    var nodetable = $(table).appendTo('#rowTableXemKhenThuongcn');
+                    var _drawtable = document.getElementById("tblXemKhenThuongcn");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Họ tên</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Chức danh</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    thead.append(trhead);
+                    $('#tblXemKhenThuongcn').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong.length; i++) {
+                        if (data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].loaiKT == 1) {
+                            var trbody = $('<tr/>');
+                            trbody.append("<td>" + stt + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].chucDanh + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                            trbody.append("<td>" + numberWithCommas(data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tienThuong) + 'VND' + "</td>");
+                            body.append(trbody);
+                            stt++;
+                        }
+                    }
+                    $('#tblXemKhenThuongcn').append(body);
+                    var _drawtable = document.getElementById("rowTableXemKhenThuongtt");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemKhenThuongtt'>";
+                    var nodetable = $(table).appendTo('#rowTableXemKhenThuongtt');
+                    var _drawtable = document.getElementById("tblXemKhenThuongtt");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Tên</th>");
+                    trhead.append("<th class='text-nowrap' width='40%'>Tên đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    thead.append(trhead);
+                    $('#tblXemKhenThuongtt').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong.length; i++) {
+                        if (data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].loaiKT == 0) {
+                            var trbody = $('<tr/>');
+                            trbody.append("<td>" + stt + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                            trbody.append("<td>" + numberWithCommas(data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tienThuong) + ' VND' + "</td>");
+                            body.append(trbody);
+                            stt++;
+                        }
+                    }
+                    $('#tblXemKhenThuongtt').append(body);
+                }
+            }
+        });
+    }
+    //fomat tien thuong
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    //xoá khen thưởng
+    function xoaKhenThuong(idKhenThuong) {
+        var confirmation = confirm("Bạn chắc chắn muốn xóa khen thưởng này?");
+        if (confirmation) {
+            $.ajax({
+                url: "/KhenThuong/XoaKhenThuong",
+                data: { idKhenThuong: idKhenThuong },
+                type: "GET",
+                datatype: "json",
+                contentType: "application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data == 1) {
+                        showToast("success", "Xóa khen thưởng thành công!", "Thông báo")
+                        loadDanhSachKhenThuong();
+                    }
+                    else {
+                        showToast("error", "Lỗi khi xóa khen thưởng!", "Thông báo lỗi")
+                    }
+                },
+                error: function (errormessage) {
+                    showToast("error", errormessage.responseText, "Thông báo lỗi");
+                }
+            });
+        }
+    }
+    //sửa khen thưởng
+    function editKhenThuong(idKhenThuong) {
+        flag = 1;
+        $("#idKhenThuong").val(idKhenThuong);
+        $("#mdlKhenThuong").modal('show');
+
+        $("#linkFileQuyetDinh").html("");
+        var tiencn = [];
+        var tientt = [];
+        var selected = [];
+        if ($("#loaiKT").val() == 1) {
+
+            var checkboxes = document.getElementsByClassName("checkitem");
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked == true) {
+                    selected.push(checkboxes[i].id);
+                    tiencn.push($('#tiencn_' + checkboxes[i].id).val());
+                }
+            }
+        }
+        else {
+            var checkboxes = document.getElementsByClassName("checkitem");
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked == true) {
+                    selected.push(checkboxes[i].id);
+                    tientt.push($('#tientt_' + checkboxes[i].id).val());
+                }
+            }
+        }
+        $.ajax({
+            url: "/KhenThuong/ChinhSuaKhenThuong",
+            data: { idKhenThuong: idKhenThuong },
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                console.log("qqqqqqqq" + data.hinhThucKhenThuong);
+                document.getElementById("loaiKT").disabled = true;
+                $("#cbxCapKhenThuong").val(data.capKhenThuong);
+                $("#txtSoHieu").val(data.soHieu);
+                $("#txtNgayKhenThuong").val(data.ngayKhenThuong);
+                $("#txtNoiDungKhenThuong").val(data.noiDungKhenThuong);
+                $("#loaiKT").val(data.doiTuongThamGia);
+                $("#nguoiKy").val(data.capKyKhenThuong);
+                $("#bophan").val(data.bophan);
+                $("#ghiChuKhenThuong").val(data.ghiChuHTKT);
+                //document.getElementById("cbxHinhThucKhenThuong").value(data.hinhThucKhenThuong);
+                $("#cbxHinhThucKhenThuong").val(data.hinhThucKhenThuong);
+                //$("#cbxHinhThucDanhHieu").val(data.hinhThucKhenThuong);
+
+
+                $("#cbxKieuKhenThuong").val(data.kieuKhenThuong);
+
+                //$("#txtienKhenThuong").val(data.tongTien);
+                if (data.daTraoTang == true) {
+                    $("#ckbDaTraoTang").attr('checked', true);
+                    document.getElementById("cbxHinhThucKhenThuong").style.display = "block";
+                    document.getElementById("lblHinhThuc").style.display = "block";
+                    document.getElementById("lblghiChuKhenThuong").style.display = "block";
+                    document.getElementById("ghiChuKhenThuong").style.display = "block";
+                }
+                else {
+                    $("#ckbDaTraoTang").attr('checked', false);
+
+                    document.getElementById("cbxHinhThucKhenThuong").style.display = "none";
+                    document.getElementById("lblHinhThuc").style.display = "none";
+                    document.getElementById("lblghiChuKhenThuong").style.display = "none";
+                    document.getElementById("ghiChuKhenThuong").style.display = "none";
+                }
+                if (data.quyetDinh != "" && data.quyetDinh != null) {
+                    var objFile = JSON.parse(data.quyetDinh);
+                    var spl = objFile[0].Key.split(/\\/);
+                    $("#linkFileQuyetDinh").html("<a href='#' onclick='downloadfile(\"" + spl + "\", \"" + spl[spl.length - 1] + "\", \"" + objFile[0].Value + "\")'><i class='fa fa-download'></i> " + spl[spl.length - 1] + "</a>");
+                }
+                else {
+                    $("#linkFileQuyetDinh").html("");
+                }
+                loadHinhThucKhenThuongDT(data.doiTuongThamGia, data.bophan, data.hinhThucKhenThuong);
+                if (data.danhSachCaNhanTapThe.length > 0) {
+                    var dsCNTT = JSON.parse(data.danhSachCaNhanTapThe);
+                    console.log("ds", dsCNTT);
+                    var htmldsCNTT = '';
+                    var temp = '';
+                    var lengthFile = dsCNTT.length;
+                    var i = 0;
+                    var html = '';
+                    if (dsCNTT.loaiKhenThuong == 1) {
+                        getCNTT(1);
+                        $('#tblThongTinCaNhanCache tbody tr').remove();
+
+
+                    }
+                    if (dsCNTT.loaiKhenThuong == 0) {
+                        getCNTT(0);
+                        $('#tblThongTinTapTheCache tbody tr').remove();
+
+
+                    }
+
+
+                    var tr;
+                    var stt = 1;
+                    for (var i = 0; i < dsCNTT.dschitietcanhantapthekhenthuong.length; i++) {
+                        console.log("123", dsCNTT.dschitietcanhantapthekhenthuong[i].loaiKT);
+
+                        if (dsCNTT.dschitietcanhantapthekhenthuong[i].loaiKT == 1) {
+                            tr = $('<tr/>');
+                            tr.append("<input type='hidden' name='idd' value=" + dsCNTT.dschitietcanhantapthekhenthuong[i].id + ">");
+                            tr.append("<td class='center' width='1%'><input type='checkbox' class='checkitem' name='hkRowM' id='" + dsCNTT.dschitietcanhantapthekhenthuong[i].id + "' checked/></td>");
+                            tr.append("<td width='30%'>" + dsCNTT.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                            tr.append("<td width='20%'>" + dsCNTT.dschitietcanhantapthekhenthuong[i].chucDanh + "</td>");
+                            if (dsCNTT.dschitietcanhantapthekhenthuong[i].donViCha != null) {
+                                tr.append("<td width='30%'>" + dsCNTT.dschitietcanhantapthekhenthuong[i].donVi + " / " + dsCNTT.dschitietcanhantapthekhenthuong[i].donViCha + "</td>");
+
+                            }
+                            else {
+                                tr.append("<td width='30%'>" + dsCNTT.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+
+                            }
+                            tr.append("<td width='10%'><input type='text' class='center' name='tienthuongcn' value ='" + (dsCNTT.dschitietcanhantapthekhenthuong[i].tienThuong != null ? dsCNTT.dschitietcanhantapthekhenthuong[i].tienThuong : "") + "'   id='tiencn_" + dsCNTT.dschitietcanhantapthekhenthuong[i].id + "'/></td>");
+                            tr.append('<td><button class="btn btn-primary waves-effect waves-light" onclick="return deleteRow(this)"><i class="fa fa-trash"></i></button></td>');
+                            $('#bodyThongTinCaNhanCache').append(tr);
+                            stt++;
+                        }
+                        else if (dsCNTT.dschitietcanhantapthekhenthuong[i].loaiKT == 0) {
+                            tr = $('<tr/>');
+                            tr.append("<input type='hidden' name='idd' value=" + dsCNTT.dschitietcanhantapthekhenthuong[i].id + ">");
+                            tr.append("<td class='center' width='1%'><input type='checkbox' class='checkitem' name='hkRowM' id='" + dsCNTT.dschitietcanhantapthekhenthuong[i].id + "' checked/></td>");
+                            tr.append("<td width='30%'>" + dsCNTT.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+
+                            if (dsCNTT.dschitietcanhantapthekhenthuong[i].donViCha != null) {
+                                tr.append("<td width='30%'>" + dsCNTT.dschitietcanhantapthekhenthuong[i].donVi + " / " + dsCNTT.dschitietcanhantapthekhenthuong[i].donViCha + "</td>");
+
+                            }
+                            else {
+                                tr.append("<td width='30%'>" + dsCNTT.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+
+                            }
+                            tr.append("<td width='20%'><input type='text' class='center' name='tienthuongtt' value = '" + (dsCNTT.dschitietcanhantapthekhenthuong[i].tienThuong != null ? dsCNTT.dschitietcanhantapthekhenthuong[i].tienThuong : "") + "'  id='tientt_" + dsCNTT.dschitietcanhantapthekhenthuong[i].id + "'/></td>");
+                            tr.append('<td><button class="btn btn-primary waves-effect waves-light" onclick="return deleteRow(this)"><i class="fa fa-trash"></i></button></td>');
+                            $('#bodyThongTinTapTheCache').append(tr);
+                            stt++;
+                        }
+
+                    }
+
+
+
+
+                }
+
+                //console.log(data.tienthuong);
+            },
+            error: function (errormessage) {
+                showToast("error", errormessage.responseText, "Thông báo lỗi");
+            }
+        });
+    }
+    function getIsCheck(stt) {
+        if (stt) {
+            return "checked"
+        }
+        else {
+            return "";
+        }
+    }
+
+    //Load main tree
+    function loadTreeCaNhan() {
+        $('#tree_donvi').jstree("destroy");
+        $('#tree_donvi').jstree({
+            "plugins": ["wholerow", "checkbox", "types"],
+            "checkbox": {
+                "three_state": false,
+                "keep_selected_style": false
+            },
+            'core': {
+                'check_callback': true,
+                'data': {
+                    "themes": {
+                        "responsive": true
+                    },
+                    "url": "/KhenThuong/LoadTreeCaNhan",
+                    "dataType": "json"
+                }
+            }
+        }).bind("loaded.jstree", function (event, data) {
+            $(this).jstree("open_all");
+        }).on("select_node.jstree", function (e, data) {
+            $('#selectedTreeCN').val(data.node.id);
+            loadNhanVienByDonVi(data.node.id);
+        });
+        $('#tree_ttcn_cn').jstree("destroy");
+        $('#tree_ttcn_cn').jstree({
+            "plugins": ["wholerow", "checkbox", "types"],
+            "checkbox": {
+                "three_state": false,
+                "keep_selected_style": false
+            },
+            'core': {
+                'check_callback': true,
+                'data': {
+                    "themes": {
+                        "responsive": true
+                    },
+                    "url": "/KhenThuong/LoadTreeCaNhan",
+                    "dataType": "json"
+                }
+            }
+        }).bind("loaded.jstree", function (event, data) {
+            $(this).jstree("open_all");
+        }).on("select_node.jstree", function (e, data) {
+            $('#selectedTreeCNTT_CN').val(data.node.id);
+            loadNhanVienByDonVi(data.node.id);
+        });
+    }
+
+    //Load main tree
+    function loadTreeDonVi() {
+        $('#tree_tapthe').jstree("destroy");
+        $('#tree_tapthe').jstree({
+            "plugins": ["wholerow", "checkbox", "types"],
+            "checkbox": {
+                "three_state": false,
+                "keep_selected_style": false
+            },
+            'core': {
+                'check_callback': true,
+                'data': {
+                    "themes": {
+                        "responsive": true
+                    },
+                    "url": "/KhenThuong/LoadTreeDonVi",
+                    "dataType": "json"
+                }
+            }
+        }).bind("loaded.jstree", function (event, data) {
+            $(this).jstree("open_all");
+        }).on("select_node.jstree", function (e, data) {
+            $('#selectedTreeTT').val(data.node.id);
+            loadDonViByDonVi(data.node.id);
+        });
+    }
+
+    //danh sách nhân viên theo đơn vị
+    function loadNhanVienByDonVi(idDonVi) {
+
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/loadNhanVienByDonVi",
+            data: { idDonVi: idDonVi },
+            dataType: "json",
+            success: OnSuccess,
+        });
+    };
+
+    function OnSuccess(response) {
+        var tr;
+        //Append each row to html table
+        for (var i = 0; i < response.length; i++) {
+            tr = $('<tr/>');
+            tr.append("<td class='center' width='3%'><input type='checkbox' class='chkRowModal' name='chkRowM' id='" + response[i].idNguoiDung + "'/></td>");
+            tr.append("<td width='10%'>" + response[i].maNhanVien + "</td>");
+            tr.append("<td width='30%'>" + response[i].hoTen + "</td>");
+            tr.append("<td width='30%'>" + response[i].TenDonVi + "</td>");
+            tr.append("<td width='27%'>" + response[i].tenChucDanh + "</td>");
+            $('#tblThongTinCaNhan').append(tr);
+        }
+    };
+
+    //danh sách đơn vị theo đơn vị
+    function loadDonViByDonVi(idDonVi) {
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/loadDonViByDonVi",
+            data: { idDonVi: idDonVi },
+            dataType: "json",
+            success: OnSuccess2,
+        });
+    };
+
+    function OnSuccess2(response) {
+        var tr;
+        //Append each row to html table
+        for (var i = 0; i < response.length; i++) {
+            console.log("response", response[i].idDonVi);
+
+            tr = $('<tr/>');
+            tr.append("<td class='center' width='10%'><input type='checkbox' class='chkRowModalTT' name='chkRowM' id='" + response[i].idDonVi + "'/></td>");
+            tr.append("<td width='70%'>" + response[i].tenDonVi + "</td>");
+            $('#tblThongTinTapThe').append(tr);
+
+        }
+    };
+
+
+    function checkAll(ele, table) {
+        var checkboxes = document.getElementsByClassName(table);
+        if (ele.checked) {
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].type == 'checkbox') {
+                    checkboxes[i].checked = true;
+                }
+            }
+        } else {
+            for (var i = 0; i < checkboxes.length; i++) {
+                //console.log(i)
+                if (checkboxes[i].type == 'checkbox') {
+                    checkboxes[i].checked = false;
+                }
+            }
+        }
+    }
+
+    //nút thêm cá nhân tập thể
+    $("#btnThemCaNhanTapTheKT").click(function () {
+        var idkt = $("#idKhenThuong").val();
+        var ldh = $('#loaiKT option:selected').val();
+        var tdh = $('#txthtTraoTang').val();
+        var tongtien = 0;
+
+        var tiencn = [];
+        var selected = [];
+          $("#tblThongTinCaNhanCache tbody tr").each(function (index) {
+            var idd = $("[type='hidden']", this).val();
+        @*var checkboxes = document.getElementsByClassName("chkRowModal");
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked == true) {*@
+                selected.push(idd);
+              tiencn.push($('#tiencn_' + idd).val());
+              tongtien += parseInt(tiencn.toString());
+              console.log(tiencn);
+
+            })
+
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/ThemCaNhanTapThe",
+            data: { idcntt: selected.toString(), ldh: ldh, tdh: tdh, idkt: idkt, tien: tiencn.join(","), tongtien: tongtien },
+            success: function (response) {
+                if (response == 1) {
+                    showToast("success", "thêm tập thể, cá nhân thành công!", "Thông báo")
+                    $("#mdlCaNhanTapTheKT").modal('hide');
+                    loadDsCaNhanTapThe(idkt);
+                }
+            },
+        });
+    })
+
+
+    //nút thêm tập thể
+    $("#btnThemTapThe").click(function () {
+        var idkt = $("#idKhenThuong").val();
+        var ldh = $('#loaiKT option:selected').val();
+        var tdh = $('#txthtTraoTang').val();
+        var tongtien = 0;
+        var tientt = [];
+        var selected = [];
+        $("#tblThongTinTapTheCache tbody tr").each(function (index) {
+            var idd = $("[type='hidden']", this).val();
+            @*var checkboxes = document.getElementsByClassName("chkRowModal");
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked == true) {*@
+                    selected.push(idd);
+                    tientt.push($('#tientt_' + idd).val());
+                    tongtien += parseInt(tientt.toString());
+
+                })
+
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/ThemCaNhanTapThe",
+            data: { idcntt: selected.toString(), ldh: ldh, tdh: tdh, idkt: idkt, tien: tientt.join(","), tongtien: tongtien },
+            success: function (response) {
+                if (response == 1) {
+                    showToast("success", "thêm tập thể, cá nhân thành công!", "Thông báo")
+                    $("#mdlTapTheKT").modal('hide');
+                    loadDsCaNhanTapThe(idkt);
+
+                }
+            },
+        });
+    })
+
+    // danh sách cá nhân tập thể
+    function loadDsCaNhanTapThe(idkt) {
+        $('#rowtablecanhan').empty();
+        $('#rowtabletapthe').empty();
+        $("#txttientt").val("");
+        $("#txttiencn").val("");
+        $("#canhan").hide();
+        $("#tapthe").hide();
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/loadDsCaNhanTapThe",
+            data: { idkt: idkt },
+            dataType: "json",
+            success: function (response) {
+                document.getElementById("loaiKT").disabled = true;
+
+                $("#loaiKT").val(response.loaiKhenThuong);
+                $("#txthtTraoTang").val(response.idTenKhenThuong);
+                load = response.dschitietcanhantapthekhenthuong;
+
+                if (response.loaiKhenThuong == 1) {
+                    document.getElementById("btnTapThe").disabled = true;
+                    document.getElementById("btnCaNhanTapThe").disabled = false;
+
+                    var _drawtable = document.getElementById("rowtablecanhan");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tbldscanhan'>";
+                    var nodetable = $(table).appendTo('#rowtablecanhan');
+                    var _drawtable = document.getElementById("tbldscanhan");
+
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Họ tên</th>");
+                    trhead.append("<th class='text-nowrap' width='15%'>Chức danh</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    trhead.append("<th class='text-nowrap' width='10%'>#</th>");
+                    trhead.append("<th class='text-nowrap' width='10%'>Sửa tiền</th>");
+                    thead.append(trhead);
+                    $('#tbldscanhan').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    if (response.dschitietcanhantapthekhenthuong.length > 0) {
+                        for (var i = 0; i < response.dschitietcanhantapthekhenthuong.length; i++) {
+                            if (response.dschitietcanhantapthekhenthuong[i].loaiKT == 1) {
+                                var trbody = $('<tr/>');
+                                trbody.append("<td>" + stt + "</td>");
+                                //trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].id + "</td>");
+                                trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                                trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].chucDanh + "</td>");
+                                trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                                trbody.append("<td><input type='text' class='center quantity-input' id='tienthuongcn_" + response.dschitietcanhantapthekhenthuong[i].id + "' name='tienthuongcn' onkeypress='return isNumberKey(event)'  value='" + (response.dschitietcanhantapthekhenthuong[i].tienThuong != null ? response.dschitietcanhantapthekhenthuong[i].tienThuong : "") + "'></td>");
+                                var para = "cn_" + response.dschitietcanhantapthekhenthuong[i].id;
+
+                                trbody.append("<td><button class='btn btn-primary waves-effect waves-light' onclick='return xoaCaNhanTapThe(\"" + para + "\")'><i class='fa fa-trash'></i></button></td>");
+                                trbody.append("<td><button class='btn btn-primary waves-effect waves-light' onclick='return SuaTien(" + response.dschitietcanhantapthekhenthuong[i].id + ")'><i class='fa fa-save'></i></button></td>");
+
+                                body.append(trbody);
+                                stt++;
+
+                            }
+                        }
+                    }
+                    $("#canhan").show();
+                    $('#tbldscanhan').append(body);
+                    $("#txtcn").text(stt - 1);
+                    $("#btnCaNhanTapThe").show();
+                    $("#btnTapThe").hide();
+
+                }
+                else if (response.loaiKhenThuong == 0) {
+                    document.getElementById("btnCaNhanTapThe").disabled = true;
+                    document.getElementById("btnTapThe").disabled = false;
+
+
+                    var _drawtable = document.getElementById("rowtabletapthe");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tbldstapthe'>";
+                    var nodetable = $(table).appendTo('#rowtabletapthe');
+                    var _drawtable = document.getElementById("tbldstapthe");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='30%'>Tên</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Tên đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    trhead.append("<th class='text-nowrap' width='10%'>#</th>");
+                    trhead.append("<th class='text-nowrap' width='10%'>Sửa tiền</th>");
+                    thead.append(trhead);
+                    $('#tbldstapthe').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    if (response.dschitietcanhantapthekhenthuong.length > 0) {
+                        for (var i = 0; i < response.dschitietcanhantapthekhenthuong.length; i++) {
+                            if (response.dschitietcanhantapthekhenthuong[i].loaiKT == 0) {
+                                var trbody = $('<tr/>');
+                                trbody.append("<td>" + stt + "</td>");
+                                //trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].id + "</td>");
+                                trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                                trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                                trbody.append("<td><input type='text' class='center quantity-input' id='tienthuongtt_" + response.dschitietcanhantapthekhenthuong[i].id + "' name='tienthuongtt' onkeypress='return isNumberKey(event)' value='" + (response.dschitietcanhantapthekhenthuong[i].tienThuong != null ? response.dschitietcanhantapthekhenthuong[i].tienThuong :"") + "'></td>");
+                                var paratt = "tt_" + response.dschitietcanhantapthekhenthuong[i].id;
+
+                                trbody.append("<td><button class='btn btn-primary waves-effect waves-light' onclick='return xoaCaNhanTapThe(\"" + paratt + "\")'><i class='fa fa-trash'></i></button></td>");
+                                trbody.append("<td><button class='btn btn-primary waves-effect waves-light' onclick='return SuaTienTT(" + response.dschitietcanhantapthekhenthuong[i].id + ")'><i class='fa fa-save'></i></button></td>");
+
+                                body.append(trbody);
+                                stt++;
+
+                            }
+                        }
+                    }
+                    $("#tapthe").show();
+                    $('#tbldstapthe').append(body);
+                    $("#txttt").text(stt - 1);
+                    $("#btnCaNhanTapThe").hide();
+
+                    $("#btnTapThe").show();
+                }
+                else {
+                    var _drawtable = document.getElementById("rowtablecanhan");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tbldscanhan'>";
+                    var nodetable = $(table).appendTo('#rowtablecanhan');
+                    var _drawtable = document.getElementById("tbldscanhan");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Họ tên</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Chức danh</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    trhead.append("<th class='text-nowrap' width='10%'>#</th>");
+                    trhead.append("<th class='text-nowrap' width='10%'>Sửa tiền</th>");
+                    thead.append(trhead);
+                    $('#tbldscanhan').append(thead);
+                    var body = $('<tbody/>');
+                    var stt1 = 1;
+                    if (response.dschitietcanhantapthekhenthuong.length > 0) {
+                        for (var i = 0; i < response.dschitietcanhantapthekhenthuong.length; i++) {
+                            if (response.dschitietcanhantapthekhenthuong[i].loaiKT == 1) {
+                                var trbody = $('<tr/>');
+                                trbody.append("<td>" + stt1 + "</td>");
+                                //trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].id + "</td>");
+                                trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                                trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].chucDanh + "</td>");
+                                trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                                trbody.append("<td><input type='text' class='center quantity-input' id='tienthuongcn_" + response.dschitietcanhantapthekhenthuong[i].id + "' name='tienthuongcn' onkeypress='return isNumberKey(event)' value='" + (response.dschitietcanhantapthekhenthuong[i].tienThuong != null ? response.dschitietcanhantapthekhenthuong[i].tienThuong : "") + "'></td>");
+                                var para = "cn_" + response.dschitietcanhantapthekhenthuong[i].id;
+                                trbody.append("<td><button class='btn btn-primary waves-effect waves-light' onclick='return xoaCaNhanTapThe(\"" + para + "\")'><i class='fa fa-trash'></i></button></td>");
+                                trbody.append("<td><button class='btn btn-primary waves-effect waves-light' onclick='return SuaTien(" + response.dschitietcanhantapthekhenthuong[i].id + ")'><i class='fa fa-save'></i></button></td>");
+
+                                body.append(trbody);
+                                stt1++;
+                            }
+                        }
+                    }
+                    $('#tbldscanhan').append(body);
+                    $("#txtcn").text(stt1 -1);
+                    var _drawtable = document.getElementById("rowtabletapthe");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tbldstapthe'>";
+                    var nodetable = $(table).appendTo('#rowtabletapthe');
+                    var _drawtable = document.getElementById("tbldstapthe");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Tên</th>");
+                    trhead.append("<th class='text-nowrap' width='40%'>Tên đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    trhead.append("<th class='text-nowrap' width='10%'>#</th>");
+                    trhead.append("<th class='text-nowrap' width='10%'>Sửa tiền</th>");
+                    thead.append(trhead);
+                    $('#tbldstapthe').append(thead);
+                    var body = $('<tbody/>');
+                    var stt2 = 1;
+                    if (response.dschitietcanhantapthekhenthuong.length > 0 ) {
+                        for (var i = 0; i < response.dschitietcanhantapthekhenthuong.length; i++) {
+                            if (response.dschitietcanhantapthekhenthuong[i].loaiKT == 0) {
+                                var trbody = $('<tr/>');
+                                trbody.append("<td>" + stt2 + "</td>");
+                                //trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].id + "</td>");
+                                trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                                trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                                trbody.append("<td><input type='text' class='center quantity-input' id='tienthuongtt_" + response.dschitietcanhantapthekhenthuong[i].id + "' name='tienthuongtt' onkeypress='return isNumberKey(event)' value='" + (response.dschitietcanhantapthekhenthuong[i].tienThuong != null ? response.dschitietcanhantapthekhenthuong[i].tienThuong :"") + "'></td>");
+                                var paratt = "tt_" + response.dschitietcanhantapthekhenthuong[i].id;
+
+                                trbody.append("<td><button class='btn btn-primary waves-effect waves-light' onclick='return xoaCaNhanTapThe(\"" + paratt + "\")'><i class='fa fa-trash'></i></button></td>");
+                                trbody.append("<td><button class='btn btn-primary waves-effect waves-light' onclick='return SuaTienTT(" + response.dschitietcanhantapthekhenthuong[i].id + ")'><i class='fa fa-save'></i></button></td>");
+                                body.append(trbody);
+                                stt2++;
+                            }
+                        }
+                    }
+                    $("#canhan").show();
+                    $("#tapthe").show();
+                    $('#tbldstapthe').append(body);
+                    $("#txttt").text(stt2 - 1);
+                    $("#btnCaNhanTapThe").show();
+                    $("#btnTapThe").show();
+                }
+            }
+        });
+    };
+
+    // sửa tiền form khen thưởng
+    function SuaTien(idCNTT) {
+        var idkt = $("#idKhenThuong").val();
+        var a = "tienthuongcn_" + idCNTT;
+        var tien = $('#' + a).val();
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/suatienCaNhanTapThe",
+            data: { idcntt: idCNTT, idkt: idkt, tien: tien },
+            success: function (response) {
+                if (response == 1) {
+                    showToast("success", "Sửa tiền thành công!", "Thông báo")
+                    loadDsCaNhanTapThe(idkt);
+                }
+            },
+        });
+
+    }
+
+    //sửa tiền tập thể
+    $("#btnTongTT").click(function () {
+        var tong = $("#txttt").text()
+        var tientt = $("#txttientt").val();
+        var chia = tientt / tong;
+        var idkt = $("#idKhenThuong").val();
+        var selected = [];
+        for (var i = 0; i < load.length; i++) {
+            if (load[i].loaiKT == 0) {
+                var a = "tienthuongtt_" + load[i].id;
+                //var tien = $('#' + a).val(chia);
+                selected.push(load[i].id);
+
+            }
+        }
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/suatienCaNhanTapThe",
+            data: { idcntt: selected.toString(), idkt: idkt, tien: chia },
+            success: function (response) {
+                if (response == 1) {
+                    showToast("success", "Sửa tiền thành công!", "Thông báo")
+                    loadDsCaNhanTapThe(idkt);
+                }
+            },
+        });
+    })
+
+    // sửa tiền cá nhân
+    $("#btnTongCN").click(function () {
+        var tong = $("#txtcn").text()
+        var tiencn = $("#txttiencn").val();
+        var chia = tiencn / tong;
+        var idkt = $("#idKhenThuong").val();
+        var selected = [];
+        for (var i = 0; i < load.length; i++) {
+            if (load[i].loaiKT == 1) {
+                var a = "tienthuongcn_" + load[i].id;
+
+                selected.push(load[i].id);
+
+            }
+        }
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/suatienCaNhanTapThe",
+            data: { idcntt: selected.toString(), idkt: idkt, tien: chia },
+            success: function (response) {
+                if (response == 1) {
+                    showToast("success", "Sửa tiền thành công!", "Thông báo")
+                    loadDsCaNhanTapThe(idkt);
+                }
+            },
+        });
+    })
+    function SuaTienTT(idCNTT) {
+        var idkt = $("#idKhenThuong").val();
+        var a = "tienthuongtt_" + idCNTT;
+        var tien = $('#' + a).val();
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/suatienCaNhanTapThe",
+            data: { idcntt: idCNTT, idkt: idkt, tien: tien },
+            success: function (response) {
+                if (response == 1) {
+                    showToast("success", "Sửa tiền thành công!", "Thông báo")
+                    loadDsCaNhanTapThe(idkt);
+                }
+            },
+        });
+
+    }
+
+    //xoá cá nhân tập thể
+    function xoaCaNhanTapThe(idCNTT) {
+        var idkt = $("#idKhenThuong").val();
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/xoaCaNhanTapThe",
+            data: { idcntt: idCNTT, idkt: idkt },
+            success: function (response) {
+                if (response == 1) {
+                    showToast("success", "Xóa tập thể, cá nhân thành công!", "Thông báo")
+                    loadDsCaNhanTapThe(idkt);
+                }
+            },
+        });
+    }
+    $("#btnSearchCN").click(function () {
+        var treeValue = $("#selectedTreeCN").val();
+        var searchValue = $("#txtCaNhanSearch").val();
+        $('#tblThongTinCaNhan tbody tr').remove();
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/searchCaNhan",
+            data: { idDonVi: treeValue, searchText: searchValue },
+            dataType: "json",
+            success: function (response) {
+                $('#tblThongTinCaNhan tbody tr').remove();
+                var tr;
+                for (var i = 0; i < response.length; i++) {
+                    tr = $('<tr/>');
+                    tr.append("<td class='center' width='1%'><input type='checkbox' class='chkRowModal' name='chkRowM' id='" + response[i].idNguoiDung + "'/></td>");
+                    tr.append("<td width='20%'>" + response[i].maNhanVien + "</td>");
+                    tr.append("<td width='25%'>" + response[i].hoTen + "</td>");
+                    tr.append("<td width='20%'>" + response[i].TenDonVi + "</td>");
+                    tr.append("<td width='25%'>" + response[i].tenChucDanh + "</td>");
+                    $('#tblThongTinCaNhan').append(tr);
+                }
+            },
+        });
+    });
+    $("#btnAddTapThe").click(function () {
+        var idkt = $("#idKhenThuong").val();
+        var lkt = $('#loaiKT option:selected').val();
+        var selected = [];
+        var checkboxes = document.getElementsByClassName("chkRowModalTT");
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked == true) {
+                selected.push(checkboxes[i].id);
+            }
+        }
+        var selectedtt = [];
+
+        var list_tt = [];
+        $("#tblThongTinTapTheCache tbody tr").each(function (index) {
+            var idd = $("[type='hidden']", this).val();
+            list_tt.push(idd);
+        });
+        if (idkt == 0) {
+            LoadTTCache(selectedtt.toString(), selected.toString(), lkt, 0, "");
+
+        }
+        else {
+            LoadTTCache(selectedtt.toString(), selected.toString(), lkt, idkt, list_tt.toString());
+
+        }
+    });
+
+    //thêm cá nhân
+    $("#btnAddCaNhan").click(function () {
+        var idkt = $("#idKhenThuong").val();
+        var lkt = $('#loaiKT option:selected').val();
+        //var tdh = $('#cbxTenDanhHieu option:selected').val();
+        var selectedtt = [];
+        var selected = [];
+        var checkboxes = document.getElementsByClassName("chkRowModal");
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked == true) {
+                selected.push(checkboxes[i].id);
+                selectedtt.push();
+            }
+        }
+
+
+        var list_cn = [];
+        $("#tblThongTinCaNhanCache tbody tr").each(function (index) {
+            var idd = $("[type='hidden']", this).val();
+            list_cn.push(idd);
+        });
+        if (idkt == 0) {
+            LoadCNCache(selected.toString(), selectedtt.toString(), lkt, 0, "");
+
+        }
+        else {
+            LoadCNCache(selected.toString(), selectedtt.toString(), lkt, idkt, list_cn.toString());
+
+        }
+    });
+
+    //load tập thể
+    function LoadTTCache(idcnx, idttx, lktx, idktx, listcurrentx) {
+        if (idktx == 0) {
+            $.ajax({
+                type: "POST",
+                url: "/KhenThuong/ThemCaNhanTapTheCache",
+                data: { idcn: idcnx, idtt: idttx, lkt: lktx, idkt: 0, listCurrent: "" },
+                success: function (response) {
+                    console.log("aaaaa", response);
+                    $('#tblThongTinTapTheCache tbody tr').remove();
+                    var tr;
+                    var stt = 1;
+                    for (var i = 0; i < response.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<input type='hidden' name='idd' value=" + response[i].id + ">");
+                        tr.append("<td class='center' width='1%'><input type='checkbox' class='checkitem' name='hkRowM' id='" + response[i].id + "' checked/></td>");
+                        tr.append("<td width='30%'>" + response[i].tenCaNhanTapThe + "</td>");
+                        tr.append("<td width='60%'>" + response[i].donVi + "</td>");
+                        tr.append("<td width='20%'><input type='text' class='center' name='tienthuongtt' value = '" + (response[i].tienThuong != null ? response[i].tienThuong : "") + "'  id='tientt_" + response[i].id + "'/></td>");
+                        tr.append('<td><button class="btn btn-primary waves-effect waves-light" onclick="return deleteRow(this)"><i class="fa fa-trash"></i></button></td>');
+                        $('#bodyThongTinTapTheCache').append(tr);
+                        stt++;
+                    }
+                },
+            });
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/KhenThuong/ThemCaNhanTapTheCache",
+                data: { idcn: idcnx, idtt: idttx, lkt: lktx, idkt: idktx, listCurrent: listcurrentx },
+                success: function (response) {
+                    console.log("aaaaa", response);
+                    $('#tblThongTinTapTheCache tbody tr').remove();
+                    var tr;
+                    var stt = 1;
+                    for (var i = 0; i < response.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<input type='hidden' name='idd' value=" + response[i].id + ">");
+                        tr.append("<td class='center' width='1%'><input type='checkbox' class='checkitem' name='hkRowM' id='" + response[i].id + "' checked/></td>");
+                        tr.append("<td width='30%'>" + response[i].tenCaNhanTapThe + "</td>");
+                        tr.append("<td width='60%'>" + response[i].donVi + "</td>");
+                        tr.append("<td width='20%'><input type='text' class='center' name='tienthuongtt' value = '" + (response[i].tienThuong != null ? response[i].tienThuong : "") + "'  id='tientt_" + response[i].id + "'/></td>");
+                        tr.append('<td><button class="btn btn-primary waves-effect waves-light" onclick="return deleteRow(this)"><i class="fa fa-trash"></i></button></td>');
+                        $('#bodyThongTinTapTheCache').append(tr);
+                        stt++;
+                    }
+                },
+            });
+        }
+
+    }
+
+    // xoá dữ liệu
+    function deleteRow(e) {
+        $(e).parents('tr').remove();
+    }
+
+    //load cá nhân
+    function LoadCNCache(idcnx, idttx, lktx, idktx, listcurrentx) {
+        if (idktx == 0) {
+            $.ajax({
+                type: "POST",
+                url: "/KhenThuong/ThemCaNhanTapTheCache",
+                data: { idcn: idcnx, idtt: idttx, lkt: lktx, idkt: 0, listCurrent: "" },
+                success: function (response) {
+                    console.log("aaaaa", response);
+
+                    $('#tblThongTinCaNhanCache tbody tr').remove();
+                    var tr;
+                    var stt = 1;
+                    for (var i = 0; i < response.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<input type='hidden' name='idd' value=" + response[i].id + ">");
+                        tr.append("<td class='center' width='1%'><input type='checkbox' class='checkitem' name='hkRowM' id='" + response[i].id + "' checked/></td>");
+                        tr.append("<td width='30%'>" + response[i].tenCaNhanTapThe + "</td>");
+                        tr.append("<td width='20%'>" + response[i].chucDanh + "</td>");
+                        tr.append("<td width='30%'>" + response[i].donVi + "</td>");
+                        tr.append("<td width='10%'><input type='text' class='center' name='tienthuongcn' value ='" + (response[i].tienThuong != null ? response[i].tienThuong : "") + "'   id='tiencn_" + response[i].id + "'/></td>");
+                        tr.append('<td><button class="btn btn-primary waves-effect waves-light" onclick="return deleteRow(this)"><i class="fa fa-trash"></i></button></td>');
+                        $('#bodyThongTinCaNhanCache').append(tr);
+                        stt++;
+                    }
+                },
+            });
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/KhenThuong/ThemCaNhanTapTheCache",
+                data: { idcn: idcnx, idtt: idttx, lkt: lktx, idkt: idktx, listCurrent: listcurrentx },
+                success: function (response) {
+                    console.log("aaaaa", response);
+
+                    $('#tblThongTinCaNhanCache tbody tr').remove();
+                    var tr;
+                    var stt = 1;
+                    for (var i = 0; i < response.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<input type='hidden' name='idd' value=" + response[i].id + ">");
+                        tr.append("<td class='center' width='1%'><input type='checkbox' class='checkitem' name='hkRowM' id='" + response[i].id + "' checked/></td>");
+                        tr.append("<td width='30%'>" + response[i].tenCaNhanTapThe + "</td>");
+                        tr.append("<td width='20%'>" + response[i].chucDanh + "</td>");
+                        tr.append("<td width='30%'>" + response[i].donVi + "</td>");
+                        tr.append("<td width='10%'><input type='text' class='center' name='tienthuongcn' value ='" + (response[i].tienThuong != null ? response[i].tienThuong : "") + "'   id='tiencn_" + response[i].id + "'/></td>");
+                        tr.append('<td><button class="btn btn-primary waves-effect waves-light" onclick="return deleteRow(this)"><i class="fa fa-trash"></i></button></td>');
+                        $('#bodyThongTinCaNhanCache').append(tr);
+                        stt++;
+                    }
+                },
+            });
+        }
+
+    }
+    $("#btnSearchTT").click(function () {
+        var treeValue = $("#selectedTreeTT").val();
+        var searchValue = $("#txtTapTheSearch").val();
+        $('#tblThongTinTapThe tbody tr').remove();
+        $.ajax({
+            type: "POST",
+            url: "/KhenThuong/searchTapThe",
+            data: { idDonVi: treeValue, searchText: searchValue },
+            dataType: "json",
+            success: function (response) {
+                $('#tblThongTinTapThe tbody tr').remove();
+                var tr;
+                for (var i = 0; i < response.length; i++) {
+                    tr = $('<tr/>');
+                    tr.append("<td class='center' width='20%'><input type='checkbox' class='chkRowModalTT' name='chkRowM' id='" + response[i].idDonVi + "'/></td>");
+                    tr.append("<td width='80%'>" + response[i].tenDonVi + "</td>");
+                    $('#tblThongTinTapThe').append(tr);
+                }
+            },
+        });
+    });
+    function downloadfile(fullpath, file, type) {
+        window.location = "@Url.RouteUrl(new { Controller = "KhenThuong", Action = "DownloadFile" })/?fullpath=" + fullpath + "&file=" + file + "&type=" + type;
+    }
+</script>
+

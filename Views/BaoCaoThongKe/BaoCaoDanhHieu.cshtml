@@ -1,0 +1,834 @@
+﻿
+@{
+    ViewBag.Title = "BaoCaoDanhHieu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="#">Báo cáo thống kê</a></li>
+        <li class="breadcrumb-item active">Báo cáo danh hiệu</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body" id="frmSearch">
+
+                    @*<h4 class="header-title mb-6" style="font-size: 20px;">Báo cáo danh hiệu</h4>*@
+                    <div class="row">
+                        <div class="col-xl-2">
+                            <div class="form-group" style="text-align:right;">
+                                <label for="btnGroupTieuChi">Chọn tiêu chí:</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-10">
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="btn-group">
+                                        <button id="btnNgay" class="btn btn-default waves-effect waves-light">Ngày chi tiết</button>
+                                        <button id="btnThang" class="btn btn-default waves-effect waves-light">Tháng</button>
+                                        <button id="btnQuy" class="btn btn-default waves-effect waves-light">Quý</button>
+                                        <button id="btnNam" class="btn btn-default waves-effect waves-light">Năm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row form-horizontal" id="regionNgay">
+                        <div class="col-xl-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label"></label>
+                                <div class="col-md-9">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="dtNgayPhatDongSearch_TuNgay">Từ ngày:</label>
+                                        <div class="col-md-9">
+                                            @*<input type="text" id="dtNgayPhatDongSearch_TuNgay" name="dtNgayPhatDongSearch_TuNgay" class="form-control" placeholder="">*@
+                                            <div id="dateNgayPhatDong_TuNgay" class="input-group date" data-date-format="dd/mm/yyyy"> <input id="dtNgay_TuNgay" name="dtNgay_TuNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text"> <span class="input-group-addon"><i class="fa fa-lg fa-calendar"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label"></label>
+                                <div class="col-md-9">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="dtNgayPhatDongSearch_DenNgay">Đến ngày:</label>
+                                        <div class="col-md-9">
+                                            @*<input type="text" id="dtNgayPhatDongSearch_DenNgay" name="dtNgayPhatDongSearch_DenNgay" class="form-control" placeholder="">*@
+                                            <div id="dateNgayPhatDong_DenNgay" class="input-group date" data-date-format="dd/mm/yyyy"> <input id="dtNgay_DenNgay" name="dtNgay_DenNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text"> <span class="input-group-addon"><i class="fa fa-lg fa-calendar"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                            </div>
+                        </div>
+                        <div class="col-xl-10">
+                            <div class="row">
+                                <div class="col-xl-6" id="regionThang" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="cbxThang">Tháng:</label>
+                                        <select id="cbxThang" name="cbxThang" class="form-control">
+                                            <option value="1">Tháng 1</option>
+                                            <option value="2">Tháng 2</option>
+                                            <option value="3">Tháng 3</option>
+                                            <option value="4">Tháng 4</option>
+                                            <option value="5">Tháng 5</option>
+                                            <option value="6">Tháng 6</option>
+                                            <option value="7">Tháng 7</option>
+                                            <option value="8">Tháng 8</option>
+                                            <option value="9">Tháng 9</option>
+                                            <option value="10">Tháng 10</option>
+                                            <option value="11">Tháng 11</option>
+                                            <option value="12">Tháng 12</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6" id="regionNam" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="cbxNam">Năm:</label>
+                                        <select id="cbxNam" name="cbxNam" class="form-control">
+                                            @for (int i = 0; i < 10; i++)
+                                            {
+                                                <option value="@(DateTime.Now.Year - i)">@(DateTime.Now.Year - i)</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="regionQuy" style="display: none;">
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                            </div>
+                        </div>
+                        <div class="col-xl-10">
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label for="cbxQuy">Quý:</label>
+                                        <select id="cbxQuy" name="cbxQuy" class="form-control">
+                                            <option value="1">Quý 1</option>
+                                            <option value="2">Quý 2</option>
+                                            <option value="3">Quý 3</option>
+                                            <option value="4">Quý 4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                            </div>
+                        </div>
+                        <div class="col-xl-10">
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <div class="form-group">
+                                        <label for="bophan">Bộ phận:</label>
+                                        <select id="bophan" name="bophan" class="form-control" onchange="loadDmDanhHieu()">
+                                            <option value="0">Tất cả</option>
+                                            <option value="1">Chuyên môn</option>
+                                            <option value="2">Đảng - Đoàn thể</option>
+                                            <option value="3">Công Đoàn</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                            </div>
+                        </div>
+                        <div class="col-xl-10">
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <div class="form-group">
+                                        <label for="cbxLoaiDanhHieu">Loại danh hiệu</label>
+                                        <select id="cbxLoaiDanhHieu" name="cbxLoaiDanhHieu" class="form-control" onchange="loadDmDanhHieu()">
+                                            <option value="2">--Chọn loại danh hiệu--</option>
+                                            <option value="0">Tập thể</option>
+                                            <option value="1">Cá nhân</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4">
+                                    <div class="form-group">
+                                        <label for="cbxTenDanhHieu">Tên danh hiệu: </label>
+                                        <select id="cbxTenDanhHieu" name="cbxTenDanhHieu" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4">
+                                    <div class="form-group">
+                                        <label for="txtSoQuyetDinh">Số quyết định: </label>
+                                        <input type="text" id="txtSoQuyetDinh" name="txtSoQuyetDinh" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                            </div>
+                        </div>
+                        <div class="col-xl-10">
+                            <div class="row">
+                                @* <div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label for="cbxCapKyKhenThuong">Cấp ký khen thưởng</label>
+                                            <select id="cbxCapKyKhenThuong" name="cbxCapKyKhenThuong" class="form-control">
+                                            </select>
+                                        </div>
+                                    </div>*@
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <label for="cbxHinhThucKhenThuong">Hình thức danh hiệu</label>
+                                        <select id="cbxHinhThucKhenThuong" name="cbxHinhThucKhenThuong" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                            </div>
+                        </div>
+                        <div class="col-xl-10">
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <button class="btn btn-info" id="btnDisplay"><i class="fa fa-desktop"></i> Hiển thị</button>
+                                    <button class="btn btn-danger" id="btnXuatExcel"><i class="fa fa-file-excel"></i> Xuất Excel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <table id="table_danhhieu" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%; ">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    </div>
+    <div class="modal" id="mdlXemDanhHieu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="titleXemDanhHieu">THÔNG TIN DANH HIỆU</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body" id="test">
+                    <div class="row">
+
+                        <div class="col-xl-8">
+                            <div class="form-group">
+                                <label for="cbxTenDanhHieu" style="color:gray;font-style:italic">Tên danh hiệu: </label>
+                                <label id="lblTenDanhHieu" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="txtSoHieu" style="color:gray;font-style:italic">Số hiệu: </label>
+                                <label id="lblSoHieu" style="font-size:medium"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="form-group">
+                                <label for="txtNoiDungDanhHieu" style="color:gray;font-style:italic">Nội dung danh hiệu: </label>
+                                <label id="lblNoiDungDanhHieu" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="txtLoaiDanhHieu" style="color:gray;font-style:italic">Loại danh hiệu: </label>
+                                <label id="lblloaiDanhHieu" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="txtNgayDanhHieu" style="color:gray;font-style:italic ">Ngày quyết định: </label>
+                                <label id="lblNgayDanhHieu" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="txtNamDanhHieu" style="color:gray;font-style:italic">Năm danh hiệu: </label>
+                                <label id="lblNamDanhHieu" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="ckbDaTraoTang" style="color:gray;font-style:italic">Trạng thái: </label>
+                                <label id="lblDaTraoTang" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="txtNgayTraoTang" style="color:gray;font-style:italic">Ngày trao tặng: </label>
+                                <label id="lblNgayTraoTang" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="lblHìnhThucTraoTang" style="color:gray;font-style:italic">Hình thức trao tặng: </label>
+                                <label id="lblHìnhThucTraoTang" style="font-size:medium"></label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row" id="rowTableXemDanhHieu">
+                    </div>
+                    <div class="row" id="rowTableXemDanhHieuExtra">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @using (Html.BeginForm("ExportBaoCaoDanhHieu", "BaoCaoThongKe", FormMethod.Post, new { @id = "Export_Form" }))
+                    {
+                        <input type="hidden" name="GridHtml" />
+                        <input class="btn btn-info" type="submit" id="btnSubmit" value="Export Báo Cáo Danh Hiệu" />
+                    }
+                    <button type="button" class="btn btn-danger" id="btnCloseTraoTang" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var flag_bt = 0;
+    $(document).ready(function () {
+        activeMenu("liBaoCao", "liBaoCaoDanhHieu");
+        $.noConflict();
+        $("#dateNgayPhatDong_TuNgay").datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            orientation: 'bottom'
+        }).datepicker('update');
+        $("#dateNgayPhatDong_DenNgay").datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            orientation: 'bottom'
+        }).datepicker('update');
+        loadDmDanhHieu();
+        setDate();
+    });
+    $(function () {
+        $("#btnSubmit").click(function () {
+            $("input[name='GridHtml']").val($("#test").html());
+        });
+    });
+    $('#mdlXemDanhHieu').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset');
+    });
+    function setDate() {
+        var toDay = new Date();
+        $("#dateNgayPhatDong_TuNgay").datepicker('setDate', toDay);
+        $("#dateNgayPhatDong_DenNgay").datepicker('setDate', toDay);
+    }
+
+    @*function loadCapKyKhenThuong() {
+        $('#cbxCapKyKhenThuong').empty();
+        $.get('/DanhHieu/getCapKyKhenThuong', function (data) {
+            var html = '';
+            html = '<option value="0" selected>Tất cả</option>';
+            $.each(data, function (key, item) {
+                html += '<option value = ' + item.id + '>' + item.tenCapKyKhenThuong + '</option>';
+            });
+            $('#cbxCapKyKhenThuong').html(html);
+        })
+    }*@
+    @*function loadTenDanhHieu() {
+        $('#cbxTenDanhHieu').empty();
+        $.get('/DanhHieu/loadTenDanhHieu', function (data) {
+            var html = '';
+            html = '<option value="0" selected>Tất cả</option>';
+            $.each(data, function (key, item) {
+                html += '<option value=' + item.id + '>' + item.tenDanhHieuThiDua + '</option>';
+            });
+            $('#cbxTenDanhHieu').html(html);
+        })
+    }*@
+    //Xem Danh Hiệu trong báo cáo
+
+    function xemDanhHieu(idDanhHieu) {
+        $("#mdlXemDanhHieu").modal('show');
+        $.ajax({
+            url: "/BaoCaoThongKe/xemDanhHieu",
+            data: { idDanhHieu: idDanhHieu },
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                console.log(data, "aaaa");
+                $('#rowTableXemDanhHieu').empty();
+                $('#rowTableXemDanhHieuExtra').empty();
+
+                //console.log(data);
+                $("#lblTenDanhHieu").text(data.tenDanhHieu);
+                $("#lblSoHieu").text(data.soHieu);
+                $("#lblNgayDanhHieu").text(data.ngayDanhHieu);
+                $("#lblNoiDungDanhHieu").text(data.noiDungDanhHieu);
+                //$("#lblHìnhThucTraoTang").text(data.xemhinhThucTraoTang);
+                if (data.xemhinhThucTraoTang != null) {
+                    $("#lblHìnhThucTraoTang").text(data.xemhinhThucTraoTang);
+
+                }
+                else {
+                    $("#lblHìnhThucTraoTang").text("Chưa có hình thức trao tặng danh hiệu/ trao tặng trực tiếp");
+
+                }
+
+                if (data.kieuDanhHieu == 1) {
+                    $("#lblloaiDanhHieu").text("Cá nhân");
+
+                }
+                else if (data.kieuDanhHieu == 0) {
+                    $("#lblloaiDanhHieu").text("Tập thể");
+
+                }
+                $("#lblNamDanhHieu").text(data.namDanhHieu);
+                if (data.daTraoTang == true) {
+                    $("#lblDaTraoTang").text("Đã trao tặng");
+
+                } else {
+                    $("#lblDaTraoTang").text("Chưa trao tặng");
+
+
+                }
+                if (data.ngayTraoTang != "") {
+                    $("#lblNgayTraoTang").text(data.ngayTraoTang);
+
+                }
+                else {
+                    $("#lblNgayTraoTang").text("Chưa có ngày trao tặng");
+                }
+                var dsCNTT = data.danhSachCaNhanTapThe;
+                console.log(dsCNTT);
+                if (dsCNTT.loaiDanhHieu == 1) {
+                    var _drawtable = document.getElementById("rowTableXemDanhHieu");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemDanhHieu'>";
+                    var nodetable = $(table).appendTo('#rowTableXemDanhHieu');
+                    var _drawtable = document.getElementById("tblXemDanhHieu");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th>STT</th>");
+                    trhead.append("<th>Họ tên</th>");
+                    trhead.append("<th>Chức danh</th>");
+                    trhead.append("<th>Đơn vị</th>");
+                    thead.append(trhead);
+                    $('#tblXemDanhHieu').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < dsCNTT.dsChiTietCaNhanTapThe.length; i++) {
+                        var trbody = $('<tr/>');
+                        trbody.append("<td>" + stt + "</td>");
+                        trbody.append("<td>" + dsCNTT.dsChiTietCaNhanTapThe[i].tenCaNhanTapThe + "</td>");
+                        trbody.append("<td>" + dsCNTT.dsChiTietCaNhanTapThe[i].chucDanh + "</td>");
+                        trbody.append("<td>" + dsCNTT.dsChiTietCaNhanTapThe[i].donVi + "</td>");
+                        body.append(trbody);
+                        stt++;
+                    }
+                    $('#tblXemDanhHieu').append(body);
+                }
+                else if (dsCNTT.loaiDanhHieu == 0) {
+                    var _drawtable = document.getElementById("rowTableXemDanhHieu");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemDanhHieu'>";
+                    var nodetable = $(table).appendTo('#rowTableXemDanhHieu');
+                    var _drawtable = document.getElementById("tblXemDanhHieu");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th>STT</th>");
+                    trhead.append("<th>Tên</th>");
+                    trhead.append("<th>Tên đơn vị</th>");
+                    thead.append(trhead);
+                    $('#tblXemDanhHieu').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < dsCNTT.dsChiTietCaNhanTapThe.length; i++) {
+                        var trbody = $('<tr/>');
+                        trbody.append("<td>" + stt + "</td>");
+                        trbody.append("<td>" + dsCNTT.dsChiTietCaNhanTapThe[i].tenCaNhanTapThe + "</td>");
+                        trbody.append("<td>" + dsCNTT.dsChiTietCaNhanTapThe[i].donVi + "</td>");
+                        body.append(trbody);
+                        stt++;
+                    }
+                    $('#tblXemDanhHieu').append(body);
+                }
+                else {
+                    var _drawtable = document.getElementById("rowTableXemDanhHieu");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemDanhHieu'>";
+                    var nodetable = $(table).appendTo('#rowTableXemDanhHieu');
+                    var _drawtable = document.getElementById("tblXemDanhHieu");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th>STT</th>");
+                    trhead.append("<th>Tên</th>");
+                    trhead.append("<th>Tên đơn vị</th>");
+                    thead.append(trhead);
+                    $('#tblXemDanhHieu').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < dsCNTT.dsChiTietCaNhanTapThe.length; i++) {
+                        if (dsCNTT.dsChiTietCaNhanTapThe[i].loaiDanhHieu == 0) {
+                            var trbody = $('<tr/>');
+                            trbody.append("<td>" + stt + "</td>");
+                            trbody.append("<td>" + dsCNTT.dsChiTietCaNhanTapThe[i].tenCaNhanTapThe + "</td>");
+                            trbody.append("<td>" + dsCNTT.dsChiTietCaNhanTapThe[i].donVi + "</td>");
+                            body.append(trbody);
+                            stt++;
+                        }
+                    }
+                    $('#tblXemDanhHieu').append(body);
+
+                    var _drawtable = document.getElementById("rowTableXemDanhHieuExtra");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemDanhHieuCN'>";
+                    var nodetable = $(table).appendTo('#rowTableXemDanhHieuExtra');
+                    var _drawtable = document.getElementById("tblXemDanhHieuCN");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th>STT</th>");
+                    trhead.append("<th>Họ tên</th>");
+                    trhead.append("<th>Chức danh</th>");
+                    trhead.append("<th>Đơn vị</th>");
+                    thead.append(trhead);
+                    $('#tblXemDanhHieuCN').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < dsCNTT.dsChiTietCaNhanTapThe.length; i++) {
+                        if (dsCNTT.dsChiTietCaNhanTapThe[i].loaiDanhHieu == 1) {
+                            var trbody = $('<tr/>');
+                            trbody.append("<td>" + stt + "</td>");
+                            trbody.append("<td>" + dsCNTT.dsChiTietCaNhanTapThe[i].tenCaNhanTapThe + "</td>");
+                            trbody.append("<td>" + dsCNTT.dsChiTietCaNhanTapThe[i].chucDanh + "</td>");
+                            trbody.append("<td>" + dsCNTT.dsChiTietCaNhanTapThe[i].donVi + "</td>");
+                            body.append(trbody);
+                            stt++;
+                        }
+                    }
+                    $('#tblXemDanhHieuCN').append(body);
+                }
+            }
+        });
+    }
+
+    function loadDmDanhHieu(kieuDanhHieu = "", idDmDH = 0, bophan ="") {
+        if (kieuDanhHieu == "") {
+            kieuDanhHieu = $("#cbxLoaiDanhHieu").val();
+        }
+        if (bophan == "") {
+            bophan = $("#bophan").val();
+        }
+        $.get("/BaoCaoThongKe/GetDmDanhHieuByKieu", { kieuDanhHieu: kieuDanhHieu, bophan: bophan }, function (data) {
+            //console.log(data);
+            var html = '';
+            html = '<option value = "0">--Chọn danh hiệu--</option>';
+            $.each(data.data, function (key, item) {
+                if (bophan != 0) {
+                    if (item.id == idDmDH && item.bophan == bophan) {
+                        html += '<option value = ' + item.id + ' selected>' + item.tenDanhHieuThiDua + '</option>';
+                    }
+                    else {
+                        html += '<option value = ' + item.id + '>' + item.tenDanhHieuThiDua + '</option>';
+                    }
+                }
+                else {
+                    if (item.id == idDmDH) {
+                        html += '<option value = ' + item.id + ' selected>' + item.tenDanhHieuThiDua + '</option>';
+                    }
+                    else {
+                        html += '<option value = ' + item.id + '>' + item.tenDanhHieuThiDua + '</option>';
+                    }
+                }
+
+
+            });
+            $('#cbxTenDanhHieu').html(html);
+        })
+
+        $.get("/BaoCaoThongKe/GetDmHinhThucKhenThuong", { kieutraotang: kieuDanhHieu }, function (data) {
+            console.log(data);
+            var html = '';
+
+            html = '<option value = "0">--Chọn hình thức trao tặng--</option>';
+            $.each(data.data, function (key, item) {
+                //console.log(item);
+                html += '<option value = ' + item.id + '>' + item.tenHinhThucKhenThuong + '</option>';
+
+
+            });
+            $('#cbxHinhThucKhenThuong').html(html);
+        });
+    }
+
+    $("#btnNgay").click(function () {
+        $("#regionNgay").css("display", "");
+        $("#regionThang").css("display", "none");
+        $("#regionQuy").css("display", "none");
+        $("#regionNam").css("display", "none");
+        flag_bt = 0;
+    })
+    $("#btnThang").click(function () {
+        $("#regionNgay").css("display", "none");
+        $("#regionThang").css("display", "");
+        $("#regionQuy").css("display", "none");
+        $("#regionNam").css("display", "");
+        flag_bt = 1;
+    })
+    $("#btnQuy").click(function () {
+        $("#regionNgay").css("display", "none");
+        $("#regionThang").css("display", "none");
+        $("#regionQuy").css("display", "");
+        $("#regionNam").css("display", "");
+        flag_bt = 2;
+    })
+    $("#btnNam").click(function () {
+        $("#regionNgay").css("display", "none");
+        $("#regionThang").css("display", "none");
+        $("#regionQuy").css("display", "none");
+        $("#regionNam").css("display", "");
+        flag_bt = 3;
+    })
+
+    $("#btnDisplay").click(function () {
+        hienThiBaoCao();
+        @*var isValid = validator();
+        if (isValid) {
+
+
+        }
+        else {
+            hienThiBaoCao();
+
+        }*@
+    })
+
+    function validator() {
+        $('#frmSearch').bootstrapValidator({
+            //container: 'tooltip',
+            message: 'Giá trị không hợp lệ',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                dtNgay_TuNgay: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập thời gian từ ngày!'
+                        }
+                    }
+                },
+                dtNgay_DenNgay: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập thời gian đến ngày!'
+                        }
+                    }
+                },
+                cbxLoaiDanhHieu: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn loại danh hiệu!'
+                        }
+                    }
+                },
+                cbxTenDanhHieu: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn tên danh hiệu!'
+                        }
+                    }
+                },
+                cbxHinhThucKhenThuong: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn hình thức danh hiệu!'
+                        }
+                    }
+                }
+            }
+        });
+        var validatorObj = $('#frmSearch').data('bootstrapValidator');
+        validatorObj.validate();
+        if (validatorObj.isValid()) {
+            return true;
+        }
+        return false;
+    }
+
+    function hienThiBaoCao() {
+        //console.log(getMocThoiGian(flag_bt));
+        var kieu = $("#cbxLoaiDanhHieu").val();
+        var html = "";
+        html += "<thead><th width='1%'>STT</th><th>Số quyết định</th><th>Ngày quyết định</th><th>Danh hiệu</th><th>Tập thể/Cá nhân</th><th>Năm danh hiệu</th><th>Hình thức danh hiệu</th><th>File Đính Kèm</th></thead>";
+        $("#table_danhhieu").html(html);
+        var time = getMocThoiGian(flag_bt);
+        $.ajax({
+            url: "/BaoCaoThongKe/GetBaoCaoDanhHieu",
+            type: "GET",
+            dataType: "json",
+            data: {
+                from: time[0],
+                to: time[1],
+                bophan: $("#bophan").val(),
+                loaiDanhHieu: kieu,
+                tenDanhHieu: $("#cbxTenDanhHieu").val(),
+                hinhThucKhenThuong: $("#cbxHinhThucKhenThuong").val(),
+                soQuyetDinh: $("#txtSoQuyetDinh").val()
+            },
+            beforeSend: function () {
+                $("#overlay").fadeIn(300);
+            },
+            success: function (data) {
+                console.log("data1", data);
+
+                // Do stuff...
+                //console.log(data);
+                var stt = 0;
+                if (data.data.length > 0) {
+                    html += "<tbody>";
+                    $.each(data.data, function (key, item) {
+                        stt++;
+                        console.log("item", item);
+                        if (item.fileGoc != "" && item.fileGoc != null) {
+                            var objFile = JSON.parse(item.fileGoc);
+                            var spl = objFile[0].Key.split(/\\/);
+                            //console.log(spl);
+
+                            html += '<tr><td width="1%">' + stt + '</td><td><b>' + item.soQuyetDinh + '</b></td><td>' + item.ngayDanhHieu + '</td><td>' + item.tenDanhHieu + '</td><td><button id="btnCaNhanTT" class="btn btn-info" onclick="return xemDanhHieu(' + item.id + ')">Danh sách</button></td><td>' + item.namDanhHieu + '</td><td>' + item.hinhThucTraoTang + '</td><td><a href="#" onclick="downloadfile(\'' + spl + '\', \'' + spl[spl.length - 1] + '\', \'' + objFile[0].Value + '\')"><i class="fa fa-download"></i> Tải file QĐ</a></td></tr>';
+
+                        }
+                        else {
+                            html += '<tr><td width="1%">' + stt + '</td><td><b>' + item.soQuyetDinh + '</b></td><td>' + item.ngayDanhHieu + '</td><td>' + item.tenDanhHieu + '</td><td><button id="btnCaNhanTT" class="btn btn-info" onclick="return xemDanhHieu(' + item.id + ')">Danh sách</button></td><td>' + item.namDanhHieu + '</td><td>' + item.hinhThucTraoTang + '</td><td>Chưa có file quyết định</td></tr>';
+
+                        }
+
+                    });
+                    html += "</tbody>";
+                    console.log(html);
+                    $("#table_danhhieu").html(html);
+                }
+                else {
+                    html += "<tr><td colspan='8' style='text-align: center;'>Không có nội dung hiển thị</td></tr>";
+                    $("#table_danhhieu").html(html);
+                }
+            },
+            complete: function () {
+                $("#overlay").fadeOut(300);
+            }
+        });
+        //$("#table_danhhieu").html(html);
+    }
+    function downloadfile(fullpath, file, type) {
+        console.log(file);
+        window.location = "@Url.RouteUrl(new { Controller = "BaoCaoThongKe", Action = "DownloadFile" })/?fullpath=" + fullpath + "&file=" + file + "&type=" + type;
+    }
+    function getMocThoiGian(flag) {
+        var result = [];
+        var tuNgay = "", denNgay = "";
+        if (flag == 0) {
+            result.push($("#dtNgay_TuNgay").val());
+            result.push($("#dtNgay_DenNgay").val());
+        }
+        if (flag == 1) {
+            var lastDayOfMonth = getLastDay($("#cbxNam").val(), $("#cbxThang").val());
+            console.log(lastDayOfMonth);
+            if ($("#cbxThang").val() < 10) {
+                tuNgay = "01" + "/0" + $("#cbxThang").val() + "/" + $("#cbxNam").val();
+                denNgay = lastDayOfMonth + "/0" + $("#cbxThang").val() + "/" + $("#cbxNam").val();
+            }
+            else {
+                tuNgay = "01" + "/" + $("#cbxThang").val() + "/" + $("#cbxNam").val();
+                denNgay = lastDayOfMonth + "/" + $("#cbxThang").val() + "/" + $("#cbxNam").val();
+            }
+
+            result.push(tuNgay);
+            result.push(denNgay);
+        }
+        if (flag == 2) {
+            var quy = $("#cbxQuy").val();
+            if (quy == 1) {
+                tuNgay = "01/01/" + $("#cbxNam").val();
+                denNgay = "31/03/" + $("#cbxNam").val();
+            }
+            if (quy == 2) {
+                tuNgay = "01/04/" + $("#cbxNam").val();
+                denNgay = "30/06/" + $("#cbxNam").val();
+            }
+            if (quy == 3) {
+                tuNgay = "01/07/" + $("#cbxNam").val();
+                denNgay = "30/09/" + $("#cbxNam").val();
+            }
+            if (quy == 4) {
+                tuNgay = "01/10/" + $("#cbxNam").val();
+                denNgay = "31/12/" + $("#cbxNam").val();
+            }
+            result.push(tuNgay);
+            result.push(denNgay);
+        }
+        if (flag == 3) {
+            tuNgay = "01/01/" + $("#cbxNam").val();
+            denNgay = "31/12/" + $("#cbxNam").val();
+            result.push(tuNgay);
+            result.push(denNgay);
+        }
+        return result;
+    }
+
+    $("#btnXuatExcel").click(function () {
+        var time = getMocThoiGian(flag_bt);
+        var url = '@Url.Action("ExportExcelBaoCaoDanhHieu", "BaoCaoThongKe", new RouteValueDictionary(new { from = "t_from", to = "t_to", bophan = "t_bophan", loaiDanhHieu = "t_loaiDanhHieu", tenDanhHieu = "t_tenDanhHieu", capKyKhenThuong = "t_capKyKhenThuong", hinhThucKhenThuong = "t_hinhThucKhenThuong", soQuyetDinh = "t_soQuyetDinh" }))'.replace("t_from", encodeURIComponent(time[0]));
+        url = url.replace("t_to", encodeURIComponent(time[1]));
+        url = url.replace("t_bophan", encodeURIComponent($("#bophan").val()));
+        url = url.replace("t_loaiDanhHieu", encodeURIComponent($("#cbxLoaiDanhHieu").val()));
+        url = url.replace("t_tenDanhHieu", encodeURIComponent($("#cbxTenDanhHieu").val()));
+        url = url.replace("t_capKyKhenThuong", encodeURIComponent($("#cbxCapKyKhenThuong").val()));
+        url = url.replace("t_hinhThucKhenThuong", encodeURIComponent($("#cbxHinhThucKhenThuong").val()));
+        url = url.replace("t_soQuyetDinh", encodeURIComponent($("#txtSoQuyetDinh").val()));
+        url = url.replace(/&amp;/g, "&");
+        window.location.href = url;
+    })
+
+    function getLastDay(year, month) {
+        return new Date(year, month + 1, 0).getDate();
+    }
+
+    function removeToShortDay(day) {
+        var spl = day.split(" ");
+        return spl[0];
+    }
+</script>
+

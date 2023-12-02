@@ -1,0 +1,441 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<br />
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="#">Danh mục</a></li>
+        <li class="breadcrumb-item active">Văn Bản</li>
+    </ol>
+    <div class="col-md-12">
+        <button class="btn btn-primary" id="btnThemMoi" type="button"><i class="fa fa-save"></i> Thêm mới</button>
+        <button class="btn btn-danger" id="btnDeleteSelected" type="button"><i class="fa fa-trash"></i> Xóa lựa chọn</button>
+
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12" style="width: 100%">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-4"><b>Danh sách văn bản</b></h4>
+                    <table id="table_VB" class="table table-bordered table-responsive" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkall" /></th>
+                                <th class="text-nowrap" width="55%">Tên Văn Bản</th>
+                                <th class="text-nowrap" width="30%">File Văn Bản</th>
+
+                                <th class="text-nowrap" width="15%">Thao tác</th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="mdlVB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Cập nhật văn bản</h4>
+                        <button type="button" class="close" id="btnCloseModal" data-dismiss="modal">×</button>
+                    </div>
+                    <div class="modal-body" id="frmVB">
+
+                        <div class="form-group row m-b-15">
+                            <label for="tenVB" class="col-md-3 col-form-label">Tên văn bản: </label>
+                            <div class="col-md-9">
+                                <input type="hidden" id="idVB" />
+                                <input type="text" id="tenVB" name="tenVB" class="form-control" onkeyup="ExistTenVB()" />
+                                <label id="txtTenVB" style="color:red; font-size:10px;"></label>
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label class="col-md-3 col-form-label">File đính kèm:</label>
+                            <div class="col-md-9">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="input-append">
+                                        <span class="btn btn-outline btn-primary btn-file">
+                                            <span class="fileinput-new"><i class="fa fa-upload"></i>&nbsp;Chọn file đính kèm</span>
+                                            <span class="fileinput-exists"><i class="fa fa-plus"></i>&nbsp;Thay đổi</span><input type="file" id="fileVB" name="fileVB" />
+
+                                        </span>
+
+                                        <span class="fileinput-filename"></span>
+                                        <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                    </div>
+                                </div>
+                                <span id="linkFileDinhKem"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnUpdate"><i class="fa fa-sync"></i> Cập nhật</button>
+                        <button type="button" class="btn btn-danger" id="btnClose" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script>
+    var flag = 0;
+    $(document).ready(function () {
+        activeMenu("liDanhMuc", "liVanBan");
+        $.noConflict();
+        validator();
+        loadDanhMucVB();
+    });
+
+    //Load form
+    function loadDanhMucVB(ID) {
+        flag = 0;
+
+        $("#table_VB").DataTable({
+            "ajax": {
+                "url": "/DanhMucVB/GetDanhMucVB",
+                "type": "GET",
+                "datatype": "json",
+                "contentType": "application/json;charset=UTF-8"
+            },
+            "columns": [
+                {
+                    "data": "id", "render": function (data) {
+                        return "<input type='checkbox' class='checkitem' value='" + data + "' />";
+                    }
+                },
+
+                { "data": "tenVB" },
+
+                {
+                    "data": "fileVB", "render": function (data) {
+                        if (data != "") {
+                            var objFile = JSON.parse(data);
+                            var html = "";
+
+                            $.each(objFile, function (key, item) {
+                                var spl = item.Key.split(/\\/);
+                                html += "<a href='#' onclick='downloadfile(\"" + spl + "\", \"" + spl[spl.length - 1] + "\", \"" + item.Value + "\")'><i class='fa fa-download'></i> " + spl[spl.length - 1] + "</a>";
+                            });
+                            return html;
+                        }
+                        else {
+                            return "";
+                        }
+                    }
+                },
+
+                {
+                    "data": "id", "render": function (data) {
+                        return "<a class='fa fa-lg fa-edit' href='#' data-toggle='tooltip' title='Cập nhật' onclick='return GetById(" + data + ")'></a>&nbsp;&nbsp;<a class='fa fa-lg fa-trash' href='#' data-toggle='tooltip' title='Xóa' onclick='DeleteById(" + data + ")'></a>"
+                    }
+                }
+
+
+            ],
+            destroy: true,
+            ordering: false,
+            paging: true,
+            searching: true,
+            bInfo: false,
+            deferRender: true
+        });
+    }
+
+    $("#btnThemMoi").click(function () {
+        flag = 1;
+
+        $("#mdlVB").modal('show');
+        $("#tenVB").val("");
+        $("#idVB").val("0");
+        $("#fileVB").html("");
+        $("#linkFileDinhKem").html("");
+        $("#txtTenVB").text("");
+        document.getElementById("btnUpdate").disabled = false;
+        $('#frmVB').bootstrapValidator('resetForm', true);
+
+    });
+
+    $("#btnClose").click(function () {
+        flag = 0;
+        $("#mdlVB").modal('hide');
+        $('#frmVB').bootstrapValidator('resetForm', true);
+
+
+    });
+    $("#btnCloseModal").click(function () {
+        flag = 0;
+        $("#mdlVB").modal('hide');
+        $('#frmVB').bootstrapValidator('resetForm', true);
+    });
+
+    function ExistTenVB() {
+        var to = null;
+        if (to) { clearTimeout(to); }
+        to = setTimeout(function () {
+            $.get("/DanhMucVB/ExistTenVB", { label: $("#tenVB").val() }, function (data) {
+
+                console.log(data);
+                if (data == "True") {
+                    $("#txtTenVB").text("");
+                    document.getElementById("btnUpdate").disabled = false;
+                }
+                else {
+                    if ($("#tenVB").val() == "") {
+                        $("#txtTenVB").text("");
+                        document.getElementById("btnUpdate").disabled = false;
+
+                    }
+                    else {
+                        $("#txtTenVB").text("Tên văn bản đã trùng");
+
+                        document.getElementById("btnUpdate").disabled = true;
+                    }
+
+
+                }
+            })
+        }, 500);
+
+    }
+    function validator() {
+        $('#frmVB').bootstrapValidator({
+            //container: 'tooltip',
+            message: 'Giá trị không hợp lệ',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                tenVB: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập tên văn bản nếu muốn cập nhật!'
+                        }
+                    }
+                },
+                fileVB: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập file văn bản nếu muốn cập nhật!'
+                        },
+                        file: {
+                            maxSize: 52428800,
+                            message: 'Nhập file văn bản không vượt quá 50MB!'
+                        }
+                    }
+                }
+
+            }
+        });
+        var validatorObj = $('#frmVB').data('bootstrapValidator');
+        validatorObj.validate();
+        if (validatorObj.isValid()) {
+            return true;
+        }
+        return false;
+    }
+
+    //Xử lý nút check all
+    $("#checkall").change(function () {
+        $(".checkitem").prop("checked", $(this).prop("checked"))
+    })
+
+    function GetById(ID) {
+        flag = 1;
+        $("#mdlVB").modal('show');
+
+        $("#idVB").val(ID);
+        $('#frmVB').bootstrapValidator('resetForm', true);
+        $.get('/DanhMucVB/GetById', { id: ID }, function (data) {
+            console.log("data" , data);
+            $("#tenVB").val(data.tenVB);
+
+            $("#txtTenVB").text("");
+            document.getElementById("btnUpdate").disabled = false;
+            console.log("file", data.fileVB);
+            html = "";
+            if (data.fileVB) {
+                var objFile = JSON.parse(data.fileVB);
+
+                var spl = objFile[0].Key.split(/\\/);
+                    console.log("spl", spl[spl.length - 1]);
+                return $("#linkFileDinhKem").html("<a href='#' onclick='downloadfile(\"" + spl + "\", \"" + spl[spl.length - 1] + "\", \"" + objFile[0].Value + "\")'><i class='fa fa-download'></i>" + spl[spl.length - 1] + "</a>");
+            }
+
+            else {
+               return $("#linkFileDinhKem").html("");
+            }
+
+
+        }, 'json').fail(function (error) {
+            showToast("error", error.responseText, "Thông báo lỗi");
+        })
+    }
+    $(document).keypress(function (e) {
+        if (e.which == 13 || event.keyCode == 13) {
+            if (flag == 1) {
+                $("#btnUpdate").click();
+                document.getElementById("tenVB").focus();
+                $("#tenVB").val("");
+                $("#fileVB").html("");
+                $("#linkFileDinhKem").html("");
+            }
+
+        }
+
+
+    });
+    $("#btnUpdate").click(function () {
+        if ($("#idVB").val() != 0) {
+            var fileUpload = $("#fileVB").get(0);
+            var files = fileUpload.files;
+            var fileData = new FormData();
+
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            fileData.append('id', $("#idVB").val());
+            fileData.append('tenVB', $("#tenVB").val());
+
+
+            $.ajax({
+                url: "/DanhMucVB/CapNhatVB",
+                data: fileData,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function (data) {
+                    if (data == 0) {
+                        showToast("success", "Nhập văn bản thành công!", "Thông báo")
+                        //$("#mdlVB").modal('hide');
+                        loadDanhMucVB();
+                    }
+                    else if (data == -1) {
+                        showToast("error", "Lỗi khi upload file đính kèm!", "Thông báo lỗi")
+                    }
+                    else if (data == -2) {
+                        showToast("error", "Lỗi khi nhập sai văn bản!", "Thông báo lỗi")
+                    }
+                    else if (data == 1) {
+                        showToast("warning", "Trạng thái đã đóng, không thể cập nhật", "Cảnh báo")
+                    }
+                    else if (data == 2) {
+                        showToast("success", "Cập nhật văn bản thành công!", "Thông báo")
+                        $("#mdlVB").modal('hide');
+                        loadDanhMucVB();
+                    }
+                },
+                error: function (errormessage) {
+                    showToast("error", errormessage.responseText, "Thông báo lỗi");
+                }
+            });
+        }
+        else {
+            var isValid = validator();
+            if (isValid) {
+
+                var fileUpload = $("#fileVB").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+                fileData.append('id', $("#idVB").val());
+                fileData.append('tenVB', $("#tenVB").val());
+
+
+                $.ajax({
+                    url: "/DanhMucVB/CapNhatVB",
+                    data: fileData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    enctype: 'multipart/form-data',
+                    success: function (data) {
+                        if (data == 0) {
+                            showToast("success", "Nhập văn bản thành công!", "Thông báo")
+                            $("#mdlVB").modal('hide');
+                            loadDanhMucVB();
+                        }
+                        else if (data == -1) {
+                            showToast("error", "Lỗi khi upload file đính kèm!", "Thông báo lỗi")
+                        }
+                        else if (data == -2) {
+                            showToast("error", "Lỗi khi nhập sai văn bản!", "Thông báo lỗi")
+                        }
+                        else if (data == 1) {
+                            showToast("warning", "Trạng thái đã đóng, không thể cập nhật", "Cảnh báo")
+                        }
+                        else if (data == 2) {
+                            showToast("success", "Cập nhật văn bản thành công!", "Thông báo")
+                            $("#mdlVB").modal('hide');
+                            loadDanhMucVB();
+                        }
+                    },
+                    error: function (errormessage) {
+                        showToast("error", errormessage.responseText, "Thông báo lỗi");
+                    }
+                });
+            }
+        }
+    });
+    function DeleteById(Id) {
+        var ans = confirm("Bạn chắc chắn muốn xóa bản ghi?");
+        if (ans) {
+            $.post('/DanhMucVB/XoaVanBan/', { id: Id }, function (data) {
+                if (data == "success") {
+                    showToast("success", "Xóa bản ghi thành công!", "Thông báo")
+                    loadDanhMucVB();
+                }
+                if (data == "warning") {
+                    showToast("warning", "Tên văn bản đã tồn tại trong hồ sơ thi đua!", "Cảnh báo")
+                }
+            }).fail(function (error) {
+                showToast("error", error.responseText, "Thông báo lỗi");
+            })
+        }
+    }
+    //Xóa khi check nhiều dòng
+    $("#btnDeleteSelected").click(function () {
+        var id = $('.checkitem:checked').map(function () {
+            return $(this).val()
+        }).get().join(' ')
+        if (id == "") {
+            showToast("warning", "Bạn chưa chọn đối tượng để xóa", "Cảnh báo")
+        }
+        else {
+            var ans = confirm("Bạn chắc chắn muốn xóa các bản ghi đã chọn?");
+            if (ans) {
+                $.post('/DanhMucVB/DeleteByArrayId/', { id: id }, function (data) {
+                    if (data == "True") {
+                        showToast("success", "Xóa bản ghi thành công!", "Thông báo")
+                    }
+                    else {
+                        showToast("error", "Có lỗi khi xóa!", "Thông báo lỗi");
+                    }
+                    loadDanhMucVB();
+                }).fail(function (error) {
+                    showToast("error", error.responseText, "Thông báo lỗi");
+                });
+            }
+        }
+    });
+
+
+    function downloadfile(fullpath, file, type) {
+        window.location = "@Url.RouteUrl(new { Controller = "DanhMucVB", Action = "DownloadFile" })/?fullpath=" + fullpath + "&file=" + file + "&type=" + type;
+    }
+</script>
+

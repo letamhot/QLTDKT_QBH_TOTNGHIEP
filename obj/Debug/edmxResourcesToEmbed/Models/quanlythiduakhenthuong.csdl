@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="quanlythiduakhenthuongModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="qltdkt_baocaothidua">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="idThiDua" Type="Int32" Nullable="false" />
+    <Property Name="tenBaoCao" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="noiDungBaoCao" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="dsCaNhanTTBaoCao" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="fileDinhKem" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="ngayCapNhat" Type="DateTime" Precision="3" />
+    <Property Name="daXoa" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="qltdkt_baocaothongke">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="tenBaoCao" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="moTa" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="daXoa" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="qltdkt_dangkythidua">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="thiDuaId" Type="Int32" Nullable="false" />
+    <Property Name="donViDangKyId" Type="Int32" Nullable="false" />
+    <Property Name="noiDungDangKy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="daBaoCao" Type="Boolean" />
+    <Property Name="caNhanDangKy_KetQua" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ngayDangKy" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="fileDinhKem" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="soHieu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ngayKetQua" Type="DateTime" Precision="3" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="trangThaiThiDua" Type="Byte" />
+    <Property Name="xepHangThiDua" Type="Byte" />
+    <Property Name="ngayCapNhat" Type="DateTime" Precision="3" />
+    <Property Name="nhanXetChung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="nguoiKyDanhGia" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="noiDungDanhGia" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="fileBaoCao" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="daXoa" Type="Boolean" />
+    <Property Name="isCaNhanDangKy" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="qltdkt_danhhieu">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="idTenDanhHieu" Type="Byte" />
+    <Property Name="soHieu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ngayDanhHieu" Type="DateTime" Precision="3" />
+    <Property Name="capKyKhenThuong" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="noiDung" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+    <Property Name="danhSachCaNhanTapThe" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="tienThuong" Type="Decimal" Precision="10" Scale="4" />
+    <Property Name="fileGoc" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="hinhThucTraoTang" Type="Byte" />
+    <Property Name="daTraoTang" Type="Boolean" />
+    <Property Name="ngayTraoTang" Type="DateTime" Precision="3" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="daXoa" Type="Boolean" />
+    <Property Name="kieuDanhHieu" Type="Byte" />
+    <Property Name="namDanhHieu" Type="Int32" />
+    <Property Name="hinhAnhTraoTang" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="tuNam" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="denNam" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="nguoiKy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="bophan" Type="Int32" />
+    <Property Name="ghiChuTT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_capkykhenthuong">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="tenCapKyKhenThuong" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="moTa" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="daXoa" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_chucvu">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="tenChucVu" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="moTa" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="ngayCapNhat" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_chuky">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="tenChuKy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="daXoa" Type="Int32" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_danhhieuthidua">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="loaiDanhHieu" Type="Byte" />
+    <Property Name="tenDanhHieuThiDua" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="luuSoKyYeu" Type="Boolean" />
+    <Property Name="moTa" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="daXoa" Type="Boolean" />
+    <Property Name="idThanhTich" Type="Int32" />
+    <Property Name="chuKy" Type="Int32" />
+    <Property Name="capThanhTich" Type="Int32" />
+    <Property Name="chuKyDH" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="capKyThanhTich" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="bophan" Type="Int32" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_donvi">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="tenDonVi" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="idCha" Type="Int32" Nullable="false" />
+    <Property Name="diaChi" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="anh" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="ngayCapNhat" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_donviphatdong">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="tenPhatDong" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="moTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_hinhthuckhenthuong">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="tenHinhThucKhenThuong" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="moTa" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="daXoa" Type="Boolean" />
+    <Property Name="loaiKhenThuong" Type="Byte" />
+    <Property Name="chuKy" Type="Int32" />
+    <Property Name="maThanhTich" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="capThanhTich" Type="Int32" />
+    <Property Name="chuKyKT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="capKyThanhTich" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="bophan" Type="Int32" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_nhanvien">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="maNhanVien" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="hoTen" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="chucVu" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="donVi" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="trinhDoHocVan" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="soDienThoai" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ngaySinh" Type="DateTime" Precision="0" />
+    <Property Name="gioiTinh" Type="Boolean" />
+    <Property Name="anhDaiDien" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+    <Property Name="trangThai" Type="Byte" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="ngayCapNhat" Type="DateTime" Precision="3" />
+    <Property Name="daXoa" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_role">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="roleName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="roleUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="roleParent" Type="Int32" />
+    <Property Name="priority" Type="Int32" />
+    <Property Name="controller" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="action" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="class" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="styles" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_thidua">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="tenThiDua" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="moTa" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="kieuThiDua" Type="Int32" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_trinhdohocvan">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="tenTrinhDoHocVan" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="chuyenNganh" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="qltdkt_hosokyyeu">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="idDonVi" Type="Int32" Nullable="false" />
+    <Property Name="idNhanVien" Type="Int32" />
+    <Property Name="anhDaiDien" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="hoSoKyYeu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="chucNangNhiemVu" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="soQDThanhLap" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="daXoa" Type="Byte" />
+    <Property Name="idDanhHieu" Type="Int32" />
+  </EntityType>
+  <EntityType Name="qltdkt_hosothidua">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="thiDuaId" Type="Int32" />
+    <Property Name="kieuThiDua" Type="Byte" />
+    <Property Name="chiTietKieu" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="toTrinh" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="bienBanHopHoiDong" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="sangKien" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="trangThai" Type="Byte" />
+    <Property Name="vanBanHuongDan" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="xacNhanThue" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="daXoa" Type="Boolean" />
+    <Property Name="fileDinhKem" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="fileBaoCaoThanhTich" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="chiTietBaoCaoThanhTich" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="tenHoSoThiDua" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ngayPhatDong" Type="DateTime" Precision="3" />
+    <Property Name="tenThiDua" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="soHieu" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="qltdkt_ketquathidua">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="thiDuaId" Type="Int32" Nullable="false" />
+    <Property Name="dangKyThiDuaId" Type="Int32" Nullable="false" />
+    <Property Name="nhanXetChung" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="nguoiKyDanhGia" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="noiDungDanhGia" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="fileBaoCao" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="qltdkt_khenthuong">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="capKhenThuong" Type="Byte" />
+    <Property Name="quyetDinh" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+    <Property Name="soHieu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ngayKhenThuong" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="kieuKhenThuong" Type="Byte" Nullable="false" />
+    <Property Name="moTaKieu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="capKyKhenThuong" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="noiDungKhenThuong" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="danhSachCaNhanKhenThuong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="tongTien" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="daTraoTang" Type="Boolean" />
+    <Property Name="ngayTraoTang" Type="DateTime" Precision="3" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="ngayCapNhat" Type="DateTime" Precision="3" />
+    <Property Name="trangThai" Type="Byte" />
+    <Property Name="daXoa" Type="Boolean" />
+    <Property Name="doiTuongThamGia" Type="Byte" />
+    <Property Name="tienThuong" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="hinhThucKhenThuong" Type="Int32" />
+    <Property Name="tongTienThuong" Type="Int32" />
+    <Property Name="ghichuHTKT" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="bophan" Type="Int32" />
+  </EntityType>
+  <EntityType Name="qltdkt_thidua">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="quyetDinh" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="phatDongId" Type="Int32" Nullable="false" />
+    <Property Name="kieuThiDua" Type="Int32" Nullable="false" />
+    <Property Name="chiTietKieu" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="idDmThiDua" Type="Int32" />
+    <Property Name="soHieu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ngayPhatDong" Type="DateTime" Precision="3" />
+    <Property Name="ngayKetThuc" Type="DateTime" Precision="3" />
+    <Property Name="thoiGianThucHien" Type="Int32" />
+    <Property Name="noiDungPhatDong" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="chiTieuThiDua" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="hinhThucKhenThuong" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="doiTuongThamGia" Type="Byte" />
+    <Property Name="nguoiKy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="vanBanLuu" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+    <Property Name="ngayTao" Type="DateTime" Precision="3" />
+    <Property Name="ngayCapNhat" Type="DateTime" Precision="3" />
+    <Property Name="trangThai" Type="Byte" />
+    <Property Name="daXoa" Type="Boolean" />
+  </EntityType>
+  <EntityContainer Name="quanlythiduakhenthuongEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="qltdkt_baocaothidua" EntityType="Self.qltdkt_baocaothidua" />
+    <EntitySet Name="qltdkt_baocaothongke" EntityType="Self.qltdkt_baocaothongke" />
+    <EntitySet Name="qltdkt_dangkythidua" EntityType="Self.qltdkt_dangkythidua" />
+    <EntitySet Name="qltdkt_danhhieu" EntityType="Self.qltdkt_danhhieu" />
+    <EntitySet Name="qltdkt_dm_capkykhenthuong" EntityType="Self.qltdkt_dm_capkykhenthuong" />
+    <EntitySet Name="qltdkt_dm_chucvu" EntityType="Self.qltdkt_dm_chucvu" />
+    <EntitySet Name="qltdkt_dm_chuky" EntityType="Self.qltdkt_dm_chuky" />
+    <EntitySet Name="qltdkt_dm_danhhieuthidua" EntityType="Self.qltdkt_dm_danhhieuthidua" />
+    <EntitySet Name="qltdkt_dm_donvi" EntityType="Self.qltdkt_dm_donvi" />
+    <EntitySet Name="qltdkt_dm_donviphatdong" EntityType="Self.qltdkt_dm_donviphatdong" />
+    <EntitySet Name="qltdkt_dm_hinhthuckhenthuong" EntityType="Self.qltdkt_dm_hinhthuckhenthuong" />
+    <EntitySet Name="qltdkt_dm_nhanvien" EntityType="Self.qltdkt_dm_nhanvien" />
+    <EntitySet Name="qltdkt_dm_role" EntityType="Self.qltdkt_dm_role" />
+    <EntitySet Name="qltdkt_dm_thidua" EntityType="Self.qltdkt_dm_thidua" />
+    <EntitySet Name="qltdkt_dm_trinhdohocvan" EntityType="Self.qltdkt_dm_trinhdohocvan" />
+    <EntitySet Name="qltdkt_hosokyyeu" EntityType="Self.qltdkt_hosokyyeu" />
+    <EntitySet Name="qltdkt_hosothidua" EntityType="Self.qltdkt_hosothidua" />
+    <EntitySet Name="qltdkt_ketquathidua" EntityType="Self.qltdkt_ketquathidua" />
+    <EntitySet Name="qltdkt_khenthuong" EntityType="Self.qltdkt_khenthuong" />
+    <EntitySet Name="qltdkt_thidua" EntityType="Self.qltdkt_thidua" />
+  </EntityContainer>
+</Schema>

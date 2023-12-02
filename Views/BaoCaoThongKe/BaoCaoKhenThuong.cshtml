@@ -1,0 +1,674 @@
+﻿
+@{
+    ViewBag.Title = "BaoCaoKhenThuong";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .has-feedback .form-control-feedback {
+        top: 0px;
+        right: 10px;
+    }
+</style>
+<br />
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="#">Báo cáo thống kê</a></li>
+        <li class="breadcrumb-item active">Báo cáo khen thưởng</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="dropdown float-right">
+                        <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                    </div>
+                    <h4 class="header-title mb-1" style="font-size: 20px; text-align: center;">Báo cáo khen thưởng</h4>
+                    <br />
+                    <div class="row form-horizontal">
+                        <div class="col-xl-12">
+                            <div class="form-group row">
+
+                                <label class="col-md-1 col-form-label" for="btnGroupTieuChi">Chọn tiêu chí:</label>
+                                <div class="col-md-8">
+                                    <div class="btn-group">
+                                        <button id="btnNgay" class="btn btn-default waves-effect waves-light">Ngày chi tiết</button>
+                                        <button id="btnThang" class="btn btn-default waves-effect waves-light">Tháng</button>
+                                        <button id="btnQuy" class="btn btn-default waves-effect waves-light">Quý</button>
+                                        <button id="btnNam" class="btn btn-default waves-effect waves-light">Năm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal" id="regionNgay">
+                        <div class="col-xl-6">
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" for="dtNgayPhatDongSearch_TuNgay">Từ ngày:</label>
+                                        <div class="col-md-10">
+                                            @*<input type="text" id="dtNgayPhatDongSearch_TuNgay" name="dtNgayPhatDongSearch_TuNgay" class="form-control" placeholder="">*@
+                                            <div id="dateNgayPhatDong_TuNgay" class="input-group date" data-date-format="dd/mm/yyyy"> <input id="dtNgay_TuNgay" name="dtNgay_TuNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text"> <span class="input-group-addon"><i class="fa fa-lg fa-calendar"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" for="dtNgayPhatDongSearch_DenNgay">Đến ngày:</label>
+                                        <div class="col-md-10">
+                                            @*<input type="text" id="dtNgayPhatDongSearch_DenNgay" name="dtNgayPhatDongSearch_DenNgay" class="form-control" placeholder="">*@
+                                            <div id="dateNgayPhatDong_DenNgay" class="input-group date" data-date-format="dd/mm/yyyy"> <input id="dtNgay_DenNgay" name="dtNgay_DenNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text"> <span class="input-group-addon"><i class="fa fa-lg fa-calendar"></i></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal">
+                        <div class="col-xl-6" id="regionThang" style="display: none;">
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" for="cbxThang">Tháng:</label>
+                                        <div class="col-md-10">
+                                            <select id="cbxThang" name="cbxThang" class="form-control">
+                                                <option value="1">Tháng 1</option>
+                                                <option value="2">Tháng 2</option>
+                                                <option value="3">Tháng 3</option>
+                                                <option value="4">Tháng 4</option>
+                                                <option value="5">Tháng 5</option>
+                                                <option value="6">Tháng 6</option>
+                                                <option value="7">Tháng 7</option>
+                                                <option value="8">Tháng 8</option>
+                                                <option value="9">Tháng 9</option>
+                                                <option value="10">Tháng 10</option>
+                                                <option value="11">Tháng 11</option>
+                                                <option value="12">Tháng 12</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6" id="regionNam" style="display: none;">
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" for="cbxThang">Năm:</label>
+                                        <div class="col-md-10">
+
+                                            <select id="cbxNam" name="cbxNam" class="form-control">
+                                                @for (int i = 0; i < 20; i++)
+                                                {
+                                                    <option value="@(DateTime.Now.Year - i)">@(DateTime.Now.Year - i)</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal" id="regionQuy" style="display: none;">
+                        <div class="col-xl-6">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-2 col-form-label" for="cbxQuy">Quý:</label>
+                                        <div class="col-md-10">
+                                            <select id="cbxQuy" name="cbxQuy" class="form-control">
+                                                <option value="1">Quý 1</option>
+                                                <option value="2">Quý 2</option>
+                                                <option value="3">Quý 3</option>
+                                                <option value="4">Quý 4</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal">
+                        <div class="col-xl-3">
+                            <div class="form-horizontal">
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label" for="bophan">Bộ phận:</label>
+                                    <div class="col-md-8">
+                                        <select id="bophan" name="bophan" class="form-control">
+                                            <option value="0">Tất cả</option>
+                                            <option value="1">Chuyên môn</option>
+                                            <option value="2">Đảng - Đoàn thể</option>
+                                            <option value="3">Công Đoàn</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-6 col-form-label" for="cbxLoaiKhenThuong">Loại khen thưởng:</label>
+                                        <div class="col-md-6">
+                                            <select id="cbxLoaiKhenThuong" name="cbxLoaiKhenThuong" class="form-control">
+                                                <option value="2">Tất cả</option>
+                                                <option value="0">Tập thể</option>
+                                                <option value="1">Cá nhân</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-6 col-form-label" for="cbxCapKhenThuong">Cấp khen thưởng:</label>
+                                        <div class="col-md-6">
+                                            <select id="cbxCapKhenThuong" class="form-control">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-6 col-form-label" for="cbxHinhThucTraoTang">Kiểu khen thưởng:</label>
+                                        <div class="col-md-6">
+                                            <select id="cbxKieuKhenThuong" class="form-control">
+                                                <option value="0">Tất cả</option>
+                                                <option value="1">Năm</option>
+                                                <option value="2">Đột xuất</option>
+                                                <option value="3">Chuyên đề</option>
+                                                <option value="4">Giai đoạn</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-horizontal">
+                        <div class="col-xl-12">
+                            <div class="form-group row">
+                                <label class="col-md-9 col-form-label"></label>
+                                <div class="col-md-3">
+                                    <button class="btn btn-info" id="btnDisplay"><i class="fa fa-desktop"></i> Hiển thị</button>
+                                    <button class="btn btn-danger" id="btnXuatExcel"><i class="fa fa-file-excel"></i> Xuất Excel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <table id="table_KhenThuong" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%; ">
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    </div>
+    <div class="modal" id="mdlXemKhenThuong" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="titleXemKhenThuong">THÔNG TIN KHEN THƯỞNG</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body" id="test">
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label for="cbxCapKhenThuong" style="color:gray;font-style:italic">Cấp khen thưởng: </label>
+                                <label id="lblCapKhenThuong" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <label for="txtSoHieu" style="color:gray;font-style:italic">Số hiệu: </label>
+                                <label id="lblSoHieu" style="font-size:medium"></label>
+                            </div>
+
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <label for="txtNgayKhenThuong" style="color:gray;font-style:italic ">Ngày: </label>
+                                <label id="lblNgayKhenThuong" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="form-group">
+                                <label for="txtNoiDungKhenThuong" style="color:gray;font-style:italic">Nội dung khen thưởng: </label>
+                                <label id="lblNoiDungKhenThuong" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <div class="form-group">
+                                <label for="txtCapKyKhenThuong" style="color:gray;font-style:italic">Hình thức khen thưởng: </label>
+                                <label id="lblHinhThucKhenThuong" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                        @*<div class="col-xl-4">
+                                <div class="form-group">
+                                    <label for="ckbDaTraoTang" style="color:gray;font-style:italic">Trao tặng: </label>
+                                    <label id="lblDaTraoTang" style="font-size:medium"></label>
+                                </div>
+                            </div>*@
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="ckbDaTraoTang" style="color:gray;font-style:italic">Tổng tiền: </label>
+                                <label id="lblTongTien" style="font-size:medium"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="rowTableXemKhenThuongcn">
+                    </div>
+                    <div class="row" id="rowTableXemKhenThuongtt">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @using (Html.BeginForm("ExportBaoCaoDSKhenThuong", "BaoCaoThongKe", FormMethod.Post, new { @id = "Export_Form" }))
+                    {
+                        <input type="hidden" name="GridHtml" />
+                        <input class="btn btn-info" type="submit" id="btnSubmit" value="Export Báo Cáo Khen Thưởng" />
+                    }
+                    <button type="button" class="btn btn-danger" id="btnCloseTraoTang" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var flag_bt = 0;
+    $(document).ready(function () {
+        activeMenu("liBaoCao", "liBaoCaoKhenThuong");
+        $.noConflict();
+
+        $("#dateNgayPhatDong_TuNgay").datepicker({
+            autoclose: true,
+            setDate: new Date(),
+            todayHighlight: true,
+            orientation: 'bottom'
+        }).datepicker('update', 'today');
+        $("#dateNgayPhatDong_DenNgay").datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            orientation: 'bottom'
+        }).datepicker('update', 'today');
+        loadCapKhenThuong();
+    });
+    $(function () {
+        $("#btnSubmit").click(function () {
+            $("input[name='GridHtml']").val($("#test").html());
+        });
+    });
+    $('#mdlXemKhenThuong').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset');
+    });
+    function xemKhenThuong(idKhenThuong) {
+        $("#mdlXemKhenThuong").modal('show');
+
+        $.ajax({
+            url: "/BaoCaoThongKe/xemKhenThuong",
+            data: { idKhenThuong: idKhenThuong },
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                console.log(data, "aaaaaaaa");
+                $('#rowTableXemKhenThuongcn').empty();
+                $('#rowTableXemKhenThuongtt').empty();
+                $("#lblCapKhenThuong").text(data.capKhenThuong);
+                $("#lblSoHieu").text(data.sqd);
+                $("#lblNgayKhenThuong").text(data.ngayBH);
+                $("#lblNoiDungKhenThuong").text(data.tenKhenThuong);
+                if (data.hinhThucKhenThuong != "0") {
+                    $("#lblHinhThucKhenThuong").text(data.hinhThucKhenThuong);
+
+                }
+                else {
+                    $("#lblHinhThucKhenThuong").text("Trao tặng trực tiếp hoặc hình thức khác");
+                }
+
+                $("#lblTongTien").text(numberWithCommas(data.tongtienthuong) + ' VND');
+                if (data.danhSachCaNhanTapThe.loaiKhenThuong == 1) {
+                    var _drawtable = document.getElementById("rowTableXemKhenThuongcn");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemKhenThuongcn'>";
+                    var nodetable = $(table).appendTo('#rowTableXemKhenThuongcn');
+                    var _drawtable = document.getElementById("tblXemKhenThuongcn");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Họ tên</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Chức danh</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    thead.append(trhead);
+                    $('#tblXemKhenThuongcn').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong.length; i++) {
+                        if (data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].loaiKT == 1) {
+                            var trbody = $('<tr/>');
+                            trbody.append("<td>" + stt + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].chucDanh + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                            trbody.append("<td>" + numberWithCommas(data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tienThuong) + "</td>");
+                            body.append(trbody);
+                            stt++;
+                        }
+                    }
+                    $('#tblXemKhenThuongcn').append(body);
+                }
+                else if (data.danhSachCaNhanTapThe.loaiKhenThuong == 0) {
+                    var _drawtable = document.getElementById("rowTableXemKhenThuongtt");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemKhenThuongtt'>";
+                    var nodetable = $(table).appendTo('#rowTableXemKhenThuongtt');
+                    var _drawtable = document.getElementById("tblXemKhenThuongtt");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Tên</th>");
+                    trhead.append("<th class='text-nowrap' width='40%'>Tên đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    thead.append(trhead);
+                    $('#tblXemKhenThuongtt').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong.length; i++) {
+                        if (data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].loaiKT == 0) {
+                            var trbody = $('<tr/>');
+                            trbody.append("<td>" + stt + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                            trbody.append("<td>" + numberWithCommas(data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tienThuong) + "</td>");
+                            body.append(trbody);
+                            stt++;
+                        }
+                    }
+                    $('#tblXemKhenThuongtt').append(body);
+                }
+                else {
+                    var _drawtable = document.getElementById("rowTableXemKhenThuongcn");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemKhenThuongcn'>";
+                    var nodetable = $(table).appendTo('#rowTableXemKhenThuongcn');
+                    var _drawtable = document.getElementById("tblXemKhenThuongcn");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Họ tên</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Chức danh</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    thead.append(trhead);
+                    $('#tblXemKhenThuongcn').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong.length; i++) {
+                        if (data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].loaiKT == 1) {
+                            var trbody = $('<tr/>');
+                            trbody.append("<td>" + stt + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].chucDanh + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                            trbody.append("<td>" + numberWithCommas(data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tienThuong) + 'VND' + "</td>");
+                            body.append(trbody);
+                            stt++;
+                        }
+                    }
+                    $('#tblXemKhenThuongcn').append(body);
+                    var _drawtable = document.getElementById("rowTableXemKhenThuongtt");
+                    var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tblXemKhenThuongtt'>";
+                    var nodetable = $(table).appendTo('#rowTableXemKhenThuongtt');
+                    var _drawtable = document.getElementById("tblXemKhenThuongtt");
+                    var thead = $('<thead/>');
+                    var trhead = $('<tr/>');
+
+                    trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                    trhead.append("<th class='text-nowrap' width='25%'>Tên</th>");
+                    trhead.append("<th class='text-nowrap' width='40%'>Tên đơn vị</th>");
+                    trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                    thead.append(trhead);
+                    $('#tblXemKhenThuongtt').append(thead);
+                    var body = $('<tbody/>');
+                    var stt = 1;
+                    for (var i = 0; i < data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong.length; i++) {
+                        if (data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].loaiKT == 0) {
+                            var trbody = $('<tr/>');
+                            trbody.append("<td>" + stt + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                            trbody.append("<td>" + data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                            trbody.append("<td>" + numberWithCommas(data.danhSachCaNhanTapThe.dschitietcanhantapthekhenthuong[i].tienThuong) + ' VND' + "</td>");
+                            body.append(trbody);
+                            stt++;
+                        }
+                    }
+                    $('#tblXemKhenThuongtt').append(body);
+                }
+            }
+        });
+    }
+
+    $("#btnNgay").click(function () {
+        $("#regionNgay").css("display", "");
+        $("#regionThang").css("display", "none");
+        $("#regionQuy").css("display", "none");
+        $("#regionNam").css("display", "none");
+        flag_bt = 0;
+    })
+    $("#btnThang").click(function () {
+        $("#regionNgay").css("display", "none");
+        $("#regionThang").css("display", "");
+        $("#regionQuy").css("display", "none");
+        $("#regionNam").css("display", "");
+        flag_bt = 1;
+    })
+    $("#btnQuy").click(function () {
+        $("#regionNgay").css("display", "none");
+        $("#regionThang").css("display", "none");
+        $("#regionQuy").css("display", "");
+        $("#regionNam").css("display", "");
+        flag_bt = 2;
+    })
+    $("#btnNam").click(function () {
+        $("#regionNgay").css("display", "none");
+        $("#regionThang").css("display", "none");
+        $("#regionQuy").css("display", "none");
+        $("#regionNam").css("display", "");
+        flag_bt = 3;
+    })
+
+    $("#btnDisplay").click(function () {
+        hienThiBaoCao();
+    })
+    function loadCapKhenThuong() {
+        $('#cbxCapKhenThuong').empty();
+        $.get('/DanhHieu/getCapKyKhenThuong', function (data) {
+            var html = '';
+            html = '<option value="0" selected>Tất cả</option>';
+            $.each(data, function (key, item) {
+                html += '<option value = ' + item.id + '>' + item.tenCapKyKhenThuong + '</option>';
+            });
+            $('#cbxCapKhenThuong').html(html);
+        })
+    }
+    //fomat tien thuong
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    function hienThiBaoCao() {
+        //console.log(getMocThoiGian(flag_bt));
+        //var isValid = validator();
+
+        var kieu = $("#cbxLoaiKhenThuong").val();
+        var html = "";
+        html += "<thead><th width='1%'>STT</th><th>Số quyết định</th><th>Ngày khen thưởng</th><th>Tập thể/Cá nhân</th><th>Nội dung khen thưởng</th><th>Tiền thưởng(VND)</th><th>File Đính Kèm</th></thead>";
+        $("#table_KhenThuong").html(html);
+        var time = getMocThoiGian(flag_bt);
+
+            $.ajax({
+                url: "/BaoCaoThongKe/GetBaoCaoKhenThuong",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    fromkt: time[0],
+                    tokt: time[1],
+                    bophan: $("#bophan").val(),
+                    loaiKhenThuong: $("#cbxLoaiKhenThuong").val(),
+                    capKhenThuong: $("#cbxCapKhenThuong").val(),
+                    kieuKhenThuong: $("#cbxKieuKhenThuong").val(),
+                },
+                beforeSend: function () {
+                    $("#overlay").fadeIn(300);
+                },
+                success: function (data) {
+                    // Do stuff...
+                    //console.log(data);
+                    var stt = 0;
+                    if (data.data.length > 0) {
+                        html += "<tbody>";
+
+                        $.each(data.data, function (key, item) {
+                            //console.log("item", item);
+                            stt++;
+
+                            if (item.quyetDinh != "") {
+                                var objFile = JSON.parse(item.quyetDinh);
+                                var spl = objFile[0].Key.split(/\\/);
+                                //console.log(spl);
+
+                                html += '<tr><td>' + stt + '</td><td><b>' + item.sqd + '</b></td><td>' + item.ngayBH + '</td><td><button id="btnCaNhanTT" class="btn btn-info" onclick="return xemKhenThuong(' + item.id + ')">Danh sách</button></td><td>' + item.tenKhenThuong + '</td><td>' + numberWithCommas(item.tongtienthuong) + '</td><td><a href="#" onclick="downloadfile(\'' + spl + '\', \'' + spl[spl.length - 1] + '\', \'' + objFile[0].Value + '\')"><i class="fa fa-download"></i> Tải file QĐ</a></td></tr>';
+
+                            }
+                            else {
+                                html += '<tr><td>' + stt + '</td><td><b>' + item.sqd + '</b></td><td>' + item.ngayBH + '</td><td><button id="btnCaNhanTT" class="btn btn-info" onclick="return xemKhenThuong(' + item.id +')">Danh sách</button></td><td>' + item.tenKhenThuong + '</td><td>' + numberWithCommas(item.tongtienthuong) + '</td><td>Chưa có file quyết định</td></tr>';
+                                //html += '<tr><td>' + stt + '</td><td><b>' + item.sqd + '</b></td><td>' + item.ngayBH + '</td><td>' + item.tenDonVi_CaNhan + '</td><td>' + item.donVi + '</td><td>' + item.tenKhenThuong + '</td><td>' + numberWithCommas(item.tongtienthuong) + '</td><td>Chưa có file quyết định</td></tr>';
+
+                            }
+
+                        });
+                        html += "</tbody>";
+                        //console.log(html);
+                        $("#table_KhenThuong").html(html);
+                    }
+                    else {
+                        html += "<tr><td colspan='7' style='text-align: center;'>Không có nội dung hiển thị</td></tr>";
+                        $("#table_KhenThuong").html(html);
+                    }
+                },
+                complete: function () {
+                    $("#overlay").fadeOut(300);
+                }
+            });
+            //$("#table_KhenThuong").html(html);
+
+    }
+    function downloadfile(fullpath, file, type) {
+        console.log(file);
+        window.location = "@Url.RouteUrl(new { Controller = "BaoCaoThongKe", Action = "DownloadFile" })/?fullpath=" + fullpath + "&file=" + file + "&type=" + type;
+    }
+    function getMocThoiGian(flag) {
+        var result = [];
+        var tuNgay = "", denNgay = "";
+        if (flag == 0) {
+            result.push($("#dtNgay_TuNgay").val());
+            result.push($("#dtNgay_DenNgay").val());
+        }
+
+        if (flag == 1) {
+            var lastDayOfMonth = getLastDay($("#cbxNam").val(), $("#cbxThang").val());
+            if ($("#cbxThang").val() < 10) {
+                tuNgay = "01" + "/0" + $("#cbxThang").val() + "/" + $("#cbxNam").val();
+                denNgay = lastDayOfMonth + "/0" + $("#cbxThang").val() + "/" + $("#cbxNam").val();
+            }
+            else {
+                tuNgay = "01" + "/" + $("#cbxThang").val() + "/" + $("#cbxNam").val();
+                denNgay = lastDayOfMonth + "/" + $("#cbxThang").val() + "/" + $("#cbxNam").val();
+            }
+            console.log(lastDayOfMonth);
+
+            result.push(tuNgay);
+            result.push(denNgay);
+        }
+        if (flag == 2) {
+            var quy = $("#cbxQuy").val();
+            if (quy == 1) {
+                tuNgay = "01/01/" + $("#cbxNam").val();
+                denNgay = "31/03/" + $("#cbxNam").val();
+            }
+            if (quy == 2) {
+                tuNgay = "01/04/" + $("#cbxNam").val();
+                denNgay = "30/06/" + $("#cbxNam").val();
+            }
+            if (quy == 3) {
+                tuNgay = "01/07/" + $("#cbxNam").val();
+                denNgay = "30/09/" + $("#cbxNam").val();
+            }
+            if (quy == 4) {
+                tuNgay = "01/10/" + $("#cbxNam").val();
+                denNgay = "31/12/" + $("#cbxNam").val();
+            }
+            result.push(tuNgay);
+            result.push(denNgay);
+        }
+        if (flag == 3) {
+            tuNgay = "01/01/" + $("#cbxNam").val();
+            denNgay = "31/12/" + $("#cbxNam").val();
+            result.push(tuNgay);
+            result.push(denNgay);
+        }
+        return result;
+    }
+
+    $("#btnXuatExcel").click(function () {
+
+        var time = getMocThoiGian(flag_bt);
+        var url = '@Url.Action("ExportExcelBaoCaoKhenThuong", "BaoCaoThongKe", new RouteValueDictionary(new { from = "t_from", to = "t_to", bophan = "t_bophan", loaiKhenThuong = "t_loaikhenthuong", capKhenThuong = "t_type", kieuKhenThuong = "t_kieukhenthuong" }))'.replace("t_from", encodeURIComponent(time[0]));
+        url = url.replace("t_to", encodeURIComponent(time[1]));
+        url = url.replace("t_bophan", encodeURIComponent($("#bophan").val()));
+        url = url.replace("t_loaikhenthuong", encodeURIComponent($("#cbxLoaiKhenThuong").val()));
+        url = url.replace("t_kieukhenthuong", encodeURIComponent($("#cbxKieuKhenThuong").val()));
+        url = url.replace("t_type", encodeURIComponent($("#cbxCapKhenThuong").val()));
+        url = url.replace(/&amp;/g, "&");
+        window.location.href = url;
+    })
+
+    function getLastDay(year, month) {
+        return new Date(year, month + 1, 0).getDate();
+    }
+
+    function removeToShortDay(day) {
+        var spl = day.split(" ");
+        return spl[0];
+    }
+</script>
+

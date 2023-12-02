@@ -1,0 +1,86 @@
+﻿
+#carouselExample {
+    text-align: center;
+    margin-top: 50px;
+}
+
+    #carouselExample .carousel-indicators {
+        position: relative;
+        bottom: 0;
+        height: 300px;
+    }
+
+        #carouselExample .carousel-indicators li {
+            width: auto;
+            height: auto;
+            text-indent: 0%;
+            background-color: transparent;
+            margin-left: 20px;
+            margin-right: 20px;
+            flex-direction: column;
+        }
+
+            #carouselExample .carousel-indicators li img {
+                transition: 0.5s;
+                width: 200px;
+                height: 200px;
+            }
+
+            #carouselExample .carousel-indicators li.active {
+                transition: 0.5s;
+            }
+
+                #carouselExample .carousel-indicators li.active img {
+                    transform: scale(1.5);
+                    transition: transform 1s ease-in-out;
+
+                }
+
+
+    #carouselExample .carousel-item {
+        transition: 1s linear;
+    }
+
+    #carouselExample .blockquote {
+        font-style: italic;
+        font-weight: bold;
+    }
+    #carouselExample #list-item .blockquote {
+        font-size: 1.5rem;
+    }
+    #carouselExample small {
+        text-align: right;
+    }
+
+    #carouselExample i {
+        color: #222
+    }
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .carousel-title {
+        font-size: 18px;
+        margin-top: 20px;
+    }
+
+    #carouselExample.blockquote {
+        font-size: 15px;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    #carouselExample small {
+        text-align: center;
+        display: block;
+    }
+
+    #carouselExample .carousel-indicators li {
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+        #carouselExample .carousel-indicators li.active img {
+            transform: scale(1.2);
+            width:100px;
+            height:100px;
+        }
+}

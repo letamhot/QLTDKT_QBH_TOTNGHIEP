@@ -1,0 +1,349 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<br />
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="#">Danh mục</a></li>
+        <li class="breadcrumb-item active">Chu Kỳ</li>
+    </ol>
+    <div class="col-md-12">
+        <button class="btn btn-primary" id="btnThemMoi" type="button"><i class="fa fa-save"></i> Thêm mới</button>
+        <button class="btn btn-danger" id="btnDeleteSelected" type="button"><i class="fa fa-trash"></i> Xóa lựa chọn</button>
+
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12" style="width: 100%">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-4"><b>Danh sách Chu Kỳ</b></h4>
+                    <table id="tableCK" class="table table-bordered table-responsive" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkall" /></th>
+                                <th class="text-nowrap" width="70%">Tên Chu Kỳ</th>
+
+                                <th class="text-nowrap" width="30%">Thao tác</th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="mdlCK" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Cập nhật chu kỳ</h4>
+                        <button type="button" class="close" id="btnClose" data-dismiss="modal">×</button>
+                    </div>
+                    <div class="modal-body" id="frmCK">
+
+                        <div class="form-group row m-b-15">
+                            <label for="tenVB" class="col-md-3 col-form-label" ">Tên Chu Kỳ: </label>
+                            <div class="col-md-9">
+                                <input type="hidden" id="idCK" />
+                                <input type="text" id="tenChuKy" name="tenChuKy" class="form-control" onkeyup="ExistTenChuKy()" />
+                                <label id="txtTenChuKy" name="txtTenChuKy" style="color:red; font-size:10px;"></label>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnUpdate"><i class="fa fa-sync"></i> Cập nhật</button>
+                        <button type="button" class="btn btn-danger" id="btnCloseModal" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script>
+    var flag = 0;
+    $(document).ready(function () {
+        activeMenu("liDanhMuc", "liDMChuKy");
+        $.noConflict();
+        validator();
+        loadDanhMucChuKy();
+    });
+    //Load form
+    function loadDanhMucChuKy() {
+        flag = 0;
+        $("#tableCK").DataTable({
+            "ajax": {
+                "url": "/DanhMucChuKy/GetDanhMucCK",
+                "type": "GET",
+                "datatype": "json",
+                "contentType": "application/json;charset=UTF-8"
+            },
+            "columns": [
+                {
+                    "data": "id", "render": function (data) {
+                        return "<input type='checkbox' class='checkitem' value='" + data + "' />";
+                    }
+                },
+
+                { "data": "tenChuKy" },
+
+                {
+                    "data": "id", "render": function (data) {
+                        return "<a class='fa fa-lg fa-edit' href='#' data-toggle='tooltip' title='Cập nhật' onclick='return GetById(" + data + ")'></a>&nbsp;&nbsp;<a class='fa fa-lg fa-trash' href='#' data-toggle='tooltip' title='Xóa' onclick='DeleteById(" + data + ")'></a>"
+                    }
+                }
+
+
+            ],
+            destroy: true,
+            ordering: false,
+            paging: true,
+            searching: true,
+            bInfo: false,
+            deferRender: true
+        });
+    }
+
+    $("#btnThemMoi").click(function () {
+        flag = 1;
+        $("#mdlCK").modal('show');
+        $("#idCK").val(0);
+        $("#tenChuKy").val("");
+        $("#txtTenChuKy").text("");
+        document.getElementById("btnUpdate").disabled = false;
+        $('#frmCK').bootstrapValidator('resetForm', true);
+
+    });
+    $(document).keypress(function (e) {
+        if (e.which == 13 || event.keyCode == 13) {
+            if (flag == 1) {
+                $("#btnUpdate").click();
+                document.getElementById("tenChuKy").focus();
+                $("#tenChuKy").val("");
+            }
+
+
+        }
+    });
+    function ExistTenChuKy() {
+        var to = null;
+        if (to) { clearTimeout(to); }
+        to = setTimeout(function () {
+            $.get("/DanhMucChuKy/ExistTenChuKy", { label: $("#tenChuKy").val() }, function (data) {
+
+                console.log(data);
+                if (data == "True") {
+                    $("#txtTenChuKy").text("");
+                    document.getElementById("btnUpdate").disabled = false;
+                }
+                else {
+                    if ($("#tenChuKy").val() == "") {
+                        $("#txtTenChuKy").text("");
+                        document.getElementById("btnUpdate").disabled = false;
+
+                    }
+                    else {
+                        $("#txtTenChuKy").text("Tên chu kỳ đã trùng");
+
+                        document.getElementById("btnUpdate").disabled = true;
+                    }
+
+
+                }
+            })
+        }, 500);
+
+    }
+    function validator() {
+        $('#frmCK').bootstrapValidator({
+            //container: 'tooltip',
+            message: 'Giá trị không hợp lệ',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                tenChuKy: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập tên chu kỳ nếu muốn cập nhật!'
+                        }
+                    }
+                }
+
+            }
+        });
+        var validatorObj = $('#frmCK').data('bootstrapValidator');
+        validatorObj.validate();
+        if (validatorObj.isValid()) {
+            return true;
+        }
+        return false;
+    }
+    $("#btnClose").click(function () {
+        flag = 0;
+        $("#mdlCK").modal('hide');
+        $('#frmCK').bootstrapValidator('resetForm', true);
+
+
+    });
+    $("#btnCloseModal").click(function () {
+        flag = 0;
+        $("#mdlCK").modal('hide');
+        $('#frmCK').bootstrapValidator('resetForm', true);
+    });
+    //Xử lý nút check all
+    $("#checkall").change(function () {
+        $(".checkitem").prop("checked", $(this).prop("checked"))
+    })
+
+    function GetById(Id) {
+        flag = 1;
+        $("#mdlCK").modal('show');
+        $("#idCK").val(Id);
+
+        $('#frmCK').bootstrapValidator('resetForm', true);
+
+
+        $.ajax({
+            url: "DanhMucChuKy/GetById",
+            data: { id: Id },
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+
+                $("#tenChuKy").val(data.tenChuKy);
+
+                $("#txtTenChuKy").text("");
+                document.getElementById("btnUpdate").disabled = false;
+            },
+            error: function (errormessage) {
+                showToast("error", errormessage.responseText, "Thông báo lỗi");
+            }
+        });
+    }
+
+    $("#btnUpdate").click(function () {
+        if ($("#idCK").val() != 0) {
+            var obj =
+            {
+                id: $("#idCK").val(),
+                tenChuKy: $("#tenChuKy").val(),
+            }
+            $.ajax({
+                url: "/DanhMucChuKy/UpdateChuKy",
+                data: JSON.stringify(obj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    if (data == "addsuccess") {
+                        showToast("success", "Thêm mới chu kỳ thành công!", "Thông báo")
+                    }
+                    else if (data == "updatesuccess") {
+                        showToast("success", "Cập nhật chu kỳ thành công!", "Thông báo")
+                        $("#mdlCK").modal('hide');
+
+                    }
+                    else {
+                        showToast("warning", "Có lỗi khi cập nhật chu kỳ!", "Cảnh báo")
+                    }
+                    loadDanhMucChuKy();
+
+                },
+                error: function (errormessage) {
+                    showToast("error", error.responseText, "Thông báo lỗi");
+                }
+            });
+        }
+        else {
+            var isValid = validator();
+
+            if (isValid) {
+                var obj =
+                {
+                    id: $("#idCK").val(),
+                    tenChuKy: $("#tenChuKy").val(),
+                }
+                $.ajax({
+                    url: "/DanhMucChuKy/UpdateChuKy",
+                    data: JSON.stringify(obj),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (data) {
+                        if (data == "addsuccess") {
+                            showToast("success", "Thêm mới chu kỳ thành công!", "Thông báo")
+                        }
+                        else if (data == "updatesuccess") {
+                            showToast("success", "Cập nhật chu kỳ thành công!", "Thông báo")
+                        }
+                        else {
+                            showToast("warning", "Có lỗi khi cập nhật chu kỳ!", "Cảnh báo")
+                        }
+                        //$("#mdlCK").modal('hide');
+                        loadDanhMucChuKy();
+
+                    },
+                    error: function (errormessage) {
+                        showToast("error", error.responseText, "Thông báo lỗi");
+                    }
+                });
+            }
+        }
+    });
+    function DeleteById(Id) {
+        var ans = confirm("Bạn chắc chắn muốn xóa bản ghi?");
+        if (ans) {
+            $.post('/DanhMucChuKy/DeleteById/', { id: Id }, function (data) {
+                if (data == "success") {
+                    showToast("success", "Xóa bản ghi thành công!", "Thông báo")
+                    loadDanhMucChuKy();
+                }
+                else if (data == "warning") {
+                    showToast("warning", "Tên chu kỳ đang tồn tại trong danh mục danh hiệu thi đua", "Cảnh báo")
+                }
+            }).fail(function (error) {
+                showToast("error", error.responseText, "Thông báo lỗi");
+            })
+        }
+    }
+    //Xóa khi check nhiều dòng
+    $("#btnDeleteSelected").click(function () {
+        var id = $('.checkitem:checked').map(function () {
+            return $(this).val()
+        }).get().join(' ')
+        if (id == "") {
+            showToast("warning", "Bạn chưa chọn đối tượng để xóa", "Cảnh báo")
+        }
+        else {
+            var ans = confirm("Bạn chắc chắn muốn xóa các bản ghi đã chọn?");
+            if (ans) {
+                $.post('/DanhMucChuKy/DeleteByArrayId/', { id: id }, function (data) {
+                    if (data == "True") {
+                        showToast("success", "Xóa bản ghi thành công!", "Thông báo")
+                    }
+                    else {
+                        showToast("error", "Có lỗi khi xóa!", "Thông báo lỗi");
+                    }
+                    loadDanhMucChuKy();
+                }).fail(function (error) {
+                    showToast("error", error.responseText, "Thông báo lỗi");
+                });
+            }
+        }
+    });
+
+</script>
+
+
+

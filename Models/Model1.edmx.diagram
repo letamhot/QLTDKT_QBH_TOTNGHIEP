@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="32edbd7dcbc347ea8c3a4e543559f243" Name="Diagram1">
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_baocaothidua" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_baocaothongke" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dangkythidua" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_danhhieu" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_capkykhenthuong" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_chucvu" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_chuky" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_danhhieuthidua" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_donvi" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_donviphatdong" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_hinhthuckhenthuong" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_role" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_thidua" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_trinhdohocvan" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_groupuser" Width="1.5" PointX="10.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_groupuserbyroles" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_hosokyyeu" Width="1.5" PointX="4.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_hosothidua" Width="1.5" PointX="6.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_ketquathidua" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_khenthuong" Width="1.5" PointX="12.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_thidua" Width="1.5" PointX="8.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_user" Width="1.5" PointX="10.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_userbygroup" Width="1.5" PointX="12.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_nhanvien" Width="1.5" PointX="0.625" PointY="11.25" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_vanbanhd" Width="1.5" PointX="13.375" PointY="14.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

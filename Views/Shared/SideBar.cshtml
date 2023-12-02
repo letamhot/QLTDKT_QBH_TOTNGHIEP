@@ -1,0 +1,62 @@
+﻿
+@{
+    var menu = (List<QLTDKT.Models.Service.roleService.QuyenMenuFull>)ViewBag.Menu;
+}
+<div class="topbar-menu">
+    <div class="container-fluid">
+        <div id="navigation">
+            <!-- Navigation Menu-->
+            <ul class="navigation-menu">
+                <li class="has-submenu">
+                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Trang Chủ</a>
+                </li>
+                @foreach (var item in menu)
+                {
+                    <li id="@item.Class" class="has-submenu">
+                        <a href="#">
+                            <i class="@item.Styles"></i>@item.roleName <div class="arrow-down"></div>
+                        </a>
+                        @{
+                            if (item.Children.Count > 0)
+                            {
+                                <ul class="submenu">
+                                    @foreach (var it in item.Children)
+                                    {
+                                        <li id="@it.Class" class="has-submenu">
+                                            @{
+                                                if (it.Children.Count > 0)
+                                                {
+                                                    <a href="#"><i class="@it.Styles"></i> @it.roleName<div class="arrow-down"></div></a>
+
+                                                    <ul class="submenu">
+                                                        @foreach (var ite in it.Children)
+                                                        {
+                                                            <li id="@ite.Class">
+                                                                <a href="@Url.Action(ite.Action, ite.Controller)"><i class="@ite.Styles"></i> @ite.roleName</a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.Action(it.Action, it.Controller)"><i class="@it.Styles"></i> @it.roleName</a>
+
+                                                }
+                                            }
+
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        }
+                    </li>
+                }
+            </ul>
+            <!-- End navigation menu -->
+
+            <div class="clearfix"></div>
+        </div>
+        <!-- end #navigation -->
+    </div>
+    <!-- end container -->
+</div>

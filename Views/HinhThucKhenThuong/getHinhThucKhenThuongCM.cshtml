@@ -1,0 +1,633 @@
+﻿
+@{
+    ViewBag.Title = "getHinhThucKhenThuongCM";
+}
+
+
+<br />
+<style>
+    .has-feedback .form-control-feedback {
+        top: 0px;
+        right: 10px;
+    }
+</style>
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="#">Danh mục</a></li>
+        <li class="breadcrumb-item active">Hình thức  khen thưởng</li>
+    </ol>
+    <div class="col-md-12">
+        <button class="btn btn-primary" id="btnThemMoi" type="button"><i class="fa fa-save"></i> Thêm mới</button>
+        <button class="btn btn-danger" id="btnDeleteSelected" type="button"><i class="fa fa-trash"></i> Xóa lựa chọn</button>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select id="bophanSearch" name="bophanSearch" class="form-control">
+                                <option value="0">Tất cả</option>
+                                <option value="1">Chuyên môn</option>
+                                <option value="2">Đảng - Đoàn thể</option>
+                                <option value="3">Công Đoàn</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger waves-effect waves-light" id="btnTimKiem"><i class="fa fa-search"></i> Tìm kiếm</button>
+                        </div>
+                    </div>
+
+                    <br />
+                    <h4 class="header-title mb-4">Hình thức  khen thưởng</h4>
+
+                    <table id="table_tdkt" class="table table-bordered table-responsive" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkall" /></th>
+                                <th class="text-nowrap" width="15%">Bộ phận</th>
+
+                                <th class="text-nowrap" width="30%">Tên hình thức khen thưởng</th>
+                                <th class="text-nowrap" width="10%">Loại hình thức</th>
+
+                                <th class="text-nowrap" width="10%">Mã thành tích</th>
+                                <th class="text-nowrap" width="15%">Chu kỳ</th>
+                                <th class="text-nowrap" width="15%">Cấp thành tích</th>
+                                <th class="text-nowrap" width="30%">Mô tả</th>
+
+                                <th class="text-nowrap" width="15%">Thao tác</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="HTTD" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Cập nhật hình thức thi đua</h4>
+                        <button type="button" class="close" id="btnClose" data-dismiss="modal">×</button>
+                    </div>
+                    <div class="modal-body" id="frmHTTD">
+                        <div class="form-group row m-b-15">
+                            <label for="bophan" class="col-md-3 col-form-label">Bộ phận: </label>
+                            <div class="col-md-9">
+                                <select id="bophan" name="bophan" class="form-control" onchange="ExistHTTD()">
+                                    <option value="0">--Chọn bộ phận--</option>
+                                    <option value="1">Chuyên môn</option>
+                                    <option value="2">Đảng - Đoàn thể</option>
+                                    <option value="3">Công Đoàn</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label for="loaiKT" class="col-md-3 col-form-label">Loại hình thức khen thưởng: </label>
+                            <div class="col-md-9">
+                                <select id="loaiKT" name="loaiKT" class="form-control" onchange="ExistHTTD()">
+                                    <option value="">-Chọn loại khen thưởng-</option>
+                                    <option value="1">Cá nhân</option>
+                                    <option value="0">Tập thể</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label for="tenHinhThucKhenThuong" class="col-md-3 col-form-label">Tên hình thức thi đua: </label>
+                            <div class="col-md-9">
+                                <input type="hidden" id="id" />
+                                <input type="hidden" id="idKT" />
+                                <input class="form-control" id="tenHinhThucKhenThuong" name="tenHinhThucKhenThuong" type="text" onkeyup="ExistHTTD()" />
+                                <label id="txtTenHinhThucKhenThuong" style="color:red; font-size:10px;"></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row m-b-15">
+                            <label for="maThanhTich" class="col-md-3 col-form-label">Mã thành tích: </label>
+                            <div class="col-md-9">
+                                <input class="form-control" id="maThanhTich" name="maThanhTich" type="text" />
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+
+                            <label class="col-md-3 col-form-label">Chọn chu kỳ</label>
+                            <div class="col-md-9">
+                                <select id="chuKy" class="form-control" name="chuKy">
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="form-group row m-b-15">
+
+                            <label class="col-md-3 col-form-label">Chọn cấp ký khen thưởng</label>
+                            <div class="col-md-9">
+
+                                <select id="capKy" class="form-control" name="capKy">
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label for="moTa" class="col-md-3 col-form-label">Mô tả: </label>
+                            <div class="col-md-9">
+                                <input class="form-control" id="moTa" name="moTa" type="text" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnUpdate"><i class="fa fa-sync"></i> Cập nhật</button>
+                        <button type="button" class="btn btn-danger" id="btnCloseModal" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script>
+    var flag = 0;
+    $(document).ready(function () {
+        activeMenu("liDanhMuc", "liHinhThucKhenThuong", "liDmHTKTCM");
+        $.noConflict();
+        validator();
+        loadData();
+        loadChuKy();
+        loadCapKyKT();
+    });
+    $("#btnTimKiem").click(function () {
+        loadData();
+    })
+    function loadData(ID) {
+        flag = 0;
+        $("#table_tdkt").DataTable({
+            "ajax": {
+                "url": "/HinhThucKhenThuong/GetListHTTD",
+                "data": { idHT: $("#idKT").val() , bophan: $("#bophanSearch").val() },
+
+                "type": "GET",
+                "datatype": "json",
+                "contentType": "application/json;charset=UTF-8"
+            },
+            "columns": [
+                {
+                    "data": "idHT", "render": function (data) {
+                        return "<input type='checkbox' class='checkitem' value='" + data + "' />";
+                    }
+                },
+                {
+                    "data": "bophan", "render": function (data) {
+                        console.log("aaa", data);
+                        if (data == "1") {
+                            return "Chuyên môn"
+                        }
+                        else if (data == "2") {
+                            return "Đảng - Đoàn thể"
+                        }
+                        else {
+                            return "Công Đoàn"
+                        }
+                    }
+                },
+                { "data": "tenHinhThucKhenThuong" },
+                {
+                    "data": "loaiKhenThuong", "render": function (data) {
+                        if (data == '0')
+                            return "Tập thể"
+                        else if (data == '1') {
+                            return "Cá Nhân"
+                        }
+                        else
+                            return "Tập thể/Cá nhân"
+                    }
+                },
+                { "data": "maThanhTich" },
+                {
+                    "data": "chuKyKT"
+                },
+                {
+                    "data": "capKyThanhTich"
+                },
+                { "data": "moTa" },
+
+
+                {
+                    "data": "idHT", "render": function (data) {
+                        return "<a class='fa fa-lg fa-edit' href='#' data-toggle='tooltip' title='Cập nhật' onclick='return GetById(" + data + ")'></a>&nbsp;&nbsp;<a class='fa fa-lg fa-trash' href='#' data-toggle='tooltip' title='Xóa' onclick='DeleteById(" + data + ")'></a>"
+                    }
+                }
+            ],
+            destroy: true,
+            ordering: false,
+            paging: true,
+            searching: true,
+            bInfo: false,
+            deferRender: true
+        });
+    }
+    //Xử lý nút check all
+    $("#checkall").change(function () {
+        $(".checkitem").prop("checked", $(this).prop("checked"))
+    })
+    function loadChuKy() {
+        $.get('/HinhThucKhenThuong/getChuKy', function (data) {
+            var html = '';
+            $.each(data, function (key, item) {
+                //console.log("ds", data);
+
+                html += '<option value = ' + item.id + '>' + item.tenChuKy + '</option>';
+
+
+
+            });
+            $('#chuKy').html(html);
+        })
+    }
+
+    function loadCapKyKT() {
+        $.get('/HinhThucKhenThuong/getCapKyKT', function (data) {
+            var html = '';
+            $.each(data, function (key, item) {
+                //console.log("ds", item.id);
+
+                html += '<option value = ' + item.id + '>' + item.tenCapKyKhenThuong + '</option>';
+
+
+
+            });
+            $('#capKy').html(html);
+        })
+    }
+    $("#btnThemMoi").click(function () {
+        flag = 1;
+        $("#HTTD").modal('show');
+        $("#id").val(0);
+        $("#tenHinhThucKhenThuong").val('');
+        $("#moTa").val('');
+        $("#loaiKT").val(-1);
+        $("#maThanhTich").val(""),
+        $("#chuKy").val("");
+        $("#capKy").val("");
+        $("#myModalLabel").text("Thêm mới hình thức khen thưởng");
+        $("#btnUpdate").text('Thêm mới');
+        $("#txtTenHinhThucKhenThuong").text("");
+        $('#frmHTTD').bootstrapValidator('resetForm', true);
+        document.getElementById("btnUpdate").disabled = false;
+        ExistHTTD($("#loaiKT").val());
+
+
+
+    })
+
+    function ExistHTTD() {
+        var to = null;
+        if (to) { clearTimeout(to); }
+        to = setTimeout(function () {
+            $.get("/HinhThucKhenThuong/ExistHTTD", { bophan: $("#bophan").val(), label: $("#tenHinhThucKhenThuong").val(), idcntt: $("#loaiKT").val() }, function (data) {
+                console.log(data);
+                if ($("#bophan").val() == 1) {
+                    if ($("#loaiKT").val() == 1) {
+                        if (data == "True") {
+                            $("#txtTenHinhThucKhenThuong").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenHinhThucKhenThuong").val() == "") {
+                                $("#txtTenHinhThucKhenThuong").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+
+                            }
+                            else {
+                                $("#txtTenHinhThucKhenThuong").text("Tên hình thức khen thưởng đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+                        }
+                    }
+                    else if ($("#loaiKT").val() == 0) {
+                        if (data == "True") {
+                            $("#txtTenHinhThucKhenThuong").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenHinhThucKhenThuong").val() == "") {
+                                $("#txtTenHinhThucKhenThuong").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+
+                            }
+                            else {
+                                $("#txtTenHinhThucKhenThuong").text("Tên hình thức khen thưởng đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+                        }
+
+                    }
+                }
+                else if ($("#bophan").val() == 2) {
+                    if ($("#loaiKT").val() == 1) {
+                        if (data == "True") {
+                            $("#txtTenHinhThucKhenThuong").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenHinhThucKhenThuong").val() == "") {
+                                $("#txtTenHinhThucKhenThuong").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+
+                            }
+                            else {
+                                $("#txtTenHinhThucKhenThuong").text("Tên hình thức khen thưởng đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+                        }
+                    }
+                    else if ($("#loaiKT").val() == 0) {
+                        if (data == "True") {
+                            $("#txtTenHinhThucKhenThuong").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenHinhThucKhenThuong").val() == "") {
+                                $("#txtTenHinhThucKhenThuong").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+
+                            }
+                            else {
+                                $("#txtTenHinhThucKhenThuong").text("Tên hình thức khen thưởng đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+                        }
+
+                    }
+                }
+                else if ($("#bophan").val() == 3) {
+                    if ($("#loaiKT").val() == 1) {
+                        if (data == "True") {
+                            $("#txtTenHinhThucKhenThuong").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenHinhThucKhenThuong").val() == "") {
+                                $("#txtTenHinhThucKhenThuong").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+
+                            }
+                            else {
+                                $("#txtTenHinhThucKhenThuong").text("Tên hình thức khen thưởng đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+                        }
+                    }
+                    else if ($("#loaiKT").val() == 0) {
+                        if (data == "True") {
+                            $("#txtTenHinhThucKhenThuong").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenHinhThucKhenThuong").val() == "") {
+                                $("#txtTenHinhThucKhenThuong").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+
+                            }
+                            else {
+                                $("#txtTenHinhThucKhenThuong").text("Tên hình thức khen thưởng đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+                        }
+
+                    }
+                }
+
+
+
+
+            })
+        }, 500);
+
+    }
+    $("#btnClose").click(function () {
+        flag = 0;
+        $("#HTTD").modal('hide');
+        $('#frmHTTD').bootstrapValidator('resetForm', true);
+
+    })
+    $("#btnCloseModal").click(function () {
+        flag = 0;
+        $("#HTTD").modal('hide');
+        $('#frmHTTD').bootstrapValidator('resetForm', true);
+
+    })
+    function GetById(Id) {
+        flag = 1;
+        $("#HTTD").modal('show');
+
+        $("#id").val(Id);
+        $('#frmHTTD').bootstrapValidator('resetForm', true);
+
+        $.ajax({
+            url: "/HinhThucKhenThuong/GetCVById",
+            data: { id: Id },
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                console.log(data);
+                $("#tenHinhThucKhenThuong").val(data.tenHinhThucKhenThuong);
+                $("#bophan").val(data.bophan);
+                $("#loaiKT").val(data.loaiKhenThuong);
+                $("#moTa").val(data.moTa);
+                $("#maThanhTich").val(data.maThanhTich);
+                $("#chuKy").val(data.chuKy);
+                $("#capKy").val(data.capThanhTich);
+
+                $("#txtTenHinhThucKhenThuong").text("");
+                document.getElementById("btnUpdate").disabled = false;
+                $("#myModalLabel").text("Cập nhập hình thức khen thưởng");
+                $("#btnUpdate").text('Cập nhập');
+            },
+            error: function (errormessage) {
+                showToast("error", errormessage.responseText, "Thông báo lỗi");
+            }
+        });
+    }
+
+    //Reset bootstrap validator
+    $('#HTTD').on('hide.bs.modal', function () {
+        $('#frmHTTD').bootstrapValidator('resetForm', true);
+    });
+    //Validate
+    function validator() {
+        $('#frmHTTD').bootstrapValidator({
+            message: 'Giá trị không hợp lệ',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                tenHinhThucKhenThuong: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập tên hình thức thi đua!'
+                        }
+                    }
+                },
+                loaiKT: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập loại danh hiệu thi đua!'
+                        }
+                    }
+                },
+                maThanhTich: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập mã thành tích!'
+                        }
+                    }
+                },
+                chuKy: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn tên chu kỳ!'
+                        }
+                    }
+                },
+                capKy: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn tên cấp ký!'
+                        }
+                    }
+                },
+                loaiKT: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn loại khen thưởng!'
+                        }
+                    }
+                }
+            }
+        });
+        var validatorObj = $('#frmHTTD').data('bootstrapValidator');
+        validatorObj.validate();
+        if (validatorObj.isValid()) {
+            return true;
+        }
+        return false;
+    }
+    $(document).keypress(function (e) {
+        if (e.which == 13 || event.keyCode == 13) {
+            if (flag == 1) {
+                $("#btnUpdate").click();
+
+                document.getElementById("tenPhatDong").focus();
+                $("#tenHinhThucKhenThuong").val('');
+                $("#moTa").val('');
+                $("#loaiKT").val(-1);
+                $("#maThanhTich").val(""),
+                $("#chuKy").val("");
+                $("#capKy").val("");
+            }
+
+        }
+    });
+    $("#btnUpdate").click(function () {
+        var isValid = validator();
+        var b = $('#bophan option:selected').val();
+        if (isValid) {
+            var obj = {
+                id: $("#id").val(),
+                bophan: b,
+                tenHinhThucKhenThuong: $("#tenHinhThucKhenThuong").val(),
+                loaiKhenThuong: $("#loaiKT").val(),
+                moTa: $("#moTa").val(),
+                maThanhTich: $("#maThanhTich").val(),
+                chuKy: $("#chuKy").val(),
+                capThanhTich: $("#capKy").val(),
+            }
+            $.ajax({
+                url: "/HinhThucKhenThuong/UpdateHTTD",
+                data: JSON.stringify(obj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    if (data == "addsuccess") {
+                        showToast("success", "Thêm mới quyền thành công!", "Thông báo")
+                    }
+                    else if (data == "updatesuccess") {
+                        showToast("success", "Cập nhật quyền thành công!", "Thông báo")
+                    }
+                    else {
+                        showToast("warning", "Có lỗi khi cập nhật quyền!", "Cảnh báo")
+                    }
+                    loadData();
+                    $("#HTTD").modal('hide');
+                },
+                error: function (errormessage) {
+                    showToast("error", error.responseText, "Thông báo lỗi");
+                }
+            });
+        }
+    });
+    function DeleteById(Id) {
+        var ans = confirm("Bạn chắc chắn muốn xóa bản ghi?");
+        if (ans) {
+            $.post('/HinhThucKhenThuong/DeleteByID/', { id: Id }, function (data) {
+                if (data == "success") {
+                    showToast("success", "Xóa bản ghi thành công!", "Thông báo")
+                    loadData();
+                }
+                if (data == "warning") {
+                    showToast("warning", "Hình thức khen thưởng đã tồn tại trong nghiệp vụ khen thưởng!", "Cảnh báo")
+                }
+                if (data == "warning1") {
+                    showToast("warning", "Hình thức khen thưởng đã tồn tại trong nghiệp vụ danh hiệu!", "Cảnh báo")
+                }
+            }).fail(function (error) {
+                showToast("error", error.responseText, "Thông báo lỗi");
+            })
+        }
+    }
+    //Xóa khi check nhiều dòng
+    $("#btnDeleteSelected").click(function () {
+        var id = $('.checkitem:checked').map(function () {
+            return $(this).val()
+        }).get().join(' ')
+        if (id == "") {
+            showToast("warning", "Bạn chưa chọn đối tượng để xóa", "Cảnh báo")
+        }
+        else {
+            var ans = confirm("Bạn chắc chắn muốn xóa các bản ghi đã chọn?");
+            if (ans) {
+                $.post('/HinhThucKhenThuong/DeleteByArrayId/', { id: id }, function (data) {
+                    if (data == "True") {
+                        showToast("success", "Xóa bản ghi thành công!", "Thông báo")
+                    }
+                    else {
+                        showToast("error", "Có lỗi khi xóa!", "Thông báo lỗi");
+                    }
+                    loadData();
+                }).fail(function (error) {
+                    showToast("error", error.responseText, "Thông báo lỗi");
+                });
+            }
+        }
+    });
+</script>
+

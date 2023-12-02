@@ -1,0 +1,1025 @@
+﻿
+@{
+    ViewBag.Title = "HoSoThiDua";
+}
+<style>
+
+
+    a.disabled {
+        pointer-events: none;
+        cursor: default;
+        color: gray;
+    }
+</style>
+<br />
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="#">Nghiệp vụ</a></li>
+        <li class="breadcrumb-item active">Hồ sơ thi đua</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <button class="btn btn-success" id="btnThemMoi" type="button"><i class="fa fa-save"></i> Thêm mới hồ sơ thi đua</button>
+
+                    </div>
+
+                    <h4 class="header-title mb-4">Danh sách hồ sơ thi đua</h4>
+
+
+
+                    <table id="table_hosothidua" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%; ">
+                        <thead>
+                            <tr>
+                                <th class="text-nowrap" width="1%">STT</th>
+                                <th class="text-nowrap">Tên hồ sơ thi đua</th>
+                                <th class="text-nowrap">Tên thi đua</th>
+                                <th class="text-nowrap">Số hiệu</th>
+                                <th class="text-nowrap">Văn bản hướng dẫn</th>
+                                <th class="text-nowrap">Văn bản đính kèm</th>
+                                <th class="text-nowrap" width="20%">Thao tác</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="form-group row justify-content-end mb-0">
+                        <div class="col-md-12">
+                            @*<button class="btn btn-primary waves-effect waves-light" id="btnTimKiem"><i class="fa fa-search"></i> Tìm kiếm</button>*@
+                            <a class="btn btn-info" href="@Url.Action("Index", "ThiDua")"><i class="fa fa-arrow-left"></i> Quay lại</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="mdlHoSoThiDua" tabindex="0" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Hồ sơ thi đua</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                    <form enctype="multipart/form-data" method="post" id="frmHoSoThiDua">
+                        <input type="hidden" id="idThiDua" />
+                        <input type="hidden" id="idHoSoThiDua" />
+                        <input type="hidden" id="cbxTemp" />
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="cbxThiDua" title="Không chọn nếu lập hồ sơ thi đua đột xuất">Chọn thi đua để lập hồ sơ: </label>
+
+                                    <select id="cbxThiDua" name="cbxThiDua" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label></label>
+                                </div>
+                                <div id="lblError" style="color: red;"></div>
+                            </div>
+                        </div>
+                        <div class="row" id="pnlChiTiet" style="display: none;">
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label for="txtTenThiDua">Tên thi đua: </label>
+
+                                    <input type="text" class="form-control" id="txtTenThiDua" name="txtTenThiDua" />
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label for="txtSoHieu">Số hiệu: </label>
+
+                                    <input type="text" class="form-control" id="txtSoHieu" />
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label for="txtNgayPhatDong">Ngày phát động: </label>
+                                    <div id="dateNgayPhatDong" class="input-group date" data-date-format="dd/mm/yyyy">
+                                        <input id="txtNgayPhatDong" class="form-control" type="text">
+                                        <span class="input-group-addon"><i class="fa fa-lg fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            @* <div class="col-xl-3">
+                                    <div class="form-group">
+                                        <label id ="kieutd" for="txtNgayPhatDong">Kiểu thi đua: </label>
+
+                                        <input type="text" class="form-control"  id="txtKieuThiDua" />
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="txtTenHoSoThiDua">Tên hồ sơ thi đua: </label>
+                                    <input type="text" class="form-control" id="txtTenHoSoThiDua" name="txtTenHoSoThiDua" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="pnlHoSoKhenThuong">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="cbxHoSoKhenThuong">Hồ sơ khen thưởng: </label>
+                                    <select class="form-control" id="cbxHoSoKhenThuong" name="cbxHoSoKhenThuong">
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="header-title mb-4">Danh sách tập thể, cá nhân đã báo cáo thành tích <button type="button" class="btn btn-info" id="btnThemTTCN"><i class="fa fa-plus"></i> Thêm tập thể cá nhân</button></h4>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h3 class="header-title mb-4">TẬP THỂ</h3>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>STT</th>
+                                                            <th>Tên tập thể</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tblTapThe">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h3 class="header-title mb-4">CÁ NHÂN</h3>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>STT</th>
+                                                            <th>Tên cá nhân</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tblCaNhan">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="header-title mb-4">Các file báo cáo thành tích</h4>
+                                        <div id="dvFileDinhKem">
+                                            <input type="file" id="fileDinhKem" class="dropify" data-height="300" data-max-file-size="10M" multiple />
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="table" id="tblFileBaoCaoTT">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">Chọn văn bản hướng dẫn</label>
+                                    <select id="cbxHoso" class="form-control" name="cbxHoso" multiple>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnLuuHoSoThiDua"><i class="fa fa-sync"></i> Cập nhật</button>
+                    <button type="button" class="btn btn-danger" id="btnClose"><i class="fa fa-window-close"></i> Đóng lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="mdlThemTapTheCaNhan" tabindex="0" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Thêm tập thể cá nhân vào hồ sơ thi đua</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h3 class="header-title mb-4">TẬP THỂ</h3>
+                                            <div id="tree_donvi"></div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h3 class="header-title mb-4">CÁ NHÂN</h3>
+                                            <table class="table" id="table_CaNhan">
+                                                <thead>
+                                                    <tr>
+                                                        <th><input type="checkbox" class="checkAllCN" /></th>
+                                                        <th>STT</th>
+                                                        <th>Tên cá nhân</th>
+                                                        <th>Đơn vị</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tblCaNhan_Them">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="btnLuuDanhSach"><i class="fa fa-save"></i> Lưu danh sách</button>
+                    <button type="button" class="btn btn-danger" id="btnCloseTTCN"><i class="fa fa-window-close"></i> Đóng lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var html_cn = '';
+    var id_cn_send = [];
+    var id_cn = [];
+    var id_tt = [];
+    var obj_tt = [];
+    var obj_cn = [];
+    var stt = 0;
+    var tree_selected;
+    $(document).ready(function () {
+
+        activeMenu("liNghiepVu", "liThiDua");
+
+        $.noConflict();
+        validator();
+        $("#dateNgayPhatDong").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker('update', new Date());
+        $('#cbxHoso').select2({
+            placeholder: "Chọn văn bản"
+        });
+
+        $(".dropify").dropify({
+            messages: {
+                default: "Kéo và thả file cần upload hoặc click",
+                replace: "Kéo và thả hoặc click để thay đổi",
+                remove: "Xóa",
+                error: "Có lỗi xảy ra."
+            },
+            error: {
+                fileSize: "File upload có dung lượng quá lớn (10M max)."
+            }
+        });
+        loadDanhSachHoSoThiDua();
+        loadDanhSachThiDua();
+        loadDanhSachVanBan();
+        getHoSoKhenThuong();
+    });
+
+
+    function loadDanhSachHoSoThiDua() {
+        $("#table_hosothidua").DataTable({
+            "ajax": {
+                "url": "/ThiDua/getDanhSachHoSoThiDua",
+                "data": { idHoSoThiDua: $("#idHoSoThiDua").val() },
+                "type": "GET",
+                "datatype": "json",
+                "contentType": "application/json;charset=UTF-8"
+            },
+            "columns": [
+                {
+                    "data": "null", "render": function (data, type, full, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                { "data": "tenHoSoThiDua" },
+                { "data": "tenThiDua" },
+                { "data": "soHieu" },
+                {
+                    "data": "vanBanHuongDan", "render": function (data) {
+                        //console.log("vbhd", data);
+                        if (data != "") {
+                            var objFile = JSON.parse(data);
+                            //console.log(objFile);
+                            html = "";
+                            $.each(objFile, function (key, item) {
+                                var fileVB = JSON.parse(item.fileVB);
+                                var spl = fileVB[0].Key.split(/\\/);
+                                html += "<a href='#' onclick='downloadfile(\"" + spl + "\", \"" + spl[spl.length - 1] + "\", \"" + objFile[0].Value + "\")'><i class='fa fa-download'></i>" + spl[spl.length - 1] + "</a></br>";
+                            })
+                            return html;
+                        }
+
+                    }
+                },
+                {
+                    "data": "fileBaoCaoThanhTich", "render": function (data) {
+                        if (data != "") {
+                            var objFile = JSON.parse(data);
+                            html = "";
+                            $.each(objFile, function (key, item) {
+                                var spl = item.Key.split(/\\/);
+                                html += "<a href='#' onclick='downloadfile(\"" + spl + "\", \"" + spl[spl.length - 1] + "\", \"" + objFile[0].Value + "\")'><i class='fa fa-download'></i>" + spl[spl.length - 1] + "</a></br>";
+                            })
+                            return html;
+                        }
+                        else {
+                            return html += "<a href='#'>Chưa có file báo cáo thành tích</a></br>";
+                        }
+                    }
+                },
+                {
+                    "data": "idHoSoThiDua", "render": function (data, type, row, meta) {
+                        console.log("daa", row);
+                        $('[data-toggle="tooltip"]').tooltip();
+                        if (row["trangThaiTD"] == 2) {
+                            return "<a class='fa fa-lg fa-edit colorEdit' href='#' data-toggle='tooltip' title='Cập nhật' onclick='return GetById(" + data + ")'></a>&nbsp;<a class='fa fa-lg fa-trash' href='#' data-toggle='tooltip' title='Xóa' onclick='DeleteById(" + data + ")'></a>";
+
+                        }
+                        else {
+                            return "<a class='fa fa-lg fa-edit colorEdit disabled'  href='#' data-toggle='tooltip' data-placement='top' title='Cập nhật' onclick='return GetById(" + data + ")'></a>&nbsp;<a class='fa fa-lg fa-trash colorEdit disabled' href='#' data-toggle='tooltip' title='Xóa' onclick='DeleteById(" + data + ")'></a>";
+                        }
+                    }
+                }
+            ],
+            destroy: true,
+            ordering: false,
+            paging: true,
+            searching: true,
+            bInfo: false,
+            deferRender: true
+        });
+    }
+
+    function loadDanhSachThiDua(idThiDua) {
+        $.get("/BaoCaoThiDua/getDSThiDua", function (data) {
+            var html = '';
+            html = '<option value = "0">HỒ SƠ THI ĐUA ĐỘT XUẤT</option>';
+            $.each(data, function (key, item) {
+                if (item.id == idThiDua)
+                    html += '<option value = ' + item.id + ' selected>' + item.tenHienThi + '</option>';
+                else
+                    html += '<option value = ' + item.id + '>' + item.tenHienThi + '</option>';
+            });
+            $('#cbxThiDua').html(html);
+        })
+    }
+
+
+
+
+    function GetById(idHoSoThiDua) {
+        id_tt = [];
+        obj_tt = [];
+        id_cn_send = [];
+        obj_cn = [];
+        $("#tblFileBaoCaoTT").html("");
+        //console.log(idHoSoThiDua);
+        $("#mdlHoSoThiDua").modal('show');
+        $("#idHoSoThiDua").val(idHoSoThiDua);
+        $.get("/ThiDua/GetHoSoThiDuaById", { idHoSoThiDua: idHoSoThiDua }, function (data) {
+            //console.log(data);
+            var result = data.data;
+            //console.log(result.thiDuaId);
+            document.getElementById("cbxThiDua").disabled = true;
+
+            @*$("#cbxThiDua").prop("disabled", "disabled");*@
+            $("#cbxThiDua").val(result.thiDuaId);
+            $("#cbxHoSoKhenThuong").val(result.kieuThiDua);
+            $("#txtTenHoSoThiDua").val(result.tenHoSoThiDua);
+            $("#txtTenThiDua").val(result.tenThiDua);
+            $("#txtSoHieu").val(result.soHieu);
+            $("#txtNgayPhatDong").val(convertDate(result.ngayPhatDong));
+            if (result.chiTietBaoCaoThanhTich.length > 0) {
+                var chiTietBaoCao = JSON.parse(result.chiTietBaoCaoThanhTich);
+                //console.log(chiTietBaoCao);
+                $.each(chiTietBaoCao, function (key, item) {
+                    if (item.type == 1) {
+                        id_tt.push(item.id);
+                        obj_tt.push(item);
+                    }
+                    if (item.type == 2) {
+                        id_cn_send.push(item.id);
+                        obj_cn.push(item);
+                    }
+                })
+            }
+
+            if (result.fileBaoCaoThanhTich.length > 0) {
+                var fileBaoCaoThanhTich = JSON.parse(result.fileBaoCaoThanhTich);
+                //console.log(fileBaoCaoThanhTich);
+                var htmlDownload = '';
+                htmlDownload += "<thead><tr><th>STT</th><th>File download</th></tr></thead>";
+                htmlDownload += "<tbody>";
+                var stt_dowload = 0;
+                $.each(fileBaoCaoThanhTich, function (key, item) {
+                    stt_dowload++;
+                    var spl = item.Key.split(/\\/);
+                    htmlDownload += "<tr><td>" + stt_dowload + "</td><td><a href='#' onclick='downloadfile(\"" + spl + "\", \"" + spl[spl.length - 1] + "\", \"" + item.Value + "\")'><i class='fa fa-download'></i>" + spl[spl.length - 1] + "</a></td></tr>";
+                })
+                htmlDownload += "</tbody>";
+                $("#tblFileBaoCaoTT").html(htmlDownload);
+            }
+            console.log("0", result.fileDinhKem);
+
+            if (result.fileDinhKem.length > 0) {
+                var fileDinhKem = JSON.parse(result.fileDinhKem);
+                var htmlfileDinhKem = '';
+                var temp = '';
+                var lengthFile = fileDinhKem.length;
+                var i = 0;
+                $.each(fileDinhKem, function (key, item) {
+                    i++;
+                    if (i < lengthFile)
+                        temp += item.id + ',';
+                    else
+                        temp += item.id;
+                    console.log("aa", temp);
+
+                    htmlfileDinhKem += '<option value = ' + item.id + ' selected>' + item.tenVB + '</option>';
+                })
+                $("#cbxTemp").val(temp);
+                $("#cbxHoso").html(htmlfileDinhKem);
+                loadDanhSachVanBan();
+            }
+
+            getThongTinThiDua();
+
+        })
+    }
+
+    function DeleteById(id) {
+        //console.log(id);
+        var ans = confirm("Bạn muốn xóa hồ sơ thi đua này?");
+        if (ans) {
+            $.post("/ThiDua/DeleteBaoCaoThiDua", { idHoSoThiDua: id }, function (data) {
+                if (data) {
+                    showToast("success", "Xóa hồ sơ thi đua thành công!", "Thông báo");
+                    loadDanhSachHoSoThiDua();
+                }
+            }).fail(function (error) {
+                showToast("error", "Có lỗi khi xóa hồ sơ thi đua", "Thông báo lỗi");
+            })
+        }
+    }
+
+    $("#cbxThiDua").change(function () {
+        //console.log($("#cbxThiDua").val());
+        getThongTinThiDua();
+    })
+
+    function getDsNhanVienByDonVi(idDonVi) {
+        $.get("/ThiDua/getDsNhanVienByDonVi", { idDonVi, idDonVi }, function (data) {
+            //console.log(data.data);
+            $.each(data.data, function (key, item) {
+                //debugger;
+                var isCheck = false;
+                if (id_cn.length > 0) {
+                    for (var i = 0; i < id_cn.length; i++) {
+                        if (item.idNhanVien == id_cn[i]) {
+                            isCheck = true;
+                            break;
+                        }
+                    }
+                }
+                if (!isCheck) {
+                    stt++;
+                    id_cn.push(item.idNhanVien);
+                    html_cn += "<tr><td><input type='checkbox' class='checkitemNV' value='" + item.idNhanVien + "_" + item.tenNhanVien + "_" + item.tenDonVi + "' /></td><td>" + stt + "</td><td>" + item.tenNhanVien + "</td><td>" + item.tenDonVi + "</td></tr>";
+                }
+            });
+        });
+        var to = null;
+        //var table = null;
+        if (to) { clearTimeout(to); }
+        to = setTimeout(function () {
+            //console.log(html_cn);
+            $("#tblCaNhan_Them").html(html_cn)
+
+            $('#table_CaNhan').DataTable({
+                paging: false,
+                searching: true,
+                retrieve: true,
+                order: false,
+                destroy: false
+
+            })
+        }, 1000);
+    }
+
+    function getThongTinThiDua() {
+        $("#tblTapThe").html("");
+        $("#tblCaNhan").html("");
+        //console.log("===============" + $("#cbxThiDua").val());
+        if ($("#cbxThiDua").val() != "0") {
+            $("#tblFileBaoCaoTT").html("");
+            $("#btnThemTTCN").css("display", "none");
+            $("#dvFileDinhKem").css("display", "none");
+            $("#pnlHoSoKhenThuong").css("display", "");
+            $("#fileDinhKem").val("");
+            $.get("/BaoCaoThiDua/getThongTinThiDuaAndBaoCao", { idThiDua: $("#cbxThiDua").val() }, function (data) {
+                //console.log(data);
+                if (data.data.isBaoCao) {
+                    $("#pnlChiTiet").css("display", "");
+                    $("#lblError").html("");
+                    $("#txtTenThiDua").val(data.data.tenThiDua);
+                    $("#txtTenThiDua").prop("disabled", "disabled");
+                    $("#txtSoHieu").val(data.data.soHieu);
+                    $("#txtSoHieu").prop("disabled", "disabled");
+                    $("#cbxHoSoKhenThuong").html('<option value = ' + data.data.idKieuThiDua + '>' + data.data.kieuThiDua + '</option>');
+                    $("#cbxHoSoKhenThuong").prop("disabled", "disabled");
+
+                    $("#txtNgayPhatDong").datepicker({
+                        autoclose: true,
+                        setDate: new Date(),
+                        todayHighlight: true,
+                        orientation: 'bottom'
+                    }).datepicker('update', data.data.ngayPhatDong.split(" ")[0]);
+                    $("#txtNgayPhatDong").prop("disabled", "disabled");
+
+                    var dsDonViCaNhan = data.data.dsDonViCaNhan;
+                    var htmlTapThe = '', htmlCaNhan = '';
+                    var stt_TT = 0, stt_CN = 0;
+                    $.each(dsDonViCaNhan, function (key, item) {
+                        if (item.type == 1) {
+                            stt_TT++;
+                            htmlTapThe += "<tr><td>" + stt_TT + "</td><td>" + item.name + "</td></tr>";
+                        }
+                        if (item.type == 2) {
+                            stt_CN++;
+                            htmlCaNhan += "<tr><td>" + stt_CN + "</td><td>" + item.name + "</td></tr>";
+                        }
+                    });
+                    $("#tblTapThe").html(htmlTapThe);
+                    $("#tblCaNhan").html(htmlCaNhan);
+                    var dsFileBaoCao = data.data.lsFileBaoCao;
+                    var objFile = JSON.parse(dsFileBaoCao);
+                    var htmlDownload = '';
+                    htmlDownload += "<thead><tr><th>STT</th><th>File download</th></tr></thead>";
+                    htmlDownload += "<tbody>";
+                    var stt_dowload = 0;
+                    $.each(objFile, function (key, item) {
+                        stt_dowload++;
+                        var spl = item.Key.split(/\\/);
+                        htmlDownload += "<tr><td>" + stt_dowload + "</td><td><a href='#' onclick='downloadfile(\"" + spl + "\", \"" + spl[spl.length - 1] + "\", \"" + objFile[0].Value + "\")'><i class='fa fa-download'></i>" + spl[spl.length - 1] + "</a></td></tr>";
+                    })
+                    htmlDownload += "</tbody>";
+                    $("#tblFileBaoCaoTT").html(htmlDownload);
+
+                }
+                else {
+                    $("#pnlChiTiet").css("display", "none");
+
+                    $("#lblError").html("Chưa tạo báo cáo cho thi đua này. Nhấn vào <a href='/ThiDua/BaoCaoThiDua'>ĐÂY</a> để báo cáo thi đua!");
+                }
+            })
+        }
+        else {
+            $.get("/BaoCaoThiDua/getThongTinThiDuaAndBaoCao", { idThiDua: $("#cbxThiDua").val() }, function (data) {
+
+                $("#pnlChiTiet").css("display", "");
+                $("#lblError").html("");
+                $("#tblFileBaoCaoTT").html("");
+                $("#btnThemTTCN").css("display", "");
+                $("#dvFileDinhKem").css("display", "");
+                $("#pnlHoSoKhenThuong").css("display", "");
+                resetFormDotXuat();
+                getHoSoKhenThuong();
+
+                var htmlTapThe = '', htmlCaNhan = '';
+                var stt_TT = 0, stt_CN = 0;
+                if (obj_tt.length > 0) {
+                    for (var i = 0; i < obj_tt.length; i++) {
+                        stt_TT++;
+                        htmlTapThe += "<tr><td>" + stt_TT + "</td><td>" + obj_tt[i].name + "</td></tr>";
+                    }
+                }
+                if (obj_cn.length > 0) {
+                    for (var i = 0; i < obj_cn.length; i++) {
+                        stt_CN++;
+                        htmlCaNhan += "<tr><td>" + stt_CN + "</td><td>" + obj_cn[i].name + "</td></tr>";
+                    }
+                }
+                $("#tblTapThe").html(htmlTapThe);
+                $("#tblCaNhan").html(htmlCaNhan);
+            });
+        }
+     }
+
+
+    function getHoSoKhenThuong(idHoSoKhenThuong) {
+        var html = "";
+        html += "<option value=''>--Chọn hồ sơ khen thưởng--</option>";
+        html += "<option value='0' " + getSelected(idHoSoKhenThuong, 0) + ">Năm</option>";
+        html += "<option value='1' " + getSelected(idHoSoKhenThuong, 1) + ">Giai đoạn</option>";
+        html += "<option value='2' " + getSelected(idHoSoKhenThuong, 2) + ">Chuyên đề</option>";
+        $("#cbxHoSoKhenThuong").html(html);
+    }
+
+    function getSelected(kt, stt) {
+        if (kt == stt)
+            return "selected";
+    }
+
+    $("#btnThemTTCN").click(function () {
+        $("#mdlThemTapTheCaNhan").modal('show');
+        id_cn = [];
+        html_cn = '';
+        stt = 0;
+        loadDsTapThe();
+    })
+
+    function loadDsTapThe() {
+        loadMainTree();
+    }
+
+    $("#btnLuuDanhSach").click(function () {
+        afterCloseThemTTCN();
+    })
+
+    $("#btnCloseTTCN").click(function () {
+        $("#mdlThemTapTheCaNhan").modal('hide');
+    })
+
+    //Xử lý nút check all
+    $(".checkAllCN").change(function () {
+        $(".checkitemNV").prop("checked", $(this).prop("checked"))
+    })
+
+    function afterCloseThemTTCN() {
+        id_cn_send = [];
+        id_tt = [];
+        tree_selected = $("#tree_donvi").jstree('get_selected', true);
+        var lsIdCaNhanDangKy = $('.checkitemNV:checked').map(function () {
+            return $(this).val()
+        }).get();//.join(';')
+        //console.log(lsIdCaNhanDangKy);
+        var htmlTapThe = '', htmlCaNhan = '';
+        var stt_TT = 0, stt_CN = 0;
+        if (tree_selected.length > 0) {
+            for (var i = 0; i < tree_selected.length; i++) {
+                id_tt.push(tree_selected[i].id);
+                stt_TT++;
+                htmlTapThe += "<tr><td>" + stt_TT + "</td><td>" + tree_selected[i].text + "</td></tr>";
+            }
+        }
+        if (lsIdCaNhanDangKy.length > 0) {
+            for (var i = 0; i < lsIdCaNhanDangKy.length; i++) {
+                stt_CN++;
+                var spl = lsIdCaNhanDangKy[i].split("_");
+                id_cn_send.push(spl[0]);
+                htmlCaNhan += "<tr><td>" + stt_CN + "</td><td>" + spl[1] + "</td></tr>";
+            }
+        }
+        $("#tblTapThe").html(htmlTapThe);
+        $("#tblCaNhan").html(htmlCaNhan);
+
+        //console.log(id_tt);
+        //console.log(id_cn_send);
+
+        $("#mdlThemTapTheCaNhan").modal('hide');
+        $("#tblCaNhan_Them").html("");
+    }
+
+    function getTenByIdNhanVienTT(id, type) {
+        var result = "";
+        $.get("/ThiDua/getTenByIdNhanVienTT", { idTTCN: id, type: type }, function (data) {
+            result = data;
+        })
+        return result;
+    }
+
+    function loadMainTree() {
+        $('#tree_donvi').jstree("destroy");
+        $('#tree_donvi').jstree({
+            "plugins": ["wholerow", "checkbox", "types"],
+            "checkbox": {
+                "three_state": false,
+                "keep_selected_style": false
+            },
+            'core': {
+                'check_callback': true,
+                'data': {
+                    "themes": {
+                        "responsive": true
+                    },
+                    "url": "/ThiDua/LoadTreeDonVi",
+                    "dataType": "json"
+                }
+            }
+        }).on("select_node.jstree", function (e, data) {
+            getDsNhanVienByDonVi(data.node.id)
+            //alert(data.node.id);
+        }).bind("loaded.jstree", function (event, data) {
+            $(this).jstree("open_all");
+        });
+    }
+
+
+    $("#btnThemMoi").click(function () {
+        $("#mdlHoSoThiDua").modal('show');
+        loadDanhSachVanBan();
+        resetFormHoSoThiDua();
+    })
+
+    $("#btnClose").click(function () {
+        $("#mdlHoSoThiDua").modal('hide');
+        $('#frmHoSoThiDua').bootstrapValidator('resetForm', true);
+
+    })
+    function resetFormDotXuat() {
+        $("#cbxThiDua").val("0");
+        $("#cbxThiDua").removeAttr('disabled');
+        $("#txtTenThiDua").val("");
+        $("#txtTenThiDua").removeAttr('disabled');
+        $("#txtSoHieu").val("");
+        $("#txtSoHieu").removeAttr('disabled');
+        $("#txtNgayPhatDong").val("");
+        $("#txtNgayPhatDong").removeAttr('disabled');
+        $("#txtNgayPhatDong").val(convertFullDate(new Date()));
+
+        $("#cbxHoSoKhenThuong").val("");
+        $("#cbxHoSoKhenThuong").removeAttr('disabled');
+
+
+
+
+
+    }
+    function resetFormHoSoThiDua() {
+        $("#idHoSoThiDua").val("0");
+        document.getElementById("cbxThiDua").disabled = false;
+
+        @*$("#cbxThiDua").removeAttr('disabled');*@
+        $("#cbxThiDua").val("0");
+        $("#txtTenHoSoThiDua").val("");
+        $("#tblFileBaoCaoTT").html("");
+        $("#cbxHoso").html("");
+
+        obj_tt = [];
+        obj_cn = [];
+        getThongTinThiDua();
+    }
+
+    function loadDanhSachVanBan() {
+        $.get('/ThiDua/loadDanhSachVanBan', function (data) {
+            var html = '';
+            $.each(data, function (key, item) {
+                //console.log("ds", item.id);
+
+                    html += '<option value = ' + item.id + '>' + item.tenVB + '</option>';
+
+
+
+            });
+            $('#cbxHoso').html(html);
+        })
+    }
+
+    //Validate form nhập
+    function validator() {
+        $('#frmHoSoThiDua').bootstrapValidator({
+            container: 'tooltip',
+            message: 'Giá trị không hợp lệ',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                cbxThiDua: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn thi đua vào hồ sơ thi đua!'
+                        }
+                    }
+                },
+                txtTenThiDua: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập tên thi đua!'
+                        }
+                    }
+                },
+                txtTenHoSoThiDua: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập tên hồ sơ thi đua!'
+                        }
+                    }
+                }
+            }
+        });
+        var validatorObj = $('#frmHoSoThiDua').data('bootstrapValidator');
+        validatorObj.validate();
+        if (validatorObj.isValid()) {
+            return true;
+        }
+        return false;
+    }
+   @* $(document).keypress(function (e) {
+        if (e.which == 13 || event.keyCode == 13) {
+            $("#btnLuuHoSoThiDua").click();
+        }
+    });*@
+    $("#btnLuuHoSoThiDua").click(function () {
+
+        if ($("#idThiDua").val() != 0) {
+            var fileUpload = $("#fileDinhKem").get(0);
+            var files = fileUpload.files;
+            var fileData = new FormData();
+
+
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            fileData.append('idThiDua', $("#cbxThiDua").val());
+            fileData.append('idHoSoThiDua', $("#idHoSoThiDua").val());
+            fileData.append('ngayPhatDong', $("#txtNgayPhatDong").val());
+            fileData.append('tenThiDua', $("#txtTenThiDua").val());
+            fileData.append('soHieu', $("#txtSoHieu").val());
+
+            fileData.append('tenHoSoThiDua', $("#txtTenHoSoThiDua").val());
+            fileData.append('fileDinhKem', $("#cbxHoso").val() == "" ? $("#cbxTemp").val() : $("#cbxHoso").val());
+            fileData.append('kieuHoSo', $("#cbxHoSoKhenThuong").val());
+            fileData.append('lsTT', id_tt.join(";"));
+            fileData.append('lsCN', id_cn_send.join(";"));
+            $.ajax({
+                url: "/ThiDua/CapNhatHoSoThiDua",
+                data: fileData,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function (data) {
+                    console.log("dataT", fileData);
+
+                    //showToast("success", data, "Thông báo")
+                    if (data == 0) {
+                        showToast("success", "Tạo hồ sơ thi đua thành công!", "Thông báo")
+                        $("#mdlHoSoThiDua").modal('hide');
+                        loadDanhSachHoSoThiDua();
+                        resetFormHoSoThiDua();
+                    }
+                    else if (data == -1) {
+                        showToast("error", "Lỗi khi upload file đính kèm!", "Thông báo lỗi")
+                    }
+                    else if (data == 2) {
+                        showToast("success", "Cập nhật hồ sơ thi đua thành công!", "Thông báo")
+                        $("#mdlHoSoThiDua").modal('hide');
+                        loadDanhSachHoSoThiDua();
+                        resetFormHoSoThiDua();
+                    }
+                },
+                error: function (errormessage) {
+                    showToast("error", errormessage.responseText, "Thông báo lỗi");
+                }
+            });
+
+        }
+        else {
+            var isValid = validator();
+            if (isValid) {
+                var fileUpload = $("#fileDinhKem").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+
+
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+                fileData.append('idThiDua', $("#cbxThiDua").val());
+                fileData.append('idHoSoThiDua', $("#idHoSoThiDua").val());
+                fileData.append('ngayPhatDong', $("#txtNgayPhatDong").val());
+                fileData.append('tenThiDua', $("#txtTenThiDua").val());
+                fileData.append('soHieu', $("#txtSoHieu").val());
+
+                fileData.append('tenHoSoThiDua', $("#txtTenHoSoThiDua").val());
+                fileData.append('fileDinhKem', $("#cbxHoso").val() == "" ? $("#cbxTemp").val() : $("#cbxHoso").val());
+                fileData.append('kieuHoSo', $("#cbxHoSoKhenThuong").val());
+                fileData.append('lsTT', id_tt.join(";"));
+                fileData.append('lsCN', id_cn_send.join(";"));
+                $.ajax({
+                    url: "/ThiDua/CapNhatHoSoThiDua",
+                    data: fileData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    enctype: 'multipart/form-data',
+                    success: function (data) {
+                        console.log("dataT", fileData);
+
+                        //showToast("success", data, "Thông báo")
+                        if (data == 0) {
+                            showToast("success", "Tạo hồ sơ thi đua thành công!", "Thông báo")
+                            $("#mdlHoSoThiDua").modal('hide');
+                            loadDanhSachHoSoThiDua();
+                            resetFormHoSoThiDua();
+                        }
+                        else if (data == -1) {
+                            showToast("error", "Lỗi khi upload file đính kèm!", "Thông báo lỗi")
+                        }
+                        else if (data == 2) {
+                            showToast("success", "Cập nhật hồ sơ thi đua thành công!", "Thông báo")
+                            $("#mdlHoSoThiDua").modal('hide');
+                            loadDanhSachHoSoThiDua();
+                            resetFormHoSoThiDua();
+                        }
+                    },
+                    error: function (errormessage) {
+                        showToast("error", errormessage.responseText, "Thông báo lỗi");
+                    }
+                });
+            }
+
+
+        }
+    })
+
+    function toggleSubItems(source, level, subItemLevel, hiddenOnly) {
+        //console.log(source);
+        $(source).trigger("blur");
+        //var level = "level-1";
+        var nextTarget = $(source).parent().parent().next();
+        //console.log("=====================" + nextTarget[0]);
+        if ($(source).parent().parent().hasClass(level)) {
+            $(source).parent().parent().removeClass(level);
+        } else {
+            $(source).parent().parent().addClass(level);
+        }
+
+        while ($(nextTarget).hasClass('sub-canhan-item-' + subItemLevel) || $(nextTarget).hasClass('sub-canhan-item-' + (parseInt(subItemLevel) + 1))) {
+            //console.log("a");
+            if ($(nextTarget).hasClass("hidden") && !hiddenOnly) {
+                if ($(nextTarget).hasClass('sub-canhan-item-' + subItemLevel)) {
+                    $(nextTarget).removeClass("hidden");
+                }
+            } else {
+                $(nextTarget).addClass("hidden");
+
+                toggleSubItems($(nextTarget).children().children().closest('a'), '', parseInt(subItemLevel) + 1, true);
+            }
+
+            nextTarget = $(nextTarget).next();
+        }
+
+        return false;
+    }
+
+    function getXepHang(index) {
+        if (index == 0) {
+            return "Chưa xếp hạng";
+        }
+        if (index == 1) {
+            return "Giỏi";
+        }
+        if (index == 2) {
+            return "Khá";
+        }
+        if (index == 3) {
+            return "Trung bình";
+        }
+        if (index == 4) {
+            return "Yếu";
+        }
+        if (index == 5) {
+            return "Kém";
+        }
+        return "";
+    }
+
+
+    $("#btnLuuHoSoKyYeu").click(function () {
+        var idThiDua = $("#idThiDua").val();
+        $.post("/SoKyYeu/LuuSoKyYeu", { idThiDua: idThiDua }, function (data) {
+            if (data) {
+                showToast("info", "Đã lưu vào sổ kỷ yếu", "Thông báo!");
+            }
+        });
+    });
+
+    function downloadfile(fullpath, file, type) {
+        window.location = "@Url.RouteUrl(new { Controller = "ThiDua", Action = "DownloadFile" })/?fullpath=" + fullpath + "&file=" + file + "&type=" + type;
+    }
+</script>
+

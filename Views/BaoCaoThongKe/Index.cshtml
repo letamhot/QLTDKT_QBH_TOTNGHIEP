@@ -1,0 +1,40 @@
+﻿@model List<QLTDKT.Models.qltdkt_baocaothongke>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="#">Nghiệp vụ</a></li>
+        <li class="breadcrumb-item active">Báo cáo thống kê</li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="dropdown float-right">
+                        <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                    </div>
+                    <h4 class="header-title mb-4">Danh sách báo cáo thống kê</h4>
+                    <br />
+                    @foreach (var item in Model)
+                    {
+                        <a href="/BaoCaoThongKe/BaoCao/@item.id">@item.tenBaoCao</a><br/>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        activeMenu("liBaoCao", "liBaoCaoTongHop");
+        $.noConflict();
+    });
+</script>
+

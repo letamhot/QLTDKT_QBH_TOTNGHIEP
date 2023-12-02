@@ -1,0 +1,762 @@
+﻿
+@{
+    ViewBag.Title = "getDanhHieuThiDuaCD";
+}
+
+<br />
+<style>
+    .has-feedback .form-control-feedback {
+        top: 0px;
+        right: 10px;
+    }
+</style>
+
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="#">Danh mục</a></li>
+        <li class="breadcrumb-item active">Danh hiệu thi đua</li>
+    </ol>
+    <div class="col-md-12">
+        <button class="btn btn-primary" id="btnThemMoi" type="button"><i class="fa fa-save"></i> Thêm mới</button>
+        <button class="btn btn-danger" id="btnDeleteSelected" type="button"><i class="fa fa-trash"></i> Xóa lựa chọn</button>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <br />
+                    <div class="row">
+                        @*<div class="col-md-3">
+                                <input type="file" id="inputFile" name="postedFile" class="form-control" />
+                            </div>
+                            <div class="col-md-3">
+                                <input id="btnImportfile" type="submit" value="Import File Excel" class="btn btn-success" />
+                            </div>*@
+                        <div class="col-md-3" style="display:none">
+                            <select id="bophanSearch" name="bophanSearch" class="form-control">
+                                <option value="0">Tất cả</option>
+                                <option value="1">Chuyên môn</option>
+                                <option value="2">Đảng - Đoàn thể</option>
+                                <option value="3">Công Đoàn</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3" style="display:none">
+                            <button class="btn btn-danger waves-effect waves-light" id="btnTimKiem"><i class="fa fa-search"></i> Tìm kiếm</button>
+                        </div>
+                    </div>
+                    <br />
+                    @*<div class="row">
+                            <div class="col-md-4">
+                                <button class="btn btn-danger waves-effect waves-light" id="btnXuatExcel"><i class="fa fa-download"></i>File mẫu tham khảo</button>
+                            </div>
+
+
+                        </div>*@
+                    <br />
+                    <h4 class="header-title mb-4">Danh sách danh hiệu thi đua</h4>
+
+                    <table id="table_dhtd" class="table table-bordered table-responsive" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkall" /></th>
+                                <th class="text-nowrap" width="10%">Bộ phận</th>
+                                <th class="text-nowrap" width="20%">Tên danh hiệu</th>
+                                <th class="text-nowrap" width="10%">Lưu sổ kỷ yếu</th>
+                                <th class="text-nowrap" width="10%">Loại danh hiệu</th>
+                                <th class="text-nowrap" width="10%">Mã thành tích</th>
+                                <th class="text-nowrap" width="10%">Chu kỳ</th>
+                                <th class="text-nowrap" width="10%">Cấp thành tích</th>
+                                <th class="text-nowrap" width="10%">Mô tả</th>
+                                <th class="text-nowrap" width="10%">Thao tác</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="DHTD" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Cập nhật danh hiệu thi đua</h4>
+                        <button type="button" class="close" id="btnCloseModal" data-dismiss="modal">×</button>
+                    </div>
+                    <div class="modal-body" id="frmDHTD">
+                        <div class="form-group row m-b-15">
+                            <label for="bophan" class="col-md-3 col-form-label">Bộ phận: </label>
+                            <div class="col-md-9">
+                                <select id="bophan" name="bophan" class="form-control" onchange="ExistTenDanhHieu()">
+                                    <option value="0">--Chọn bộ phận--</option>
+                                    @*<option value="1">Chuyên môn</option>
+                                        <option value="2">Đảng - Đoàn thể</option>*@
+                                    <option value="3">Công Đoàn</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label for="loaiDH" class="col-md-3 col-form-label">Loại danh hiệu thi đua: </label>
+                            <div class="col-md-9">
+                                <select id="loaiDH" name="loaiDH" class="form-control" onchange="ExistTenDanhHieu()">
+                                    <option value="">--Chọn loại danh hiệu--</option>
+                                    <option value="1">Cá nhân</option>
+                                    <option value="0">Tập thể</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label for="tenDanhHieuThiDua" class="col-md-3 col-form-label">Tên danh hiệu thi đua: </label>
+                            <div class="col-md-9">
+                                <input type="hidden" id="id" />
+                                <input type="hidden" id="idDanhHieu" />
+                                <input class="form-control" id="tenDanhHieuThiDua" name="tenDanhHieuThiDua" type="text" onkeyup="ExistTenDanhHieu()" />
+                                <label id="txtTenDanhHieuThiDua" name="txtTenDanhHieuThiDua" style="color:red; font-size:10px;"></label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row m-b-15">
+                            <label for="ckbluuSKY" class="col-md-3 col-form-label" style="font-weight:bold; padding-top:3px;">
+                                Lưu sổ kỷ yếu
+                            </label>
+                            <div class="col-md-9">
+                                <input class="checkbox checkbox-info checkbox-circle" style="margin-top: 25px; width: 20px; height: 20px;" id="ckbluuSKY" type="checkbox" checked>
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label for="maThanhTich" class="col-md-3 col-form-label">Mã thành tích: </label>
+                            <div class="col-md-9">
+                                <input class="form-control" id="maThanhTich" name="maThanhTich" type="text" />
+                            </div>
+                        </div>
+                        <div class="form-group row m-b-15">
+
+                            <label class="col-md-3 col-form-label">Chọn chu kỳ</label>
+                            <div class="col-md-9">
+                                <select id="chuKy" class="form-control" name="chuKy">
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="form-group row m-b-15">
+
+                            <label class="col-md-3 col-form-label">Chọn cấp ký danh hiệu</label>
+                            <div class="col-md-9">
+
+                                <select id="capKy" class="form-control" name="capKy">
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="form-group row m-b-15">
+                            <label for="moTa" class="col-md-3 col-form-label">Mô tả: </label>
+                            <div class="col-md-9">
+                                <input class="form-control" id="moTa" name="moTa" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnUpdate"><i class="fa fa-sync"></i> Cập nhật</button>
+                        <button type="button" class="btn btn-danger" id="btnClose" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script>
+    var flag = 0;
+    $(document).ready(function () {
+        activeMenu("liDanhMuc", "liDanhHieuThiDua", "liDmDanhHieuCD");
+        $.noConflict();
+        validator();
+        loadData();
+        loadChuKy();
+        loadCapKyKT();
+    });
+    $("#btnTimKiem").click(function () {
+        loadData();
+    })
+    function loadData() {
+        flag = 0;
+
+        $("#table_dhtd").DataTable({
+            "ajax": {
+                "url": "/DanhHieuThiDua/GetListDHTDCD",
+                "data": { idDanhHieu: $("#idDanhHieu").val(), bophan: $("#bophanSearch").val()},
+
+                "type": "GET",
+                "datatype": "json",
+                "contentType": "application/json;charset=UTF-8"
+            },
+            "columns": [
+                {
+                    "data": "idDanhHieu", "render": function (data) {
+                        return "<input type='checkbox' class='checkitem' value='" + data + "' />";
+                    }
+                },
+                {
+                    "data": "bophan", "render": function (data) {
+                        if (data == "1") {
+                            return "Chuyên môn"
+                        }
+                        else if (data == "2") {
+                            return "Đảng - Đoàn thể"
+                        }
+                        else {
+                            return "Công Đoàn"
+                        }
+                    }
+                },
+
+                { "data": "tenDanhHieuThiDua" },
+                {
+                    "data": "luuSoKyYeu", "render": function (data) {
+                        if (data == 1) {
+                            return "<i style='color: blue;text-align: center;display: block;margin:auto;' class='fa fa-lg fa-check-circle'></i>"
+                        }
+                        else {
+                            return "<i style='color: red;text-align: center;display: block;margin:auto;' class='fa fa-lg fa-times'></i>"
+                        }
+                    }
+                },
+                {
+                    "data": "loaiDanhHieu", "render": function (data) {
+                        if (data == "2") {
+                            return "Tập thể/cá nhân"
+                        }
+                        else if (data == "1") {
+                            return "Cá Nhân"
+                        }
+                        else {
+                            return "Tập thể"
+                        }
+                    }
+                },
+                { "data": "idThanhTich" },
+                {
+                    "data": "chuKyDH"
+                },
+                {
+                    "data": "capKyThanhTich"
+                },
+                { "data": "moTa" },
+                {
+                    "data": "idDanhHieu", "render": function (data) {
+                        return "<a class='fa fa-lg fa-edit' href='#' data-toggle='tooltip' title='Cập nhật' onclick='return GetById(" + data + ")'></a>&nbsp;&nbsp;<a class='fa fa-lg fa-trash' href='#' data-toggle='tooltip' title='Xóa' onclick='DeleteById(" + data + ")'></a>"
+                    }
+                }
+            ],
+            destroy: true,
+            ordering: false,
+            paging: true,
+            searching: true,
+            bInfo: false,
+            deferRender: true
+        });
+    }
+    //Import
+    $("#btnImportfile").click(function () {
+        var fileUpload = $("#inputFile").get(0);
+        var files = fileUpload.files;
+        var fileData = new FormData();
+
+        fileData.append(files[0].name, files[0]);
+        $.ajax({
+            url: "/DanhHieuThiDua/ImportFile",
+            data: fileData,
+            type: "POST",
+            contentType: false,
+            processData: false,
+            enctype: 'multipart/form-data',
+            success: function (data) {
+                console.log(data);
+                if (data == 1) {
+                    showToast("success", "Import File thành công!", "Thông báo")
+                    loadData();
+                    $("#inputFile").val("");
+
+                }
+                else if (data == 0) {
+                    showToast("error", "Lỗi khi upload file đính kèm!", "Thông báo lỗi")
+                }
+
+            },
+            error: function (errormessage) {
+                showToast("error", errormessage.responseText, "Thông báo lỗi");
+            }
+        });
+    })
+    $("#btnXuatExcel").click(function () {
+        if (confirm('Bạn có muốn xuất dữ liệu theo tiêu chí được chọn?')) {
+            window.location = "/DanhHieuThiDua/ExportDm";
+        }
+    });
+    //Xử lý nút check all
+    $("#checkall").change(function () {
+        $(".checkitem").prop("checked", $(this).prop("checked"))
+    })
+
+    function loadChuKy() {
+        $.get('/DanhHieuThiDua/loadChuKy', function (data) {
+            var html = '';
+            html = '<option value="">--Chọn chu kỳ--</option>'
+
+            $.each(data, function (key, item) {
+                //console.log("ds", data);
+
+                html += '<option value = ' + item.id + '>' + item.tenChuKy + '</option>';
+
+
+
+            });
+            $('#chuKy').html(html);
+        })
+    }
+
+    function loadCapKyKT() {
+        $.get('/DanhHieuThiDua/loadCapKyKT', function (data) {
+            var html = '';
+            html = '<option value="">--Chọn cấp ký danh hiệu--</option>'
+            $.each(data, function (key, item) {
+                //console.log("ds", item.id);
+
+                html += '<option value = ' + item.id + '>' + item.tenCapKyKhenThuong + '</option>';
+
+
+
+            });
+            $('#capKy').html(html);
+        })
+    }
+    $("#btnThemMoi").click(function () {
+        flag = 1;
+        $("#DHTD").modal('show');
+        $("#id").val(0);
+        $("#loaiDH").val(-1);
+        $("#bophan").val(0);
+        $("#moTa").val('');
+        $("#maThanhTich").val(""),
+        $("#chuKy").val("");
+        $("#capKy").val("");
+        $("#tenDanhHieuThiDua").val('');
+        $("#txtTenDanhHieuThiDua").text("");
+        $("#myModalLabel").text("Thêm mới danh hiệu thi đua");
+        $("#btnUpdate").text('Thêm mới');
+        $('#frmDHTD').bootstrapValidator('resetForm', true);
+        document.getElementById("btnUpdate").disabled = false;
+        ExistTenDanhHieu($("#loaiDH").val());
+
+
+    })
+
+    function ExistTenDanhHieu() {
+        var to = null;
+        if (to) { clearTimeout(to); }
+        to = setTimeout(function () {
+            $.get("/DanhHieuThiDua/ExistTenDanhHieu", { bophan: $("#bophan").val(), idcntt: $("#loaiDH").val(), label: $("#tenDanhHieuThiDua").val() }, function (data) {
+                console.log(data);
+                if ($("#bophan").val() == 1) {
+                    if ($("#loaiDH").val() == 1) {
+                        if (data == "True") {
+                            $("#txtTenDanhHieuThiDua").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenDanhHieuThiDua").val() == "") {
+                                $("#txtTenDanhHieuThiDua").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+                            }
+                            else {
+
+                                $("#txtTenDanhHieuThiDua").text("Tên danh hiệu thi đua đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+
+                        }
+                    }
+                    else if ($("#loaiDH").val() == 0) {
+                        if (data == "True") {
+                            $("#txtTenDanhHieuThiDua").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenDanhHieuThiDua").val() == "") {
+                                $("#txtTenDanhHieuThiDua").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+                            }
+                            else {
+
+                                $("#txtTenDanhHieuThiDua").text("Tên danh hiệu thi đua đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+
+                        }
+                    }
+                }
+                else if ($("#bophan").val() == 2) {
+                    if ($("#loaiDH").val() == 1) {
+                        if (data == "True") {
+                            $("#txtTenDanhHieuThiDua").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenDanhHieuThiDua").val() == "") {
+                                $("#txtTenDanhHieuThiDua").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+                            }
+                            else {
+
+                                $("#txtTenDanhHieuThiDua").text("Tên danh hiệu thi đua đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+
+                        }
+                    }
+                    else if ($("#loaiDH").val() == 0) {
+                        if (data == "True") {
+                            $("#txtTenDanhHieuThiDua").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenDanhHieuThiDua").val() == "") {
+                                $("#txtTenDanhHieuThiDua").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+                            }
+                            else {
+
+                                $("#txtTenDanhHieuThiDua").text("Tên danh hiệu thi đua đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+
+                        }
+                    }
+                }
+                else if ($("#bophan").val() == 3) {
+                    if ($("#loaiDH").val() == 1) {
+                        if (data == "True") {
+                            $("#txtTenDanhHieuThiDua").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenDanhHieuThiDua").val() == "") {
+                                $("#txtTenDanhHieuThiDua").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+                            }
+                            else {
+
+                                $("#txtTenDanhHieuThiDua").text("Tên danh hiệu thi đua đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+
+                        }
+                    }
+                    else if ($("#loaiDH").val() == 0) {
+                        if (data == "True") {
+                            $("#txtTenDanhHieuThiDua").text("");
+                            document.getElementById("btnUpdate").disabled = false;
+                        }
+                        else {
+                            if ($("#tenDanhHieuThiDua").val() == "") {
+                                $("#txtTenDanhHieuThiDua").text("");
+                                document.getElementById("btnUpdate").disabled = false;
+                            }
+                            else {
+
+                                $("#txtTenDanhHieuThiDua").text("Tên danh hiệu thi đua đã trùng");
+
+                                document.getElementById("btnUpdate").disabled = true;
+                            }
+
+
+                        }
+                    }
+                }
+
+
+            })
+        }, 250);
+
+
+    }
+    $("#btnClose").click(function () {
+        flag = 0;
+        $("#DHTD").modal('hide');
+        $('#frmDHTD').bootstrapValidator('resetForm', true);
+
+    })
+    $("#btnCloseModal").click(function () {
+        flag = 0;
+        $("#DHTD").modal('hide');
+        $('#frmDHTD').bootstrapValidator('resetForm', true);
+
+    })
+    function GetById(Id) {
+        flag = 1;
+        $("#DHTD").modal('show');
+        $("#id").val(Id);
+        $('#frmDHTD').bootstrapValidator('resetForm', true);
+        $.ajax({
+            url: "/DanhHieuThiDua/GetDHTDById",
+            data: { id: Id },
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                $("#tenDanhHieuThiDua").val(data.tenDanhHieuThiDua);
+                $("#loaiDH").val(data.loaiDanhHieu);
+                $("#bophan").val(data.bophan);
+                $("#moTa").val(data.moTa);
+                $("#maThanhTich").val(data.idThanhTich);
+                $("#chuKy").val(data.chuKy);
+                $("#capKy").val(data.capThanhTich);
+                $("#myModalLabel").text("Cập nhật danh hiệu thi đua");
+                $("#btnUpdate").text('Cập nhật');
+
+                $("#txtTenDanhHieuThiDua").text("");
+                document.getElementById("btnUpdate").disabled = false;
+
+                if (data.luuSoKyYeu == 0) {
+                    $('#ckbluuSKY').prop('checked', false);
+                }
+                else {
+                    $('#ckbluuSKY').prop('checked', true);
+                }
+            },
+            error: function (errormessage) {
+                showToast("error", errormessage.responseText, "Thông báo lỗi");
+            }
+        });
+    }
+    //Reset bootstrap validator
+ @*   $('#DHTD').on('hide.bs.modal', function () {
+        $('#frmDHTD').bootstrapValidator('resetForm', true);
+    });*@
+    //Validate
+    function validator() {
+        $('#frmDHTD').bootstrapValidator({
+            message: 'Giá trị không hợp lệ',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                tenDanhHieuThiDua: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập tên danh hiệu thi đua!'
+                        }
+                    }
+                },
+                loaiDH: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn tên loại danh hiệu!'
+                        }
+                    }
+                },
+                chuKy: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn tên chu kỳ!'
+                        }
+                    }
+                },
+                capKy: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Chọn tên cấp ký!'
+                        }
+                    }
+                },
+                loaiDH: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập loại danh hiệu thi đua!'
+                        }
+                    }
+                },
+                maThanhTich: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Nhập mã thành tích!'
+                        }
+                    }
+                }
+            }
+        });
+        var validatorObj = $('#frmDHTD').data('bootstrapValidator');
+        validatorObj.validate();
+        if (validatorObj.isValid()) {
+            return true;
+        }
+        return false;
+    }
+    $(document).keypress(function (e) {
+        if (e.which == 13 || event.keyCode == 13) {
+            if (flag == 1) {
+
+                $("#btnUpdate").click();
+                document.getElementById("tenDanhHieuThiDua").focus();
+                $("#loaiDH").val(-1);
+                $("#moTa").val('');
+                $("#maThanhTich").val(""),
+                $("#chuKy").val("");
+                $("#capKy").val("");
+                $("#tenDanhHieuThiDua").val('');
+            }
+        }
+    });
+    $("#btnUpdate").click(function () {
+        var a;
+        if ($("#ckbluuSKY").is(':checked')) {
+            a = 1
+        }
+        else {
+            a = 0
+        }
+        var l = $('#loaiDH option:selected').val();
+        var b = $('#bophan option:selected').val();
+        if ($("#id").val() != 0) {
+            var obj = {
+                id: $("#id").val(),
+                tenDanhHieuThiDua: $("#tenDanhHieuThiDua").val(),
+                loaiDanhHieu: l,
+                luuSoKyYeu: a,
+                bophan: b,
+                idThanhTich: $("#maThanhTich").val(),
+                chuKy: $("#chuKy").val(),
+                capThanhTich: $("#capKy").val(),
+                moTa: $("#moTa").val(),
+            }
+            $.ajax({
+                url: "/DanhHieuThiDua/UpdateDHTD",
+                data: JSON.stringify(obj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    if (data == "addsuccess") {
+                        showToast("success", "Thêm mới danh hiệu thành công!", "Thông báo")
+                    }
+                    else if (data == "updatesuccess") {
+                        showToast("success", "Cập nhật danh hiệu thành công!", "Thông báo")
+                        $("#DHTD").modal('hide');
+
+                    }
+                    else {
+                        showToast("warning", "Có lỗi khi cập nhật danh hiệu!", "Cảnh báo")
+                    }
+                    loadData();
+                },
+                error: function (errormessage) {
+                    showToast("error", error.responseText, "Thông báo lỗi");
+                }
+            });
+        }
+        else {
+            var isValid = validator();
+
+            if (isValid) {
+                var obj = {
+                    id: $("#id").val(),
+                    tenDanhHieuThiDua: $("#tenDanhHieuThiDua").val(),
+                    loaiDanhHieu: l,
+                    bophan: b,
+                    luuSoKyYeu: a,
+                    idThanhTich: $("#maThanhTich").val(),
+                    chuKy: $("#chuKy").val(),
+                    capThanhTich: $("#capKy").val(),
+                    moTa: $("#moTa").val(),
+                }
+                $.ajax({
+                    url: "/DanhHieuThiDua/UpdateDHTD",
+                    data: JSON.stringify(obj),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (data) {
+                        if (data == "addsuccess") {
+                            showToast("success", "Thêm mới danh hiệu thành công!", "Thông báo")
+                        }
+                        else if (data == "updatesuccess") {
+                            showToast("success", "Cập nhật danh hiệu thành công!", "Thông báo")
+                            $("#DHTD").modal('hide');
+
+                        }
+                        else {
+                            showToast("warning", "Có lỗi khi cập nhật danh hiệu!", "Cảnh báo")
+                        }
+                        loadData();
+                    },
+                    error: function (errormessage) {
+                        showToast("error", error.responseText, "Thông báo lỗi");
+                    }
+                });
+            }
+        }
+
+    });
+    function DeleteById(Id) {
+        var ans = confirm("Bạn chắc chắn muốn xóa bản ghi?");
+        if (ans) {
+            $.post('/DanhHieuThiDua/DeleteByID/', { id: Id }, function (data) {
+                if (data == "success") {
+                    showToast("success", "Xóa bản ghi thành công!", "Thông báo")
+                    loadData();
+                }
+                else if (data == "warning") {
+                    showToast("warning", "Tên danh hiệu này đang tồn tại trong nghiệp vụ danh hiệu", "Cảnh báo")
+                }
+                else if (data == "error") {
+                    showToast("error", "Xoá không thành công", "Cảnh báo")
+                }
+            }).fail(function (error) {
+                showToast("error", error.responseText, "Thông báo lỗi");
+            })
+        }
+    }
+    //Xóa khi check nhiều dòng
+    $("#btnDeleteSelected").click(function () {
+        var id = $('.checkitem:checked').map(function () {
+            return $(this).val()
+        }).get().join(' ')
+        if (id == "") {
+            showToast("warning", "Bạn chưa chọn đối tượng để xóa", "Cảnh báo")
+        }
+        else {
+            var ans = confirm("Bạn chắc chắn muốn xóa các bản ghi đã chọn?");
+            if (ans) {
+                $.post('/DanhHieuThiDua/DeleteByArrayId/', { id: id }, function (data) {
+                    if (data == "True") {
+                        showToast("success", "Xóa bản ghi thành công!", "Thông báo")
+                    }
+                    else {
+                        showToast("error", "Có lỗi khi xóa!", "Thông báo lỗi");
+                    }
+                    loadData();
+                }).fail(function (error) {
+                    showToast("error", error.responseText, "Thông báo lỗi");
+                });
+            }
+        }
+    });
+</script>
+
+
