@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Data;
 
 namespace QLTDKT.Models.Service.baoCaoThongKeService
 {
@@ -4414,5 +4415,67 @@ namespace QLTDKT.Models.Service.baoCaoThongKeService
                 }
             }
         }
+
+        public List<BaoCaoTrangChu> getThongKeTrangChu(int kieuDanhHieu, int namDanhHieu)
+        {
+            List<BaoCaoTrangChu> result = new List<BaoCaoTrangChu>();
+            string sql = "";
+            if (kieuDanhHieu == 0) //Tập thể
+            {
+                sql = "SELECT YEAR(ngayDanhHieu) as 'ngayDanhHieu',sum(kieuDanhHieu) as 'tongDanhHieuTapThe' " +
+                         "FROM qltdkt_danhhieu WHERE YEAR(ngayDanhHieu) = "+namDanhHieu+" GROUP BY YEAR(ngayDanhHieu)";
+
+            }
+            if (kieuDanhHieu == 1) //Cá nhân
+            {
+                sql = "SELECT YEAR(ngayDanhHieu) as 'ngayDanhHieu',sum(kieuDanhHieu) as 'tongDanhHieuCaNhan'" +
+                    "FROM qltdkt_danhhieu WHERE YEAR(ngayDanhHieu) = "+namDanhHieu+" GROUP BY YEAR(ngayDanhHieu)";
+            }
+
+            DataTable dt = new DataTable();
+            try
+            {
+                dt = _sqlAccess.getDataFromSql(sql.ToString(), "").Tables[0];
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (kieuDanhHieu == 0)
+                        {
+                            BaoCaoTrangChu bcObj = new BaoCaoTrangChu
+                            {
+                                namDanhHieu = dt.Rows[i]["ngayDanhHieu"].ToString() != "" ? int.Parse(dt.Rows[i]["ngayDanhHieu"].ToString()) : 0,
+                                danhHieuTapThe = dt.Rows[i]["tongDanhHieuTapThe"].ToString() != "" ? int.Parse(dt.Rows[i]["tongDanhHieuTapThe"].ToString()) : 0,
+                                kieuDanhHieu = kieuDanhHieu
+                                //loiNhuan = dt.Rows[i]["tongLoiNhuan"] != null ? double.Parse(dt.Rows[i]["tongLoiNhuan"].ToString()) : 0
+                            };
+                            result.Add(bcObj);
+
+                        }
+                        else
+                        {
+                            BaoCaoTrangChu bcObj = new BaoCaoTrangChu
+                            {
+                                namDanhHieu = dt.Rows[i]["ngayDanhHieu"].ToString() != "" ? int.Parse(dt.Rows[i]["ngayDanhHieu"].ToString()) : 0,
+                                danhHieuCaNhan = dt.Rows[i]["tongDanhHieuCaNhan"].ToString() != "" ? int.Parse(dt.Rows[i]["tongDanhHieuCaNhan"].ToString()) : 0,
+                                kieuDanhHieu = kieuDanhHieu
+                                //loiNhuan = dt.Rows[i]["tongLoiNhuan"] != null ? double.Parse(dt.Rows[i]["tongLoiNhuan"].ToString()) : 0
+                            };
+                            result.Add(bcObj);
+
+                        }
+
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return result;
+        }
+
     }
+
 }

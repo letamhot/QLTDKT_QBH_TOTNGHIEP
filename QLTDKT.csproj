@@ -651,7 +651,6 @@
     <Content Include="assets\fonts\ionicons.ttf" />
     <Content Include="assets\fonts\ionicons.woff" />
     <Content Include="assets\fonts\ionicons.woff2" />
-    <Content Include="fonts\materialDesign-icons\materialdesignicons-webfont.eot" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -663,6 +662,7 @@
     <Compile Include="Controllers\DanhHieuThiDuaController.cs" />
     <Compile Include="Controllers\DanhMucCapKyKhenThuongController.cs" />
     <Compile Include="Controllers\DanhMucChuKyController.cs" />
+    <Compile Include="Controllers\DanhMucSangKienController.cs" />
     <Compile Include="Controllers\DanhMucThiDuaController.cs" />
     <Compile Include="Controllers\DanhMucVBController.cs" />
     <Compile Include="Controllers\DonViController.cs" />
@@ -672,6 +672,7 @@
     <Compile Include="Controllers\KhenThuongController.cs" />
     <Compile Include="Controllers\NhanVienController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SangKienController.cs" />
     <Compile Include="Controllers\SoKyYeuController.cs" />
     <Compile Include="Controllers\ThiDuaController.cs" />
     <Compile Include="Controllers\TrinhDoHocVanController.cs" />
@@ -734,6 +735,9 @@
     <Compile Include="Models\qltdkt_dm_role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\qltdkt_dm_sangkien.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\qltdkt_dm_thidua.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -761,6 +765,9 @@
     <Compile Include="Models\qltdkt_khenthuong.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\qltdkt_sangkien.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\qltdkt_thidua.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -774,6 +781,7 @@
     <Compile Include="Models\Service\baoCaoThongKeService\baoCaoKhenThuongModel.cs" />
     <Compile Include="Models\Service\baoCaoThongKeService\baoCaoThiDuaModel.cs" />
     <Compile Include="Models\Service\baoCaoThongKeService\baoCaoThongKeService.cs" />
+    <Compile Include="Models\Service\baoCaoThongKeService\BaoCaoTrangChu.cs" />
     <Compile Include="Models\Service\baoCaoThongKeService\danhSachCaNhanTapThe.cs" />
     <Compile Include="Models\Service\baoCaoThongKeService\dsChiTietCaNhanTapThe.cs" />
     <Compile Include="Models\Service\baoCaoThongKeService\dschitietcanhantapthekhenthuong.cs" />
@@ -806,6 +814,10 @@
     <Compile Include="Models\Service\NhanVienService\NhanVienModel.cs" />
     <Compile Include="Models\Service\roleService\QuyenMenuFull.cs" />
     <Compile Include="Models\Service\roleService\roleService.cs" />
+    <Compile Include="Models\Service\sangKienService\danhSachCaNhanTapThe.cs" />
+    <Compile Include="Models\Service\sangKienService\dsChiTietCaNhanTapThe.cs" />
+    <Compile Include="Models\Service\sangKienService\sangKienModel.cs" />
+    <Compile Include="Models\Service\sangKienService\sangKienService.cs" />
     <Compile Include="Models\Service\soKyYeuService\hoSoKyYeuModel.cs" />
     <Compile Include="Models\Service\soKyYeuService\soKyYeu.cs" />
     <Compile Include="Models\Service\soKyYeuService\soKyYeuModel.cs" />
@@ -854,6 +866,9 @@
     <Content Include="Views\BaoCaoThongKe\BaoCaoKhenThuong.cshtml" />
     <Content Include="Views\BaoCaoThongKeThiDua\Index.cshtml" />
     <Content Include="Views\BaoCaoThiDua\Index.cshtml" />
+    <Content Include="Views\DanhMucSangKien\Index.cshtml" />
+    <Content Include="Views\SangKien\Index.cshtml" />
+    <Content Include="Views\SangKien\getSangKienCM.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -891,6 +906,34 @@
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+	 <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\fa-brands-400.ttf" />
+    <Content Include="fonts\fa-brands-400.woff" />
+    <Content Include="fonts\fa-brands-400.woff2" />
+    <Content Include="fonts\fa-regular-400.ttf" />
+    <Content Include="fonts\fa-regular-400.woff" />
+    <Content Include="fonts\fa-regular-400.woff2" />
+    <Content Include="fonts\fa-solid-900.ttf" />
+    <Content Include="fonts\fa-solid-900.woff" />
+    <Content Include="fonts\fa-solid-900.woff2" />
+    <Content Include="assets\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="assets\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="assets\fonts\materialdesignicons-webfont.woff2" />
+    <Content Include="assets\fonts\themify.ttf" />
+    <Content Include="assets\fonts\themify.woff" />
+    <Content Include="fonts\materialDesign-icons\materialdesignicons-webfont.ttf" />
+    <Content Include="fonts\materialDesign-icons\materialdesignicons-webfont.woff" />
+    <Content Include="fonts\materialDesign-icons\materialdesignicons-webfont.woff2" />
+    <Content Include="fonts\ionicons.eot" />
+    <Content Include="fonts\ionicons.ttf" />
+    <Content Include="fonts\ionicons.woff" />
+    <Content Include="fonts\ionicons.woff2" />
+    <Content Include="assets\fonts\ionicons.eot" />
+    <Content Include="assets\fonts\ionicons.ttf" />
+    <Content Include="assets\fonts\ionicons.woff" />
+    <Content Include="assets\fonts\ionicons.woff2" />
+    <Content Include="fonts\materialDesign-icons\materialdesignicons-webfont.eot" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -909,6 +952,35 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+	<Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fa-brands-400.eot" />
+    <Content Include="fonts\fa-regular-400.eot" />
+    <Content Include="fonts\fa-solid-900.eot" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="assets\css\font-awesome\webfonts\fa-brands-400.woff2" />
+    <Content Include="assets\css\font-awesome\webfonts\fa-solid-900.woff2" />
+    <Content Include="assets\libs\summernote\fonts\summernote.ttf" />
+    <Content Include="assets\libs\summernote\fonts\summernote.woff" />
+    <Content Include="assets\fonts\summernote.ttf" />
+    <Content Include="assets\fonts\summernote.woff" />
+    <Content Include="assets\libs\ckeditor\CHANGES.md" />
+    <Content Include="assets\libs\ckeditor\LICENSE.md" />
+    <Content Include="assets\libs\ckeditor\README.md" />
+    <Content Include="assets\libs\ckeditor\samples\toolbarconfigurator\font\config.json" />
+    <Content Include="assets\libs\ckeditor\samples\toolbarconfigurator\font\fontello.eot" />
+    <Content Include="assets\libs\ckeditor\samples\toolbarconfigurator\font\fontello.ttf" />
+    <Content Include="assets\libs\ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
+    <Content Include="assets\libs\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
+    <Content Include="assets\libs\ckeditor\skins\moono-lisa\readme.md" />
+    <Content Include="assets\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="assets\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="assets\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="assets\fonts\dropify.ttf" />
+    <Content Include="assets\fonts\dropify.woff" />
+    <Content Include="assets\libs\fonts\dropify.ttf" />
+    <Content Include="assets\libs\fonts\dropify.woff" />
+
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -956,6 +1028,10 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+	<Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="packages.config" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />

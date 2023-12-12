@@ -194,6 +194,17 @@
     <Property Name="class" Type="nvarchar" MaxLength="50" />
     <Property Name="styles" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="qltdkt_dm_sangkien">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tenSangKien" Type="nvarchar" MaxLength="250" />
+    <Property Name="noiDungSangKien" Type="nvarchar(max)" />
+    <Property Name="ngayTao" Type="date" />
+    <Property Name="ngayCapNhat" Type="date" />
+    <Property Name="daXoa" Type="int" />
+  </EntityType>
   <EntityType Name="qltdkt_dm_thidua">
     <Key>
       <PropertyRef Name="id" />
@@ -322,6 +333,20 @@
     <Property Name="ghichuHTKT" Type="nvarchar" MaxLength="500" />
     <Property Name="bophan" Type="int" />
   </EntityType>
+  <EntityType Name="qltdkt_sangkien">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idSangKien" Type="int" />
+    <Property Name="danhSachCaNhanTapThe" Type="nvarchar(max)" />
+    <Property Name="tienThuong" Type="float" />
+    <Property Name="daXoa" Type="int" />
+    <Property Name="loaiSangKien" Type="int" />
+    <Property Name="ngaySangKien" Type="date" />
+    <Property Name="bophan" Type="int" />
+    <Property Name="soQuyetDinh" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="qltdkt_thidua">
     <Key>
       <PropertyRef Name="id" />
@@ -382,6 +407,7 @@
     <EntitySet Name="qltdkt_dm_hinhthuckhenthuong" EntityType="Self.qltdkt_dm_hinhthuckhenthuong" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="qltdkt_dm_nhanvien" EntityType="Self.qltdkt_dm_nhanvien" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="qltdkt_dm_role" EntityType="Self.qltdkt_dm_role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="qltdkt_dm_sangkien" EntityType="Self.qltdkt_dm_sangkien" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="qltdkt_dm_thidua" EntityType="Self.qltdkt_dm_thidua" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="qltdkt_dm_trinhdohocvan" EntityType="Self.qltdkt_dm_trinhdohocvan" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="qltdkt_dm_vanbanhd" EntityType="Self.qltdkt_dm_vanbanhd" Schema="dbo" store:Type="Tables" />
@@ -391,6 +417,7 @@
     <EntitySet Name="qltdkt_hosothidua" EntityType="Self.qltdkt_hosothidua" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="qltdkt_ketquathidua" EntityType="Self.qltdkt_ketquathidua" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="qltdkt_khenthuong" EntityType="Self.qltdkt_khenthuong" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="qltdkt_sangkien" EntityType="Self.qltdkt_sangkien" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="qltdkt_thidua" EntityType="Self.qltdkt_thidua" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="qltdkt_user" EntityType="Self.qltdkt_user" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="qltdkt_userbygroup" EntityType="Self.qltdkt_userbygroup" Schema="dbo" store:Type="Tables" />

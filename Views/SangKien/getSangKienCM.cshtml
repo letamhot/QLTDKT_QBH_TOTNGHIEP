@@ -1,0 +1,1130 @@
+﻿
+@{
+    ViewBag.Title = "getSangKienCM";
+}
+
+<style>
+    .has-feedback .form-control-feedback {
+        top: 0px;
+        right: 10px;
+    }
+</style>
+<br />
+<div class="container-fluid">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="#">Nghiệp vụ</a></li>
+        <li class="breadcrumb-item active">Sáng kiến</li>
+    </ol>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row form-horizontal" style="margin-bottom: 15px;">
+                        <div class="col-xl-6">
+                            <h4 class="header-title mb-4">DANH SÁCH SÁNG KIẾN</h4>
+                        </div>
+
+
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-xl-3">
+                            <div class="form-horizontal">
+                                <div class="form-group row">
+                                    <label class="col-md-5 col-form-label" for="bophanSearch">Bộ phận:</label>
+                                    <div class="col-md-7">
+                                        <select id="bophanSearch" name="bophanSearch" class="form-control">
+                                            <option value="0">Tất cả</option>
+                                            <option value="1">Chuyên môn</option>
+                                            <option value="2">Đảng - Đoàn thể</option>
+                                            <option value="3">Công Đoàn</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-horizontal">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="txtSoQuyetDinhSearch">Số hiệu:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtSoQuyetDinhSearch" name="txtSoQuyetDinhSearch" class="form-control" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group row">
+                                <label class="col-md-5 col-form-label" for="dtNgaySangKienSearch_TuNgay">Từ ngày:</label>
+                                <div class="col-md-7">
+                                    <div id="dateNgaySangKien_TuNgay" class="input-group date" data-date-format="dd/mm/yyyy">
+                                        <input id="dtNgaySangKienSearch_TuNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text">
+                                        <span class="input-group-addon bg-primary text-white"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    @*<div id="dateNgaySangKien_TuNgay" class="input-group date" data-date-format="dd/mm/yyyy"> <input id="dtNgaySangKienSearch_TuNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text"> <span class="input-group-addon"></span></div>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group row">
+                                <label class="col-md-5 col-form-label" for="dtNgaySangKienSearch_DenNgay">Đến ngày:</label>
+                                <div class="col-md-7">
+                                    <div id="dateNgaySangKien_DenNgay" class="input-group date" data-date-format="dd/mm/yyyy">
+                                        <input id="dtNgaySangKienSearch_DenNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text">
+                                        <span class="input-group-addon bg-primary text-white"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    @*<div id="dateNgaySangKien_DenNgay" class="input-group date" data-date-format="dd/mm/yyyy"> <input id="dtNgaySangKienSearch_DenNgay" placeholder="dd/mm/yyyy..." class="form-control" type="text"> <span class="input-group-addon"></span></div>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 
+                    <div class="form-group row justify-content-end mb-0">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-success" id="btnThemMoi"><i class="fa fa-lg fa-plus"></i> Thêm mới</button>
+                            <button class="btn btn-danger waves-effect waves-light" id="btnTimKiem"><i class="fa fa-search"></i> Tìm kiếm</button>
+                        </div>
+                    </div>
+                    <br />
+                   
+                    
+                    <table id="table_SangKien" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%; ">
+                        <thead>
+                            <tr>
+                                <th class="text-nowrap" width="5%">STT</th>
+                                <th class="text-nowrap" width="30%">Tên sáng kiến</th>
+                                <th class="text-nowrap" width="15%">Bộ Phận</th>
+                                <th class="text-nowrap" width="15%">Số quyết định</th>
+                                <th class="text-nowrap" width="15%">Ngày sáng kiến</th>
+                                <th class="text-nowrap" width="20%">Thao tác</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal" id="mdlSangKien" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Thông tin sáng kiến</h4>
+                <button type="button" class="close" id="btnCloseModal" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" method="post" id="frmSangKien">
+                    <input type="hidden" id="idSangKien" />
+                    <input type="hidden" id="cbxTemp" />
+
+                    <div class="form-group row m-b-15">
+                        <label for="bophan" class="col-md-3 col-form-label">Bộ phận: </label>
+                        <div class="col-md-9">
+                            <select id="bophan" name="bophan" class="form-control">
+                                <option value="0">--Chọn bộ phận--</option>
+                                <option value="1">Chuyên môn</option>
+                                <option value="2">Đảng - Đoàn thể</option>
+                                <option value="3">Công Đoàn</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row m-b-15">
+                        <label for="bophan" class="col-md-3 col-form-label">Loại Sáng kiến: </label>
+                        <div class="col-md-9">
+                            <select id="loaiSangKien" name="loaiSangKien" class="form-control">
+                                <option value="0">--Chọn loai sáng kiến--</option>
+                                <option value="1">Tập đoàn</option>
+                                <option value="2">Viễn thông tỉnh Quảng Bình</option>
+                                <option value="3">Trung tâm trực thuộc</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label for="tenSangKien" class="col-md-3 col-form-label">Tên sáng kiến: </label>
+                        <div class="col-md-9">
+                            <select id="cbxTenSangKien" name="cbxTenSangKien" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="txtSoQuyetDinh">(*) Số quyết định: </label>
+                                <input type="text" class="form-control" id="txtSoQuyetDinh" name="txtSoQuyetDinh" required />
+                            </div>
+
+
+                        </div>
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="txtNgaySangKien">Ngày sáng kiến: </label>
+                                <div id="dateNgaySangKien" class="input-group date" data-date-format="dd/mm/yyyy">
+                                    <input id="txtNgaySangKien" placeholder="dd/mm/yyyy..." class="form-control" type="text">
+                                    <span class="input-group-addon bg-primary text-white"><i class="fa fa-calendar"></i></span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="form-group" id="noiDungSK">
+                                <label for="txtNoiDungSangKien">Nội dung sáng kiến: </label>
+                                <textarea type="text" class="form-control" id="txtNoiDungSangKien"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="cntt">
+
+                        <div class="col-xl-12">
+                            <div class="form-group">
+                                <label class="col-form-label">Chọn cá nhân:</label>
+                                <div class="card" id="dscanhan">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <h4>CHỌN CÁ NHÂN</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div id="tree_donvi"></div>
+                                                        <input type="hidden" id="selectedTreeCN" />
+                                                    </div>
+                                                    <div class="col-lg-8">
+                                                        <div class="row">
+                                                            <div class="col-lg-10">
+                                                                <div class="form-group">
+                                                                    <input type="text" id="txtCaNhanSearch" name="txtCaNhanSearch" class="form-control" placeholder="Tìm kiếm" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <div class="form-group">
+                                                                    <button type="button" id="btnSearchCN" class="btn btn-primary waves-effect waves-light form-control"><i class="fas fa-search"></i></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br />
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinCaNhan">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="center" width="3%"><input type="checkbox" id="chkHeader" onchange="checkAll(this, 'chkRowModal')" /></th>
+                                                                            <th width="10%">Mã nhân viên</th>
+                                                                            <th width="30%">Họ tên</th>
+                                                                            <th width="30%">Đơn vị</th>
+                                                                            <th width="27%">Chức danh</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="bodyThongTinCaNhan"></tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-primary" id="btnAddCaNhan"><i class="fa fa-plus"></i> Thêm</button>
+                                    </div>
+                                </div>
+                                <div class="card" id="DSCN">
+                                    <div class="card-header">
+                                        <h4>DANH SÁCH CÁ NHÂN ĐÃ CHỌN</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-xl-12">
+                                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinCaNhanCache">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="1%">STT</th>
+                                                            <th width="30%">Họ tên</th>
+                                                            <th width="20%">Chức danh</th>
+                                                            <th width="30%">Đơn vị</th>
+                                                            <th width="10%">Tiền thưởng(VND)</th>
+                                                            <th width="9%">#</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bodyThongTinCaNhanCache"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<table id="table_CNTT" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    </table>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="form-group" style="display:none">
+                                <label for="txtienSangKien">Tiền thưởng: </label>
+                                <input type="text" class="form-control" id="txtienSangKien" />
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnLuuSangKien"><i class="fa fa-save"></i> Lưu</button>
+                <button type="button" class="btn btn-primary" id="btnClose"><i class="fa fa-window-close"></i> Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="mdlCaNhanTapTheKT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="myModalCaNhanTapTheKT"></h3>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4>CHỌN CÁ NHÂN</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div id="tree_donvi"></div>
+                                        <input type="hidden" id="selectedTreeCN" />
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <div class="form-group">
+                                                    <input type="text" id="txtCaNhanSearch" name="txtCaNhanSearch" class="form-control" placeholder="Tìm kiếm" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <button type="button" id="btnSearchCN" class="btn btn-primary waves-effect waves-light form-control"><i class="fas fa-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinCaNhan">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="center" width="3%"><input type="checkbox" id="chkHeader" onchange="checkAll(this, 'chkRowModal')" /></th>
+                                                            <th width="10%">Mã nhân viên</th>
+                                                            <th width="30%">Họ tên</th>
+                                                            <th width="30%">Đơn vị</th>
+                                                            <th width="27%">Chức danh</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bodyThongTinCaNhan"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary" id="btnAddCaNhan"><i class="fa fa-plus"></i> Thêm</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4>DANH SÁCH CÁ NHÂN ĐÃ CHỌN</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <table width="100%" class="table table-bordered table-striped dt-responsive" id="tblThongTinCaNhanCache">
+                                    <thead>
+                                        <tr>
+                                            <th width="1%">STT</th>
+                                            <th width="30%">Họ tên</th>
+                                            <th width="20%">Chức danh</th>
+                                            <th width="30%">Đơn vị</th>
+                                            <th width="10%">Tiền thưởng(VND)</th>
+                                            <th width="9%">#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bodyThongTinCaNhanCache"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnThemCaNhanTapTheKT"><i class="fa fa-save"></i> Lưu</button>
+                <button type="button" class="btn btn-danger" id="btnCloseCaNhan" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+//import { json } from "modernizr";
+    var flag = 0;
+
+    $(document).ready(function () {
+        activeMenu("liNghiepVu", "liSangKien", "liSangKienCM");
+        $.noConflict();
+        $("#dateNgaySangKien").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker('update', new Date());
+        $("#dateNgayTraoTang").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker('update', new Date());
+        $("#dateNgaySangKien_TuNgay").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker('update');
+        $("#dateNgaySangKien_DenNgay").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker('update');
+        $('#mdlSangKien').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+
+        });
+        $('#mdlCaNhanTapTheKT').on('hidden.bs.modal', function () {
+            $(this).find('form').trigger('reset');
+        });
+        $('.quantity-input').bind("cut copy paste drag drop", function (e) {
+            e.preventDefault();
+        });
+        var load = "";
+       // loadDanhSachSangKien();
+        loadDanhSachSangKien();
+    });
+
+    
+  
+
+
+    function isNumberKey(e) {
+        var charCode = (e.which) ? e.which : e.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+
+    //Validate form nhập
+    function validator() {
+        $('#frmSangKien').bootstrapValidator({
+            message: 'Giá trị không hợp lệ',
+            feedbackIcons: {
+                valid: 'fa fa-lg fa-ok',
+                invalid: 'fa fa-lg fa-remove',
+                validating: 'fa fa-lg fa-refresh'
+            },
+            fields: {
+                txtSoQuyetDinh: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Số hiệu không được để trống!'
+                        }
+                    }
+                },
+                
+                
+
+            }
+        });
+        var validatorObj = $('#frmSangKien').data('bootstrapValidator');
+        validatorObj.validate();
+        if (validatorObj.isValid()) {
+            return true;
+        }
+        return false;
+    }
+
+    $("#btnClose").click(function () {
+        $('#frmSangKien').bootstrapValidator('resetForm', true);
+        flag = 0;
+        $("#mdlSangKien").modal('hide');
+        $('#tblThongTinCaNhan tbody tr').remove();
+        $('#tblThongTinCaNhanCache tbody tr').remove();
+
+    })
+    $("#btnCloseModal").click(function () {
+        $('#frmSangKien').bootstrapValidator('resetForm', true);
+        flag = 0;
+        $("#mdlSangKien").modal('hide');
+        $('#tblThongTinCaNhan tbody tr').remove();
+        $('#tblThongTinCaNhanCache tbody tr').remove();
+
+    })
+    
+    $("#btnCaNhanTapThe").click(function () {
+        var x = $("#idSangKien").val();
+        var idsk = $('#idsk option:selected').val();
+        var titleCaNhanTapThe = "Danh sách " + lkt.toUpperCase() + " đạt sáng kiến ";
+        $("#myModalCaNhanTapTheKT").text(titleCaNhanTapThe);
+        LoadCNCache("", x, "");
+
+        loadTreeCaNhan();
+        $("#mdlCaNhanTapTheKT").modal('show');
+
+
+    })
+
+    $("#btnThemMoi").click(function () {
+        flag = 1;
+        $("#mdlSangKien").modal('show');
+        $("#bophan").val(0);
+        $("#linkFileQuyetDinh").html("");
+        $("#idSangKien").val(0);
+        $("#txtienSangKien").val("");
+        $("#nguoiKy").val("");
+        $('#tblThongTinCaNhan tbody tr').remove();
+        loadTreeCaNhan();
+        loadTenSangKien();
+
+
+    })
+
+    $("#btnTimKiem").click(function () {
+        loadDanhSachSangKien();
+    })
+    $(document).keypress(function (e) {
+        if (e.which == 13 || event.keyCode == 13) {
+            if (flag == 1) {
+                $("#btnLuuSangKien").click();
+
+
+            }
+        }
+    });
+
+    $("#btnLuuSangKien").click(function () {
+        if ($("#idSangKien").val() != 0) {
+            var tiencn = [];
+            var selected = [];
+            var fileData = new FormData();
+
+            var checkboxes = document.getElementsByClassName("checkitem");
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked == true) {
+                    selected.push(checkboxes[i].id);
+                    if ($('#tiencn_' + checkboxes[i].id).val() != 0) {
+                        tiencn.push($('#tiencn_' + checkboxes[i].id).val());
+
+                    }
+                    else {
+                        tiencn.push(0);
+
+                    }
+                }
+            }
+
+            fileData.append('idSangKien', $("#idSangKien").val());
+            fileData.append('loaiSangKien', $("#loaiSangKien").val());
+            fileData.append('bophan', $("#bophan").val());
+            fileData.append('SoQuyetDinh', $("#txtSoQuyetDinh").val());
+            fileData.append('NgaySangKien', $("#txtNgaySangKien").val());
+            fileData.append('danhSachCaNhanTapThe', selected.toString());
+            fileData.append('tenDmSangKien', $("#cbxTenSangKien").val());
+            fileData.append('tienThuong', tiencn.toString());
+            $('#bophan option:selected').val();
+            $('#loaiSangKien option:selected').val();
+            $('#cbxTenSangKien option:selected').val();
+
+            $.ajax({
+                url: "/SangKien/CapNhatSangKien",
+                data: fileData,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                success: function (data) {
+                    if (data == 0) {
+                        showToast("success", "Nhập sáng kiến thành công!", "Thông báo")
+                        $("#mdlSangKien").modal('hide');
+                        $('#tblThongTinCaNhan tbody tr').remove();
+                        //$('#frmSangKien').bootstrapValidator('resetForm', true);
+                        loadDanhSachSangKien();
+                    }
+                    else if (data == -1) {
+                        showToast("error", "Lỗi khi upload file đính kèm!", "Thông báo lỗi")
+                    }
+                    else if (data == -2) {
+                        showToast("error", "Lỗi khi nhập sáng kiến!", "Thông báo lỗi")
+                    }
+                    else if (data == 1) {
+                        showToast("warning", "Trạng thái đã đóng, không thể cập nhật", "Cảnh báo")
+                    }
+                    else if (data == 2) {
+                        showToast("success", "Cập nhật sáng kiến thành công!", "Thông báo")
+                        $("#mdlSangKien").modal('hide');
+                        $('#tblThongTinCaNhan tbody tr').remove();
+                        $('#frmSangKien').bootstrapValidator('resetForm', true);
+                        loadDanhSachSangKien();
+                    }
+
+                },
+                error: function (errormessage) {
+                    showToast("error", errormessage.responseText, "Thông báo lỗi");
+                }
+            });
+        }
+        else {
+            var isValid = validator();
+            var tiencn = [];
+            var selected = [];
+            var fileData = new FormData();
+
+            var checkboxes = document.getElementsByClassName("checkitem");
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked == true) {
+                    selected.push(checkboxes[i].id);
+                    tiencn.push($('#tiencn_' + checkboxes[i].id).val());
+                }
+            }
+            if (isValid) {
+                fileData.append('idSangKien', $("#idSangKien").val());
+                fileData.append('loaiSangKien', $("#loaiSangKien").val());
+                fileData.append('bophan', $("#bophan").val());
+                fileData.append('SoQuyetDinh', $("#txtSoQuyetDinh").val());
+                fileData.append('NgaySangKien', $("#txtNgaySangKien").val());
+                fileData.append('danhSachCaNhanTapThe', selected.toString());
+                fileData.append('tenDmSangKien', $("#cbxTenSangKien").val());
+                fileData.append('tienThuong', tiencn.toString());
+                $('#bophan option:selected').val();
+                $('#loaiSangKien option:selected').val();
+                $('#cbxTenSangKien option:selected').val();
+                
+                $.ajax({
+                    url: "/SangKien/CapNhatSangKien",
+                    data: fileData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    enctype: 'multipart/form-data',
+                    success: function (data) {
+                        if (data == 0) {
+                            showToast("success", "Nhập sáng kiến thành công!", "Thông báo")
+                            $("#mdlSangKien").modal('hide');
+                            $('#tblThongTinTapThe tbody tr').remove();
+                            $('#tblThongTinCaNhan tbody tr').remove();
+                            loadDanhSachSangKien();
+                        }
+                        else if (data == -1) {
+                            showToast("error", "Lỗi khi upload file đính kèm!", "Thông báo lỗi")
+                        }
+                        else if (data == -2) {
+                            showToast("error", "Lỗi khi nhập sáng kiến!", "Thông báo lỗi")
+                        }
+                        else if (data == 1) {
+                            showToast("warning", "Trạng thái đã đóng, không thể cập nhật", "Cảnh báo")
+                        }
+                        else if (data == 2) {
+                            showToast("success", "Cập nhật sáng kiến thành công!", "Thông báo")
+                            $("#mdlSangKien").modal('hide');
+                            $('#tblThongTinCaNhan tbody tr').remove();
+                            loadDanhSachSangKien();
+                        }
+
+                    },
+                    error: function (errormessage) {
+                        showToast("error", errormessage.responseText, "Thông báo lỗi");
+                    }
+                });
+
+            }
+
+        }
+
+    })
+
+    //Hàm load danh sách ở lưới chính
+    function loadDanhSachSangKien() {
+        flag = 0;
+        var bophan = $("#bophanSearch").val();
+        var soQuyetDinh = $("#txtSoQuyetDinhSearch").val();
+        var ngaySangKien_TuNgay = $("#dtNgaySangKienSearch_TuNgay").val();
+        var ngaySangKien_DenNgay = $("#dtNgaySangKienSearch_DenNgay").val();
+
+        $("#table_SangKien").DataTable({
+            "ajax": {
+                "url": "/SangKien/GetDanhSachSangKienCM",
+                "data": { bophan:bophan, soQuyetDinh: soQuyetDinh, ngaySangKien_TuNgay: ngaySangKien_TuNgay, ngaySangKien_DenNgay: ngaySangKien_DenNgay },
+                "type": "GET",
+                "datatype": "json",
+                "contentType": "application/json;charset=UTF-8"
+            },
+            "columns": [
+                { "data": "stt" },
+                { "data": "tenSangKien" },
+                {
+                    "data": "bophan", "render": function (data) {
+                        if (data == "3")
+                            return "Công Đoàn";
+                        if (data == "2")
+                            return "Đảng - Đoàn thể";
+                        if (data == "1")
+                            return "Chuyên môn";
+                    }
+
+                },
+                { "data": "soQuyetDinh" },
+
+                {
+                    "data": "ngaySangKien", "render": function (data) {
+                        //console.log(data);
+                        if (data != null || data != "") {
+                            return data.split(' ')[0];
+                        }
+                    }
+                },
+                
+               
+                {
+                    "data": "id", "render": function (data, type, row, meta) {
+                        
+                        return "<a class='fa fa-lg fa-edit colorEdit' href='#' data-toggle='tooltip' title='Cập nhật' onclick='return editSangKien(" + data + ")'></a>&nbsp;<a class='fa fa-lg fa-trash' href='#' data-toggle='tooltip' title='Xóa' onclick='xoaSangKien(" + data + ")'></a>";
+                    }
+                },
+            ],
+            destroy: true,
+            ordering: false,
+            paging: true,
+            searching: false,
+            bInfo: false,
+            deferRender: true
+        });
+    }
+    // đăng ký khrn thưởng
+    function dangKySangKien(idSangKien) {
+        $("#mdlDanhSachCaNhanTapTheKT").modal('show');
+        $("#idSangKien").val(idSangKien);
+        loadDsCaNhanTapThe(idSangKien);
+    }
+
+    function loadTenSangKien(idDmSangKien) {
+        $.get('/SangKien/loadSangKien', function (data) {
+            var html = '';
+            html = '<option value = "" selected>--Chọn tên sáng kiến--</option>';
+            $.each(data, function (key, item) {
+                if (item.id == idDmSangKien) {
+                    html += '<option value = ' + item.id + ' selected>' + item.tenSangKien + '</option>';
+
+                }
+                else {
+                    html += '<option value = ' + item.id + '>' + item.tenSangKien + '</option>';
+
+                }
+            });
+            $('#cbxTenSangKien').html(html);
+
+        })
+    }
+    $("#cbxTenSangKien").change(function () {
+        console.log($("#cbxTenSangKien").val());
+        tenSangKienByNoiDung();
+    })
+    function tenSangKienByNoiDung() {
+        if ($("#cbxTenSangKien").val() != "") {
+            $.get("/SangKien/tenSangKienByNoiDung", { idSangKien: $("#cbxTenSangKien").val() }, function (data) {
+                console.log(data.data.noiDungSangKien);
+                $("#txtNoiDungSangKien").val(data.data.noiDungSangKien)
+            })
+        }
+    }
+
+    //fomat tien thuong
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+   
+    
+    function getIsCheck(stt) {
+        console.log(stt);
+        if (stt) {
+            return "checked"
+        }
+        else {
+            return "";
+        }
+    }
+
+    //Load main tree
+    function loadTreeCaNhan() {
+        $('#tree_donvi').jstree("destroy");
+        $('#tree_donvi').jstree({
+            "plugins": ["wholerow", "checkbox", "types"],
+            "checkbox": {
+                "three_state": false,
+                "keep_selected_style": false
+            },
+            'core': {
+                'check_callback': true,
+                'data': {
+                    "themes": {
+                        "responsive": true
+                    },
+                    "url": "/SangKien/LoadTreeCaNhan",
+                    "dataType": "json"
+                }
+            }
+        }).bind("loaded.jstree", function (event, data) {
+            $(this).jstree("open_all");
+        }).on("select_node.jstree", function (e, data) {
+            $('#selectedTreeCN').val(data.node.id);
+            loadNhanVienByDonVi(data.node.id);
+        });
+        $('#tree_ttcn_cn').jstree("destroy");
+        $('#tree_ttcn_cn').jstree({
+            "plugins": ["wholerow", "checkbox", "types"],
+            "checkbox": {
+                "three_state": false,
+                "keep_selected_style": false
+            },
+            'core': {
+                'check_callback': true,
+                'data': {
+                    "themes": {
+                        "responsive": true
+                    },
+                    "url": "/SangKien/LoadTreeCaNhan",
+                    "dataType": "json"
+                }
+            }
+        }).bind("loaded.jstree", function (event, data) {
+            $(this).jstree("open_all");
+        }).on("select_node.jstree", function (e, data) {
+            $('#selectedTreeCNTT_CN').val(data.node.id);
+            loadNhanVienByDonVi(data.node.id);
+        });
+    }
+
+    
+
+    //danh sách nhân viên theo đơn vị
+    function loadNhanVienByDonVi(idDonVi) {
+
+        $.ajax({
+            type: "POST",
+            url: "/SangKien/loadNhanVienByDonVi",
+            data: { idDonVi: idDonVi },
+            dataType: "json",
+            success: OnSuccess,
+        });
+    };
+
+    function OnSuccess(response) {
+        var tr;
+        //Append each row to html table
+        for (var i = 0; i < response.length; i++) {
+            tr = $('<tr/>');
+            tr.append("<td class='center' width='3%'><input type='checkbox' class='chkRowModal' name='chkRowM' id='" + response[i].idNguoiDung + "'/></td>");
+            tr.append("<td width='10%'>" + response[i].maNhanVien + "</td>");
+            tr.append("<td width='30%'>" + response[i].hoTen + "</td>");
+            tr.append("<td width='30%'>" + response[i].TenDonVi + "</td>");
+            tr.append("<td width='27%'>" + response[i].tenChucDanh + "</td>");
+            $('#tblThongTinCaNhan').append(tr);
+        }
+    };
+
+    function checkAll(ele, table) {
+        var checkboxes = document.getElementsByClassName(table);
+        if (ele.checked) {
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].type == 'checkbox') {
+                    checkboxes[i].checked = true;
+                }
+            }
+        } else {
+            for (var i = 0; i < checkboxes.length; i++) {
+                //console.log(i)
+                if (checkboxes[i].type == 'checkbox') {
+                    checkboxes[i].checked = false;
+                }
+            }
+        }
+    }
+
+   
+
+
+    
+
+
+  
+  
+    //xoá cá nhân tập thể
+    function xoaCaNhanTapThe(idCNTT) {
+        var idkt = $("#idSangKien").val();
+        $.ajax({
+            type: "POST",
+            url: "/SangKien/xoaCaNhanTapThe",
+            data: { idcntt: idCNTT, idkt: idkt },
+            success: function (response) {
+                if (response == 1) {
+                    showToast("success", "Xóa tập thể, cá nhân thành công!", "Thông báo")
+                    loadDsCaNhanTapThe(idkt);
+                }
+            },
+        });
+    }
+
+    // danh sách cá nhân tập thể
+    function loadDsCaNhanTapThe(idkt) {
+        $('#rowtablecanhan').empty();
+        $("#txttiencn").val("");
+        $("#canhan").hide();
+        $.ajax({
+            type: "POST",
+            url: "/SangKien/loadDsCaNhanTapThe",
+            data: { idkt: idkt },
+            dataType: "json",
+            success: function (response) {
+
+                load = response.dschitietcanhantapthekhenthuong;
+
+                document.getElementById("btnCaNhanTapThe").disabled = false;
+
+                 var _drawtable = document.getElementById("rowtablecanhan");
+                 var table = "<table width='100%' class='table table-striped table-bordered dt-responsive nowrap' id='tbldscanhan'>";
+                 var nodetable = $(table).appendTo('#rowtablecanhan');
+                 var _drawtable = document.getElementById("tbldscanhan");
+
+                 var thead = $('<thead/>');
+                 var trhead = $('<tr/>');
+
+                 trhead.append("<th class='text-nowrap' width='5%'>STT</th>");
+                 trhead.append("<th class='text-nowrap' width='25%'>Họ tên</th>");
+                 trhead.append("<th class='text-nowrap' width='15%'>Chức danh</th>");
+                 trhead.append("<th class='text-nowrap' width='25%'>Đơn vị</th>");
+                 trhead.append("<th class='text-nowrap' width='20%'>Tiền thưởng(VND)</th>");
+                 trhead.append("<th class='text-nowrap' width='10%'>#</th>");
+                 trhead.append("<th class='text-nowrap' width='10%'>Sửa tiền</th>");
+                 thead.append(trhead);
+                 $('#tbldscanhan').append(thead);
+                 var body = $('<tbody/>');
+                 var stt = 1;
+                 if (response.dschitietcanhantapthekhenthuong.length > 0) {
+                     for (var i = 0; i < response.dschitietcanhantapthekhenthuong.length; i++) {
+                        var trbody = $('<tr/>');
+                        trbody.append("<td>" + stt + "</td>");
+                        //trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].id + "</td>");
+                        trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].tenCaNhanTapThe + "</td>");
+                        trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].chucDanh + "</td>");
+                        trbody.append("<td>" + response.dschitietcanhantapthekhenthuong[i].donVi + "</td>");
+                        trbody.append("<td><input type='text' class='center quantity-input' id='tienthuongcn_" + response.dschitietcanhantapthekhenthuong[i].id + "' name='tienthuongcn' onkeypress='return isNumberKey(event)'  value='" + (response.dschitietcanhantapthekhenthuong[i].tienThuong != null ? response.dschitietcanhantapthekhenthuong[i].tienThuong : "") + "'></td>");
+                        var para = "cn_" + response.dschitietcanhantapthekhenthuong[i].id;
+
+                        trbody.append("<td><button class='btn btn-primary waves-effect waves-light' onclick='return xoaCaNhanTapThe(\"" + para + "\")'><i class='fa fa-trash'></i></button></td>");
+                        trbody.append("<td><button class='btn btn-primary waves-effect waves-light' onclick='return SuaTien(" + response.dschitietcanhantapthekhenthuong[i].id + ")'><i class='fa fa-save'></i></button></td>");
+
+                        body.append(trbody);
+                        stt++;
+                     }
+                 }
+                 $("#canhan").show();
+                 $('#tbldscanhan').append(body);
+                 $("#txtcn").text(stt - 1);
+                 $("#btnCaNhanTapThe").show();
+            }
+        });
+    };
+    $("#btnSearchCN").click(function () {
+        var treeValue = $("#selectedTreeCN").val();
+        var searchValue = $("#txtCaNhanSearch").val();
+        $('#tblThongTinCaNhan tbody tr').remove();
+        $.ajax({
+            type: "POST",
+            url: "/SangKien/searchCaNhan",
+            data: { idDonVi: treeValue, searchText: searchValue },
+            dataType: "json",
+            success: function (response) {
+                $('#tblThongTinCaNhan tbody tr').remove();
+                var tr;
+                for (var i = 0; i < response.length; i++) {
+                    tr = $('<tr/>');
+                    tr.append("<td class='center' width='1%'><input type='checkbox' class='chkRowModal' name='chkRowM' id='" + response[i].idNguoiDung + "'/></td>");
+                    tr.append("<td width='20%'>" + response[i].maNhanVien + "</td>");
+                    tr.append("<td width='25%'>" + response[i].hoTen + "</td>");
+                    tr.append("<td width='20%'>" + response[i].TenDonVi + "</td>");
+                    tr.append("<td width='25%'>" + response[i].tenChucDanh + "</td>");
+                    $('#tblThongTinCaNhan').append(tr);
+                    getIsCheck(response[i].idNguoiDung);
+                }
+            },
+        });
+    });
+   
+
+    //thêm cá nhân
+    $("#btnAddCaNhan").click(function () {
+        var idsk = $("#idSangKien").val();
+        //var tdh = $('#cbxTenDanhHieu option:selected').val();
+        var selectedtt = [];
+        var selected = [];
+        var checkboxes = document.getElementsByClassName("chkRowModal");
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked == true) {
+                selected.push(checkboxes[i].id);
+                selectedtt.push();
+            }
+        }
+
+
+        var list_cn = [];
+        $("#tblThongTinCaNhanCache tbody tr").each(function (index) {
+            var idd = $("[type='hidden']", this).val();
+            list_cn.push(idd);
+        });
+        if (idsk == 0) {
+            LoadCNCache(selected.toString(), 0, "");
+
+        }
+        else {
+            LoadCNCache(selected.toString(), idsk, list_cn.toString());
+
+        }
+    });
+
+    
+
+    // xoá dữ liệu
+    function deleteRow(e) {
+        $(e).parents('tr').remove();
+    }
+
+    //load cá nhân
+    function LoadCNCache(idcnx, idsk, listcurrentx) {
+        $.ajax({
+            type: "POST",
+            url: "/SangKien/ThemCaNhanTapTheCache",
+            data: { idcn: idcnx, idsk: idsk, listCurrent: listcurrentx },
+            success: function (response) {
+                console.log("aaaaa", response);
+
+                $('#tblThongTinCaNhanCache tbody tr').remove();
+                var tr;
+                var stt = 1;
+                for (var i = 0; i < response.length; i++) {
+                    tr = $('<tr/>');
+                    tr.append("<input type='hidden' name='idd' value=" + response[i].id + ">");
+                    tr.append("<td class='center' width='1%'><input type='checkbox' class='checkitem' name='hkRowM' id='" + response[i].id + "' checked/></td>");
+                    tr.append("<td width='30%'>" + response[i].tenCaNhanTapThe + "</td>");
+                    tr.append("<td width='20%'>" + response[i].chucDanh + "</td>");
+                    tr.append("<td width='30%'>" + response[i].donVi + "</td>");
+                    tr.append("<td width='10%'><input type='text' class='center' name='tienthuongcn' value ='" + (response[i].tienThuong != null ? response[i].tienThuong : "") + "'   id='tiencn_" + response[i].id + "'/></td>");
+                    tr.append('<td><button class="btn btn-primary waves-effect waves-light" onclick="return deleteRow(this)"><i class="fa fa-trash"></i></button></td>');
+                    $('#bodyThongTinCaNhanCache').append(tr);
+                    stt++;
+                }
+            },
+        });
+
+
+    }
+
+    
+    //sửa khen thưởng
+    function editSangKien(idSangKien) {
+        flag = 1;
+        $("#idSangKien").val(idSangKien);
+        $("#mdlSangKien").modal('show');
+
+       
+        var tiencn = [];
+        var selected = [];
+        var checkboxes = document.getElementsByClassName("checkitem");
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked == true) {
+                selected.push(checkboxes[i].id);
+                tiencn.push($('#tiencn_' + checkboxes[i].id).val());
+            }
+        }
+        
+        $.ajax({
+            url: "/SangKien/ChinhSuaSangKien",
+            data: { idSangKien: idSangKien },
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                console.log("qqqqqqqq" + data);
+                $("#cbxTenSangKien").val(data.tenSangKien);
+                $("#txtSoQuyetDinh").val(data.soQuyetDinh);
+                $("#txtNgaySangKien").val(data.ngaySangKien);
+                $("#loaiSangKien").val(data.loaiSangKien);
+                $("#bophan").val(data.bophan);
+                $("#txtNoiDungSangKien").val(data.noiDungSangKien);
+                
+                if (data.danhSachCaNhanTapThe.length > 0) {
+                    var dsCNTT = JSON.parse(data.danhSachCaNhanTapThe);
+                    console.log("ds", dsCNTT);
+                    var htmldsCNTT = '';
+                    var temp = '';
+                    var lengthFile = dsCNTT.length;
+                    var i = 0;
+                    var html = '';
+                    $('#tblThongTinCaNhanCache tbody tr').remove();
+                    
+
+
+                    var tr;
+                    var stt = 1;
+                    for (var i = 0; i < dsCNTT.dsChiTietCaNhanTapThe.length; i++) {
+
+                        tr = $('<tr/>');
+                        tr.append("<input type='hidden' name='idd' value=" + dsCNTT.dsChiTietCaNhanTapThe[i].id + ">");
+                        tr.append("<td class='center' width='1%'><input type='checkbox' class='checkitem' name='hkRowM' id='" + dsCNTT.dsChiTietCaNhanTapThe[i].id + "' checked/></td>");
+                        tr.append("<td width='30%'>" + dsCNTT.dsChiTietCaNhanTapThe[i].tenCaNhanTapThe + "</td>");
+                        tr.append("<td width='20%'>" + dsCNTT.dsChiTietCaNhanTapThe[i].chucDanh + "</td>");
+                        if (dsCNTT.dsChiTietCaNhanTapThe[i].donViCha != null) {
+                            tr.append("<td width='30%'>" + dsCNTT.dsChiTietCaNhanTapThe[i].donVi + " / " + dsCNTT.dsChiTietCaNhanTapThe[i].donViCha + "</td>");
+
+                        }
+                        else {
+                            tr.append("<td width='30%'>" + dsCNTT.dsChiTietCaNhanTapThe[i].donVi + "</td>");
+
+                        }
+                        tr.append("<td width='10%'><input type='text' class='center' name='tienthuongcn' value ='" + (dsCNTT.dsChiTietCaNhanTapThe[i].tienThuong != null ? dsCNTT.dsChiTietCaNhanTapThe[i].tienThuong : "") + "'   id='tiencn_" + dsCNTT.dsChiTietCaNhanTapThe[i].id + "'/></td>");
+                        tr.append('<td><button class="btn btn-primary waves-effect waves-light" onclick="return deleteRow(this)"><i class="fa fa-trash"></i></button></td>');
+                        $('#bodyThongTinCaNhanCache').append(tr);
+                        stt++;
+
+                    }
+
+                    loadTreeCaNhan();
+                    loadTenSangKien(data.idDmSangKien);
+
+
+                }
+
+                //console.log(data.tienthuong);
+            },
+            error: function (errormessage) {
+                showToast("error", errormessage.responseText, "Thông báo lỗi");
+            }
+        });
+    }
+    
+</script>
+

@@ -30,6 +30,8 @@
         <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_userbygroup" Width="1.5" PointX="12.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_nhanvien" Width="1.5" PointX="0.625" PointY="11.25" />
         <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_vanbanhd" Width="1.5" PointX="13.375" PointY="14.75" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_dm_sangkien" Width="1.5" PointX="3.375" PointY="15.75" />
+        <EntityTypeShape EntityType="quanlythiduakhenthuongModel.qltdkt_sangkien" Width="1.5" PointX="15.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

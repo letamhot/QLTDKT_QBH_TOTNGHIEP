@@ -5,236 +5,339 @@
 <!-- Font Awesome CSS -->
 <!-- Additional CSS -->
 <link rel="stylesheet" href="~/assets/css/main.css">
+<style>
+    .highcharts-figure,
+    .highcharts-data-table table {
+        min-width: 360px;
+        max-width: 800px;
+        margin: 1em auto;
+    }
 
+    .highcharts-data-table table {
+        font-family: Verdana, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #EBEBEB;
+        margin: 10px auto;
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .highcharts-data-table caption {
+        padding: 1em 0;
+        font-size: 1.2em;
+        color: #555;
+    }
+
+    .highcharts-data-table th {
+        font-weight: 600;
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table td,
+    .highcharts-data-table th,
+    .highcharts-data-table caption {
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table thead tr,
+    .highcharts-data-table tr:nth-child(even) {
+        background: #f8f8f8;
+    }
+
+    .highcharts-data-table tr:hover {
+        background: #f1f7ff;
+    }
+
+    #dashboard .card-body {
+        padding: 3.25rem !important;
+    }
+</style>
+<!-- Main Content -->
+<div id="content">
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800" style="text-align:center">THỐNG KÊ HỆ THỐNG</h1>
+            <a href="/" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-home" title="Home"></i>
+            </a>
+        </div>
+
+        <!-- Content Row -->
+        <div class="row" id="dashboard" style="margin-left:0; margin-right:0">
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Tổng nhân viên
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <h3 id="nhanVien"></h3>
+                                </div>
+
+
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa fa-user-circle fa-2x text-gray-300"></i>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Tổng số danh hiệu:
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <h3 id="danhHieu"></h3>
+
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa fa-suitcase fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Tổng số khen thưởng:
+                                    <span style="color:blue; font-size: 1.5rem; margin-left: 5px">
+                                    </span>
+                                </div>
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                    <h3 id="khenThuong"></h3>
+
+
+                                </div>
+
+                            </div>
+                            <div class="col-auto">
+                                <i class="fa fa-star fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="col-auto">
+
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Tổng số thi đua:
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        <h3 id="thiDua"></h3>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Row -->
+        <!-- /.container-fluid -->
+            <div class="row">
+
+                <div class="col-xl-6" id="regionNam">
+                    <div class="form-group">
+                        <label for="cbxNam">Năm:</label>
+                        <select id="cbxNam" name="cbxNam" class="form-control" onchange="loadThongKeDanhHieuTapThe()">
+                            @for (int i = 0; i < 100; i++)
+                            {
+                                <option value="@(DateTime.Now.Year - i)">@(DateTime.Now.Year - i)</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">Thống kê danh hiệu tập thể</h2>
+                        </div>
+                        <div class="panel-body">
+                            <canvas id="bieuDoDanhHieuTT"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">Thống kê danh hiệu cá nhân</h2>
+                        </div>
+                        <div class="panel-body">
+                            <canvas id="bieuDoDanhHieuCN"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 <!-- Animate CSS -->
 <!-- Start Content-->
+<!-- /.content-wrapper -->
 
-<div class="container-fluid">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script>
+    
 
-    <!-- start page title -->
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-btn btn-group float-right">
+    $.ajax({
+        url: "Home/ThongKeNhanVien",
+        type: "GET",
+        datatype: "json",
+        contentType: "application/json;charset=UTF-8",
+        success: function (data) {
+            console.log(data);
+            $("#nhanVien").text(data);
+        },
+        error: function (errormessage) {
+        }
+    });
+    $.ajax({
+        url: "Home/ThongKeDanhHieu",
+        type: "GET",
+        datatype: "json",
+        contentType: "application/json;charset=UTF-8",
+        success: function (data) {
+            console.log(data);
+            $("#danhHieu").text(data);
+        },
+        error: function (errormessage) {
+        }
+    });
+    $.ajax({
+        url: "Home/ThongKeThiDua",
+        type: "GET",
+        datatype: "json",
+        contentType: "application/json;charset=UTF-8",
+        success: function (data) {
+            console.log(data);
+            $("#thiDua").text(data);
+        },
+        error: function (errormessage) {
+        }
+    });
+    $.ajax({
+        url: "Home/ThongKeKhenThuong",
+        type: "GET",
+        datatype: "json",
+        contentType: "application/json;charset=UTF-8",
+        success: function (data) {
+            console.log(data);
+            $("#khenThuong").text(data);
+        },
+        error: function (errormessage) {
+        }
+    });
+    
+</script>
+<script>
+    $(document).ready(function () {
 
+        loadThongKeDanhHieuTapThe();
+    });
+    function loadThongKeDanhHieuTapThe() {
+        var revenueData = 0;
+        var myChart = "";
+        $.get("/Home/getThongKeBaoCao", { kieuDanhHieu: 0, namDanhHieu: $("#cbxNam").val() }, function (data) {
+            console.log(data.data);
+            if (data.data.length > 0) {
 
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!-- end page title -->
-    <div class="row">
-        <div class="col-md-12">
-
-            <h1 class="text-center carousel-title">Viễn thông Quảng Bình - VNPT</h1>
-            <hr>
-
-        </div>
-        <!-- Page Content -->
-        <div class="col-md-12">
-
-            <div id="carouselExample" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    <li data-target="#carouselExample" data-slide-to="0" class="active">
-                        <img class="rounded-circle" src="https://vnn-imgs-a1.vgcloud.vn/img.infonet.vn/w490/Uploaded/2020/xqeioxrkxr/2016_08_26/cong_doan_1_copy.jpg" alt="Third slide">
-                    </li>
-
-
-                    <li data-target="#carouselExample" data-slide-to="1">
-                        <img class="rounded-circle" src="https://www.quangbinh.gov.vn/3cms/upload/qbportal/Image/TintucSuKien/2020/07/550.jpg" alt="Second slide">
-                    </li>
-
-
-                    <li data-target="#carouselExample" data-slide-to="2">
-                        <img class="rounded-circle" src="http://congdoan.vnpt.vn/uploads/0810.nucuoi02.jpg" alt="Five slide">
-                    </li>
-                    <li data-target="#carouselExample" data-slide-to="3">
-                        <img class="rounded-circle" src="~/assets/images/quangbinh_trienkhai2017_01.jpg" alt="First slide">
-                    </li>
-                    <li data-target="#carouselExample" data-slide-to="4">
-                        <img class="rounded-circle" src="~/assets/images/images590220_anh1.jpg" alt="Four slide">
-                    </li>
-
-                </ol>
-
-                <div class="carousel-inner" id="list-item">
-                    <div class="carousel-item active">
-
-                        <blockquote class="blockquote">
-                            "Nụ Cười VNPT"
-                        </blockquote>
-                        <small>
-                            - 2016 -
-                        </small>
-
-                    </div>
-
-
-
-                    <div class="carousel-item">
-
-                        <blockquote class="blockquote">
-                            "Điển Hình Tiên Tiến."
-                        </blockquote>
-                        <small>
-                            - 2015 - 2020 -
-                        </small>
-
-                    </div>
-
-                    <div class="carousel-item">
-
-                        <blockquote class="blockquote">
-                            "Cá Nhân Điển Hình Phong Trào Nụ Cười VNPT."
-                        </blockquote>
-                        <small>
-                            - 2018 -
-                        </small>
-
-                    </div>
-                    <div class="carousel-item ">
-
-                        <blockquote class="blockquote">
-                            "Đơn Vị Thi Đua Xuất Sắc"
-                        </blockquote>
-                        <small>
-                            - 2016 -
-                        </small>
-
-                    </div>
-
-                    <div class="carousel-item">
-
-                        <blockquote class="blockquote">
-                            "Đơn Vị Thi Đua Xuất Sắc VNPT Quảng Bình."
-                        </blockquote>
-                        <small>
-                            - 2015 -
-                        </small>
-
-                    </div>
+                revenueData = data.data[0].danhHieuTapThe;
 
 
 
-
-                </div>
-                <!-- End of Carousel Inner -->
-
-                <a class="carousel-control-prev" href="#carouselExample" role="button" data-slide="prev">
-
-                    <i class="fas fa-chevron-circle-left fa-2x"></i>
-
-                </a>
-                <!-- End of Carousel Control Prev -->
-
-                <a class="carousel-control-next" href="#carouselExample" role="button" data-slide="next">
-
-                    <i class="fas fa-chevron-circle-right fa-2x"></i>
-
-                </a>
-                <!-- End of Carousel Control Next -->
-
-            </div>
-            <!-- End of CarouselExample -->
-
-        </div>
-        <!-- End of Col-md-12 -->
-        <!--<div class="col-md-6">-->
-        <!-- AREA CHART -->
-        <!--<div class="box box-primary">
-        <div class="box-header with-border">
-            <h3 class="box-title"></h3>
-
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-            </div>
-        </div>
-        <div class="box-body chart-responsive">
-            <div class="chart" id="revenue-chart" style="height: 300px;"></div>
-        </div>-->
-        <!-- /.box-body -->
-        <!--</div>
-        </div>
-        <div class="col-md-6">-->
-        <!-- LINE CHART -->
-        <!--<div class="box box-info">
-        <div class="box-header with-border">
-            <h3 class="box-title"></h3>
-
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-            </div>
-        </div>
-        <div class="box-body chart-responsive">
-            <div class="chart" id="line-chart" style="height: 300px;"></div>
-        </div>-->
-        <!-- /.box-body -->
-        <!--</div>
-        </div>-->
-        <!-- /.col (RIGHT) -->
-    </div>
-</div> <!-- end container-fluid -->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
-<!-- Bootstrap JQuery Plugin -->
-<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>-->
-@*<script>
-        $(function () {
-            "use strict";
-
-            // AREA CHART
-            var area = new Morris.Area({
-                element: 'revenue-chart',
-                resize: true,
-                data: [
-                    { y: '2011 Q1', item1: 2666, item2: 2666 },
-                    { y: '2011 Q2', item1: 2778, item2: 2294 },
-                    { y: '2011 Q3', item1: 4912, item2: 1969 },
-                    { y: '2011 Q4', item1: 3767, item2: 3597 },
-                    { y: '2012 Q1', item1: 6810, item2: 1914 },
-                    { y: '2012 Q2', item1: 5670, item2: 4293 },
-                    { y: '2012 Q3', item1: 4820, item2: 3795 },
-                    { y: '2012 Q4', item1: 15073, item2: 5967 },
-                    { y: '2013 Q1', item1: 10687, item2: 4460 },
-                    { y: '2013 Q2', item1: 8432, item2: 5713 }
-                ],
-                xkey: 'y',
-                ykeys: ['item1', 'item2'],
-                labels: ['Item 1', 'Item 2'],
-                lineColors: ['#a0d0e0', '#3c8dbc'],
-                hideHover: 'auto'
+            }
+            // Tạo đối tượng biểu đồ hình tròn
+            var ctx = document.getElementById('bieuDoDanhHieuTT').getContext('2d');
+            if (Chart.getChart("bieuDoDanhHieuTT")) {
+                Chart.getChart("bieuDoDanhHieuTT").destroy();
+            }
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Danh Hiệu Tập Thể'],
+                    datasets: [
+                        {
+                            data: [revenueData],
+                            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+                            borderColor: ['rgba(255, 99, 132, 1)'],
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {}
             });
+        })
+        var ChartDHCN = null;
+        $.get("/Home/getThongKeBaoCao", { kieuDanhHieu: 1, namDanhHieu: $("#cbxNam").val() }, function (data) {
+            console.log(data.data);
+            if (data.data.length > 0) {
 
-            // LINE CHART
-            var line = new Morris.Line({
-                element: 'line-chart',
-                resize: true,
-                data: [
-                    { y: '2011 Q1', item1: 2666 },
-                    { y: '2011 Q2', item1: 2778 },
-                    { y: '2011 Q3', item1: 4912 },
-                    { y: '2011 Q4', item1: 3767 },
-                    { y: '2012 Q1', item1: 6810 },
-                    { y: '2012 Q2', item1: 5670 },
-                    { y: '2012 Q3', item1: 4820 },
-                    { y: '2012 Q4', item1: 15073 },
-                    { y: '2013 Q1', item1: 10687 },
-                    { y: '2013 Q2', item1: 8432 }
-                ],
-                xkey: 'y',
-                ykeys: ['item1'],
-                labels: ['Item 1'],
-                lineColors: ['#3c8dbc'],
-                hideHover: 'auto'
+                revenueData = data.data[0].danhHieuCaNhan;
+
+
+
+            }
+            // Tạo đối tượng biểu đồ hình tròn
+            var ctx = document.getElementById('bieuDoDanhHieuCN').getContext('2d');
+            if (Chart.getChart("bieuDoDanhHieuCN")) {
+                Chart.getChart("bieuDoDanhHieuCN").destroy();
+            }
+            ChartDHCN = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Danh Hiệu Cá Nhân'],
+                    datasets: [
+                        {
+                            data: [revenueData],
+                            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+                            borderColor: ['rgba(255, 99, 132, 1)'],
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {}
             });
-
-
-        });
-    </script>*@
-
+        })
+    }
+</script>

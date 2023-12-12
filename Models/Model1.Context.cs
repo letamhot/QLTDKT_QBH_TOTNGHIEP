@@ -50,5 +50,7 @@ namespace QLTDKT.Models
         public virtual DbSet<qltdkt_user> qltdkt_user { get; set; }
         public virtual DbSet<qltdkt_userbygroup> qltdkt_userbygroup { get; set; }
         public virtual DbSet<qltdkt_dm_vanbanhd> qltdkt_dm_vanbanhd { get; set; }
+        public virtual DbSet<qltdkt_dm_sangkien> qltdkt_dm_sangkien { get; set; }
+        public virtual DbSet<qltdkt_sangkien> qltdkt_sangkien { get; set; }
     }
 }

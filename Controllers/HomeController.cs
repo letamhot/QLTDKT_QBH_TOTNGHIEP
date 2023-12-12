@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using QLTDKT.Models;
+using QLTDKT.Models.Service.baoCaoThongKeService;
 using QLTDKT.Models.Service.roleService;
 using System;
 using System.Collections.Generic;
@@ -13,11 +15,45 @@ namespace QLTDKT.Controllers
     {
         private quanlythiduakhenthuongEntities _entities = new quanlythiduakhenthuongEntities();
         private roleService _roleService = new roleService();
+        public baoCaoThongKeService _bcService = new baoCaoThongKeService();
+
         public ActionResult Index()
         {
+            
             return View();
         }
+        public JsonResult ThongKeDanhHieu()
+        {
+            var danhHieu = _entities.qltdkt_danhhieu.ToList().Count();
+            return Json(danhHieu, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult ThongKeKhenThuong()
+        {
+            var khenThuong = _entities.qltdkt_khenthuong.ToList().Count();
 
+            return Json(khenThuong, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult ThongKeThiDua()
+        {
+            var thiDua = _entities.qltdkt_thidua.ToList().Count();
+
+            return Json(thiDua, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ThongKeNhanVien()
+        {
+            var nhanVien = _entities.qltdkt_dm_nhanvien.ToList().Count();
+
+            return Json(nhanVien, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getThongKeBaoCao()
+        {
+            int kieuDanhHieu = int.Parse(Request.QueryString["kieuDanhHieu"]);
+            int namDanhHieu = int.Parse(Request.QueryString["namDanhHieu"]);
+
+            return Json(new { data = _bcService.getThongKeTrangChu(kieuDanhHieu, namDanhHieu) }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

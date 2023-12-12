@@ -394,5 +394,32 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="qltdkt_dm_sangkien">
+      <EntityTypeMapping TypeName="quanlythiduakhenthuongModel.qltdkt_dm_sangkien">
+        <MappingFragment StoreEntitySet="qltdkt_dm_sangkien">
+          <ScalarProperty Name="daXoa" ColumnName="daXoa" />
+          <ScalarProperty Name="ngayCapNhat" ColumnName="ngayCapNhat" />
+          <ScalarProperty Name="ngayTao" ColumnName="ngayTao" />
+          <ScalarProperty Name="noiDungSangKien" ColumnName="noiDungSangKien" />
+          <ScalarProperty Name="tenSangKien" ColumnName="tenSangKien" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="qltdkt_sangkien">
+      <EntityTypeMapping TypeName="quanlythiduakhenthuongModel.qltdkt_sangkien">
+        <MappingFragment StoreEntitySet="qltdkt_sangkien">
+          <ScalarProperty Name="soQuyetDinh" ColumnName="soQuyetDinh" />
+          <ScalarProperty Name="bophan" ColumnName="bophan" />
+          <ScalarProperty Name="ngaySangKien" ColumnName="ngaySangKien" />
+          <ScalarProperty Name="loaiSangKien" ColumnName="loaiSangKien" />
+          <ScalarProperty Name="daXoa" ColumnName="daXoa" />
+          <ScalarProperty Name="tienThuong" ColumnName="tienThuong" />
+          <ScalarProperty Name="danhSachCaNhanTapThe" ColumnName="danhSachCaNhanTapThe" />
+          <ScalarProperty Name="idSangKien" ColumnName="idSangKien" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

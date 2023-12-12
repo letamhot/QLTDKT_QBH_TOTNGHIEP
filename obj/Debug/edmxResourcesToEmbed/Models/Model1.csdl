@@ -26,6 +26,8 @@
     <EntitySet Name="qltdkt_user" EntityType="quanlythiduakhenthuongModel.qltdkt_user" />
     <EntitySet Name="qltdkt_userbygroup" EntityType="quanlythiduakhenthuongModel.qltdkt_userbygroup" />
     <EntitySet Name="qltdkt_dm_vanbanhd" EntityType="quanlythiduakhenthuongModel.qltdkt_dm_vanbanhd" />
+    <EntitySet Name="qltdkt_dm_sangkien" EntityType="quanlythiduakhenthuongModel.qltdkt_dm_sangkien" />
+    <EntitySet Name="qltdkt_sangkien" EntityType="quanlythiduakhenthuongModel.qltdkt_sangkien" />
   </EntityContainer>
   <EntityType Name="qltdkt_baocaothidua">
     <Key>
@@ -394,5 +396,30 @@
     <Property Name="ngayCapNhat" Type="DateTime" Precision="3" />
     <Property Name="daXoa" Type="Boolean" />
     <Property Name="loaiVanBan" Type="Byte" />
+  </EntityType>
+  <EntityType Name="qltdkt_dm_sangkien">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tenSangKien" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="noiDungSangKien" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ngayTao" Type="DateTime" Precision="0" />
+    <Property Name="ngayCapNhat" Type="DateTime" Precision="0" />
+    <Property Name="daXoa" Type="Int32" />
+  </EntityType>
+  <EntityType Name="qltdkt_sangkien">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idSangKien" Type="Int32" />
+    <Property Name="danhSachCaNhanTapThe" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="tienThuong" Type="Double" />
+    <Property Name="daXoa" Type="Int32" />
+    <Property Name="loaiSangKien" Type="Int32" />
+    <Property Name="ngaySangKien" Type="DateTime" Precision="0" />
+    <Property Name="bophan" Type="Int32" />
+    <Property Name="soQuyetDinh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
 </Schema>
