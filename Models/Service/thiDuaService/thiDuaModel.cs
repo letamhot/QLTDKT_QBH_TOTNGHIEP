@@ -87,8 +87,28 @@ namespace QLTDKT.Models.Service.thiDuaService
         public string lsFileBaoCao { get; set; }
     }
 
-    public class dangKyThiDuaModel : qltdkt_dangkythidua
+    public class dangKyThiDuaModel
     {
+        public int id { get; set; }
+        public int thiDuaId { get; set; }
+        public int donViDangKyId { get; set; }
+        public string noiDungDangKy { get; set; }
+        public Nullable<bool> daBaoCao { get; set; }
+        public string caNhanDangKy_KetQua { get; set; }
+        public string ngayDangKy { get; set; }
+        public string fileDinhKem { get; set; }
+        public string soHieu { get; set; }
+        public Nullable<System.DateTime> ngayKetQua { get; set; }
+        public Nullable<System.DateTime> ngayTao { get; set; }
+        public Nullable<byte> trangThaiThiDua { get; set; }
+        public Nullable<byte> xepHangThiDua { get; set; }
+        public Nullable<System.DateTime> ngayCapNhat { get; set; }
+        public string nhanXetChung { get; set; }
+        public string nguoiKyDanhGia { get; set; }
+        public string noiDungDanhGia { get; set; }
+        public string fileBaoCao { get; set; }
+        public Nullable<bool> daXoa { get; set; }
+        public Nullable<bool> isCaNhanDangKy { get; set; }
         public List<chiTietDangKyThiDua> listCaNhanDangKy { get; set; }
     }
 

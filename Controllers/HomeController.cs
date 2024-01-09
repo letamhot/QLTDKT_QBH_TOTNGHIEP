@@ -47,12 +47,19 @@ namespace QLTDKT.Controllers
             return Json(nhanVien, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult getThongKeBaoCao()
+        public JsonResult getThongKeBaoCaoTT()
         {
             int kieuDanhHieu = int.Parse(Request.QueryString["kieuDanhHieu"]);
             int namDanhHieu = int.Parse(Request.QueryString["namDanhHieu"]);
 
-            return Json(new { data = _bcService.getThongKeTrangChu(kieuDanhHieu, namDanhHieu) }, JsonRequestBehavior.AllowGet);
+            return Json(new { data = _bcService.getThongKeTrangChuTT(kieuDanhHieu, namDanhHieu) }, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getThongKeBaoCaoCN()
+        {
+            int kieuDanhHieu = int.Parse(Request.QueryString["kieuDanhHieu"]);
+            int namDanhHieu = int.Parse(Request.QueryString["namDanhHieu"]);
+
+            return Json(new { data = _bcService.getThongKeTrangChuCN(kieuDanhHieu, namDanhHieu) }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult About()
         {

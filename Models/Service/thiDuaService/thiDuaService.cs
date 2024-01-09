@@ -127,7 +127,7 @@ namespace QLTDKT.Models.Service.thiDuaService
                         tenDonViDaDangKy = tenDonViDK,
                         idDonVi = rs[i].donViDangKyId,
                         fileDinhKem = rs[i].fileDinhKem,
-                        ngayDangKy = ((DateTime)rs[i].ngayDangKy).ToString("dd/MM/yyyy"),
+                        ngayDangKy = (rs[i].ngayDangKy).ToString("dd/MM/yyyy"),
                     };
                     result.Add(_new);
                     stt++;
@@ -194,7 +194,7 @@ namespace QLTDKT.Models.Service.thiDuaService
                 result.id = _objDangKyThiDua.id;
                 result.thiDuaId = _objDangKyThiDua.thiDuaId;
                 result.donViDangKyId = _objDangKyThiDua.donViDangKyId;
-                result.ngayDangKy = _objDangKyThiDua.ngayDangKy;
+                result.ngayDangKy = ((DateTime)_objDangKyThiDua.ngayDangKy).ToString("dd/MM/yyyy");
                 result.fileDinhKem = _objDangKyThiDua.fileDinhKem;
                 result.xepHangThiDua = _objDangKyThiDua.xepHangThiDua;
                 result.trangThaiThiDua = _objDangKyThiDua.trangThaiThiDua;

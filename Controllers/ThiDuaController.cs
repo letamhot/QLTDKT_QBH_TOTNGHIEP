@@ -556,7 +556,7 @@ namespace QLTDKT.Controllers
             int thiDuaId = int.Parse(Request.Form.Get("thiDuaId"));
             int donViDangKyId = int.Parse(Request.Form.Get("donViDangKyId"));
             string noiDungDangKy = Request.Unvalidated.Form.Get("noiDungDangKy");
-            DateTime ngayDangKy = DateTime.Parse(Request.Form.Get("ngayDangKy") != "" ? Request.Form.Get("ngayDangKy") : "");
+            string ngayDangKy = Request.Form.Get("ngayDangKy") != "" ? Request.Form.Get("ngayDangKy") : "";
             byte xepHangThiDua = byte.Parse(Request.Form.Get("xepHangThiDua"));
             byte trangThaiThiDua = byte.Parse(Request.Form.Get("trangThaiThiDua"));
             string nhanXetChung = Request.Unvalidated.Form.Get("nhanXetChung");
@@ -670,25 +670,33 @@ namespace QLTDKT.Controllers
 
                         output_canhandangky = JsonConvert.SerializeObject(lsChiTietCaNhanDangKy);
                     }
-                    qltdkt_dangkythidua _objNew = new qltdkt_dangkythidua
+                    if (_entities.qltdkt_thidua.Find(thiDuaId).ngayKetThuc < DateTime.ParseExact(ngayDangKy, "dd/MM/yyyy", CultureInfo.InvariantCulture))
                     {
-                        thiDuaId = thiDuaId,
-                        donViDangKyId = donViDangKyId,
-                        ngayDangKy = ngayDangKy,
-                        trangThaiThiDua = trangThaiThiDua,
-                        xepHangThiDua = xepHangThiDua,
-                        fileDinhKem = output_filedinhkem,
-                        nhanXetChung = nhanXetChung,
-                        nguoiKyDanhGia = nguoiKyDanhGia,
-                        noiDungDanhGia = noiDungDanhGia,
-                        noiDungDangKy = noiDungDangKy,
-                        caNhanDangKy_KetQua = output_canhandangky,
-                        ngayTao = DateTime.Now,
-                        daXoa = false
-                    };
-                    _entities.qltdkt_dangkythidua.Add(_objNew);
-                    _entities.SaveChanges();
-                    return 0;
+                        return -2;
+                    }
+                    else
+                    {
+                        qltdkt_dangkythidua _objNew = new qltdkt_dangkythidua
+                        {
+                            thiDuaId = thiDuaId,
+                            donViDangKyId = donViDangKyId,
+                            ngayDangKy = DateTime.ParseExact(ngayDangKy, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                            trangThaiThiDua = trangThaiThiDua,
+                            xepHangThiDua = xepHangThiDua,
+                            fileDinhKem = output_filedinhkem,
+                            nhanXetChung = nhanXetChung,
+                            nguoiKyDanhGia = nguoiKyDanhGia,
+                            noiDungDanhGia = noiDungDanhGia,
+                            noiDungDangKy = noiDungDangKy,
+                            caNhanDangKy_KetQua = output_canhandangky,
+                            ngayTao = DateTime.Now,
+                            daXoa = false
+                        };
+                        _entities.qltdkt_dangkythidua.Add(_objNew);
+                        _entities.SaveChanges();
+                        return 0;
+                    }
+                    
                 }
                 catch (Exception)
                 {
@@ -698,198 +706,206 @@ namespace QLTDKT.Controllers
             }
             else //Cập nhật đăng ký thi đua
             {
-                qltdkt_dangkythidua _update = _entities.qltdkt_dangkythidua.Find(idDangKyThiDua);
-                string duLieuDinhKem = _update.fileDinhKem;
-                if (duLieuDinhKem.Trim() == "")
+                if (_entities.qltdkt_thidua.Find(thiDuaId).ngayKetThuc < DateTime.ParseExact(ngayDangKy, "dd/MM/yyyy", CultureInfo.InvariantCulture))
                 {
-                    if (Request.Files.Count > 0)
-                    {
-                        try
-                        {
-                            string currentYear = DateTime.Now.Year.ToString();
-                            string fpath = Server.MapPath("~/Uploads/" + currentYear + "/");
-                            if (!Directory.Exists(fpath))
-                            {
-                                Directory.CreateDirectory(fpath);
-                            }
-                            HttpFileCollectionBase files = Request.Files;
-                            List<KeyValuePair<string, string>> lsFileDownload = new List<KeyValuePair<string, string>>();
-                            for (int i = 0; i < files.Count; i++)
-                            {
-                                //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";
-                                string filename = Path.GetFileName(Request.Files[i].FileName);
-
-                                HttpPostedFileBase file = files[i];
-                                string fname, ftype;
-                                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
-                                {
-                                    string[] testfiles = file.FileName.Split(new char[] { '\\' });
-                                    fname = testfiles[testfiles.Length - 1];
-                                }
-                                else
-                                {
-                                    fname = file.FileName;
-                                }
-                                fname = Path.Combine(fpath, fname);
-                                ftype = file.ContentType;
-                                if (!System.IO.File.Exists(fname))
-                                {
-                                    file.SaveAs(fname);
-                                }
-                                lsFileDownload.Add(new KeyValuePair<string, string>(fname, ftype));
-                                output_filedinhkem = JsonConvert.SerializeObject(lsFileDownload);
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            return -1;
-                            throw;
-                        }
-                    }
+                    return -2;
                 }
                 else
                 {
-                    if (Request.Files.Count > 0)
+                    qltdkt_dangkythidua _update = _entities.qltdkt_dangkythidua.Find(idDangKyThiDua);
+                    string duLieuDinhKem = _update.fileDinhKem;
+                    if (duLieuDinhKem.Trim() == "")
                     {
-                        try
+                        if (Request.Files.Count > 0)
                         {
-                            var ls = JsonConvert.DeserializeObject<List<KeyValuePair<string, string>>>(duLieuDinhKem);
-                            string currentYear = DateTime.Now.Year.ToString();
-                            string fpath = Server.MapPath("~/Uploads/" + currentYear + "/");
-                            if (!Directory.Exists(fpath))
+                            try
                             {
-                                Directory.CreateDirectory(fpath);
-                            }
-                            HttpFileCollectionBase files = Request.Files;
-                            for (int i = 0; i < files.Count; i++)
-                            {
-                                //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";
-                                string filename = Path.GetFileName(Request.Files[i].FileName);
+                                string currentYear = DateTime.Now.Year.ToString();
+                                string fpath = Server.MapPath("~/Uploads/" + currentYear + "/");
+                                if (!Directory.Exists(fpath))
+                                {
+                                    Directory.CreateDirectory(fpath);
+                                }
+                                HttpFileCollectionBase files = Request.Files;
+                                List<KeyValuePair<string, string>> lsFileDownload = new List<KeyValuePair<string, string>>();
+                                for (int i = 0; i < files.Count; i++)
+                                {
+                                    //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";
+                                    string filename = Path.GetFileName(Request.Files[i].FileName);
 
-                                HttpPostedFileBase file = files[i];
-                                string fname, ftype;
-                                if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
-                                {
-                                    string[] testfiles = file.FileName.Split(new char[] { '\\' });
-                                    fname = testfiles[testfiles.Length - 1];
-                                }
-                                else
-                                {
-                                    fname = file.FileName;
-                                }
-                                fname = Path.Combine(fpath, fname);
-                                ftype = file.ContentType;
-                                if (!System.IO.File.Exists(fname))
-                                {
-                                    file.SaveAs(fname);
-                                }
-                                bool ischeck = true;
-                                for (int j = 0; j < ls.Count; j++)
-                                {
-                                    if (ls[j].Key == fname && ls[j].Value == ftype)
+                                    HttpPostedFileBase file = files[i];
+                                    string fname, ftype;
+                                    if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
                                     {
-                                        ischeck = false;
-                                        break;
+                                        string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                                        fname = testfiles[testfiles.Length - 1];
                                     }
-                                }
-                                if (ischeck)
-                                {
-                                    ls.Add(new KeyValuePair<string, string>(fname, ftype));
+                                    else
+                                    {
+                                        fname = file.FileName;
+                                    }
+                                    fname = Path.Combine(fpath, fname);
+                                    ftype = file.ContentType;
+                                    if (!System.IO.File.Exists(fname))
+                                    {
+                                        file.SaveAs(fname);
+                                    }
+                                    lsFileDownload.Add(new KeyValuePair<string, string>(fname, ftype));
+                                    output_filedinhkem = JsonConvert.SerializeObject(lsFileDownload);
                                 }
                             }
-                            output_filedinhkem = JsonConvert.SerializeObject(ls);
-                        }
-                        catch (Exception)
-                        {
-                            return -1;
+                            catch (Exception)
+                            {
+                                return -1;
+                                throw;
+                            }
                         }
                     }
                     else
                     {
-                        output_filedinhkem = duLieuDinhKem;
-                    }
-                }
-                _update.fileDinhKem = output_filedinhkem;
-                _update.ngayDangKy = ngayDangKy;
-                _update.noiDungDangKy = noiDungDangKy;
-                _update.xepHangThiDua = xepHangThiDua;
-                _update.trangThaiThiDua = trangThaiThiDua;
-                _update.nhanXetChung = nhanXetChung;
-                _update.nguoiKyDanhGia = nguoiKyDanhGia;
-                _update.noiDungDanhGia = noiDungDanhGia;
-                _update.ngayCapNhat = DateTime.Now;
-                string output_canhandangky = "";
-                if (lsIdCaNhanDangKy.Length > 0)
-                {
-                    List<int> lsDonViAll = _thiduaService.getDonViChildByDonViId(donViDangKyId);
-
-                    var lsNhanVien = (from item in _entities.qltdkt_dm_nhanvien where lsDonViAll.Contains(item.donViId) && item.maNhanVien != "cntt_01" && item.daXoa == false select item).ToList();
-                    List<chiTietDangKyThiDua> lsChiTietCaNhanDangKy = new List<chiTietDangKyThiDua>();
-                    string[] splId = lsIdCaNhanDangKy.Split(';');
-                    string[] splNoiDungDangKy = lsCaNhanDangKy.Split(';');
-                    string[] splXepHangDangKy = lsXepHang.Split(';');
-                    string[] splNhanXet = lsNhanXet.Split(';');
-                    for (int i = 0; i < lsNhanVien.Count; i++)
-                    {
-
-                        bool isCheck = false;
-                        for (int j = 0; j < splId.Length; j++)
+                        if (Request.Files.Count > 0)
                         {
-                            qltdkt_dm_nhanvien _objNv = _entities.qltdkt_dm_nhanvien.Find(lsNhanVien[i].id);
-
-                            if (int.Parse(splId[j]) == lsNhanVien[i].id)
+                            try
                             {
+                                var ls = JsonConvert.DeserializeObject<List<KeyValuePair<string, string>>>(duLieuDinhKem);
+                                string currentYear = DateTime.Now.Year.ToString();
+                                string fpath = Server.MapPath("~/Uploads/" + currentYear + "/");
+                                if (!Directory.Exists(fpath))
+                                {
+                                    Directory.CreateDirectory(fpath);
+                                }
+                                HttpFileCollectionBase files = Request.Files;
+                                for (int i = 0; i < files.Count; i++)
+                                {
+                                    //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";
+                                    string filename = Path.GetFileName(Request.Files[i].FileName);
+
+                                    HttpPostedFileBase file = files[i];
+                                    string fname, ftype;
+                                    if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                                    {
+                                        string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                                        fname = testfiles[testfiles.Length - 1];
+                                    }
+                                    else
+                                    {
+                                        fname = file.FileName;
+                                    }
+                                    fname = Path.Combine(fpath, fname);
+                                    ftype = file.ContentType;
+                                    if (!System.IO.File.Exists(fname))
+                                    {
+                                        file.SaveAs(fname);
+                                    }
+                                    bool ischeck = true;
+                                    for (int j = 0; j < ls.Count; j++)
+                                    {
+                                        if (ls[j].Key == fname && ls[j].Value == ftype)
+                                        {
+                                            ischeck = false;
+                                            break;
+                                        }
+                                    }
+                                    if (ischeck)
+                                    {
+                                        ls.Add(new KeyValuePair<string, string>(fname, ftype));
+                                    }
+                                }
+                                output_filedinhkem = JsonConvert.SerializeObject(ls);
+                            }
+                            catch (Exception)
+                            {
+                                return -1;
+                            }
+                        }
+                        else
+                        {
+                            output_filedinhkem = duLieuDinhKem;
+                        }
+                    }
+                    _update.fileDinhKem = output_filedinhkem;
+                    _update.ngayDangKy = DateTime.ParseExact(ngayDangKy, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    _update.noiDungDangKy = noiDungDangKy;
+                    _update.xepHangThiDua = xepHangThiDua;
+                    _update.trangThaiThiDua = trangThaiThiDua;
+                    _update.nhanXetChung = nhanXetChung;
+                    _update.nguoiKyDanhGia = nguoiKyDanhGia;
+                    _update.noiDungDanhGia = noiDungDanhGia;
+                    _update.ngayCapNhat = DateTime.Now;
+                    string output_canhandangky = "";
+                    if (lsIdCaNhanDangKy.Length > 0)
+                    {
+                        List<int> lsDonViAll = _thiduaService.getDonViChildByDonViId(donViDangKyId);
+
+                        var lsNhanVien = (from item in _entities.qltdkt_dm_nhanvien where lsDonViAll.Contains(item.donViId) && item.maNhanVien != "cntt_01" && item.daXoa == false select item).ToList();
+                        List<chiTietDangKyThiDua> lsChiTietCaNhanDangKy = new List<chiTietDangKyThiDua>();
+                        string[] splId = lsIdCaNhanDangKy.Split(';');
+                        string[] splNoiDungDangKy = lsCaNhanDangKy.Split(';');
+                        string[] splXepHangDangKy = lsXepHang.Split(';');
+                        string[] splNhanXet = lsNhanXet.Split(';');
+                        for (int i = 0; i < lsNhanVien.Count; i++)
+                        {
+
+                            bool isCheck = false;
+                            for (int j = 0; j < splId.Length; j++)
+                            {
+                                qltdkt_dm_nhanvien _objNv = _entities.qltdkt_dm_nhanvien.Find(lsNhanVien[i].id);
+
+                                if (int.Parse(splId[j]) == lsNhanVien[i].id)
+                                {
+                                    chiTietDangKyThiDua _newObj = new chiTietDangKyThiDua
+                                    {
+                                        idNhanVien = int.Parse(splId[j]),
+                                        tenNhanVien = _entities.qltdkt_dm_nhanvien.Find(int.Parse(splId[j])).hoTen,
+                                        isDangKy = true,
+                                        xepHang = int.Parse(splXepHangDangKy[j]),
+                                        noiDungDangKy = splNoiDungDangKy[j],
+                                        nhanXet = splNhanXet[j],
+                                        tenDonVi = _entities.qltdkt_dm_donvi.Find(_objNv.donViId).tenDonVi
+
+                                    };
+                                    lsChiTietCaNhanDangKy.Add(_newObj);
+                                    isCheck = true;
+                                    break;
+                                }
+                            }
+                            if (!isCheck)
+                            {
+                                qltdkt_dm_nhanvien _objNv = _entities.qltdkt_dm_nhanvien.Find(lsNhanVien[i].id);
                                 chiTietDangKyThiDua _newObj = new chiTietDangKyThiDua
                                 {
-                                    idNhanVien = int.Parse(splId[j]),
-                                    tenNhanVien = _entities.qltdkt_dm_nhanvien.Find(int.Parse(splId[j])).hoTen,
-                                    isDangKy = true,
-                                    xepHang = int.Parse(splXepHangDangKy[j]),
-                                    noiDungDangKy = splNoiDungDangKy[j],
-                                    nhanXet = splNhanXet[j],
+                                    idNhanVien = lsNhanVien[i].id,
+                                    tenNhanVien = lsNhanVien[i].hoTen,
+                                    isDangKy = false,
+                                    xepHang = 0,
+                                    noiDungDangKy = "",
+                                    nhanXet = "",
                                     tenDonVi = _entities.qltdkt_dm_donvi.Find(_objNv.donViId).tenDonVi
 
                                 };
                                 lsChiTietCaNhanDangKy.Add(_newObj);
-                                isCheck = true;
-                                break;
                             }
                         }
-                        if (!isCheck)
+                        /*for (int i = 0; i < splId.Length; i++)
                         {
-                            qltdkt_dm_nhanvien _objNv = _entities.qltdkt_dm_nhanvien.Find(lsNhanVien[i].id);
                             chiTietDangKyThiDua _newObj = new chiTietDangKyThiDua
                             {
-                                idNhanVien = lsNhanVien[i].id,
-                                tenNhanVien = lsNhanVien[i].hoTen,
-                                isDangKy = false,
-                                xepHang = 0,
-                                noiDungDangKy = "",
-                                nhanXet = "",
-                                tenDonVi = _entities.qltdkt_dm_donvi.Find(_objNv.donViId).tenDonVi
-
+                                idNhanVien = int.Parse(splId[i]),
+                                tenNhanVien = _entities.qltdkt_dm_nhanvien.Find(int.Parse(splId[i])).hoTen,
+                                isDangKy = true,
+                                xepHang = int.Parse(splXepHangDangKy[i]),
+                                noiDungDangKy = splNoiDungDangKy[i],
+                                nhanXet = splNhanXet[i]
                             };
                             lsChiTietCaNhanDangKy.Add(_newObj);
-                        }
+                        }*/
+                        output_canhandangky = JsonConvert.SerializeObject(lsChiTietCaNhanDangKy);
                     }
-                    /*for (int i = 0; i < splId.Length; i++)
-                    {
-                        chiTietDangKyThiDua _newObj = new chiTietDangKyThiDua
-                        {
-                            idNhanVien = int.Parse(splId[i]),
-                            tenNhanVien = _entities.qltdkt_dm_nhanvien.Find(int.Parse(splId[i])).hoTen,
-                            isDangKy = true,
-                            xepHang = int.Parse(splXepHangDangKy[i]),
-                            noiDungDangKy = splNoiDungDangKy[i],
-                            nhanXet = splNhanXet[i]
-                        };
-                        lsChiTietCaNhanDangKy.Add(_newObj);
-                    }*/
-                    output_canhandangky = JsonConvert.SerializeObject(lsChiTietCaNhanDangKy);
+                    _update.caNhanDangKy_KetQua = output_canhandangky;
+                    _entities.SaveChanges();
+                    return 2;
                 }
-                _update.caNhanDangKy_KetQua = output_canhandangky;
-                _entities.SaveChanges();
-                return 2;
+                
             }
         }
 

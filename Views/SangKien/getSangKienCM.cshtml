@@ -200,7 +200,7 @@
                                                         <input type="hidden" id="selectedTreeCN" />
                                                     </div>
                                                     <div class="col-lg-8">
-                                                        <div class="row">
+                                                        @*<div class="row">
                                                             <div class="col-lg-10">
                                                                 <div class="form-group">
                                                                     <input type="text" id="txtCaNhanSearch" name="txtCaNhanSearch" class="form-control" placeholder="Tìm kiếm" />
@@ -211,7 +211,7 @@
                                                                     <button type="button" id="btnSearchCN" class="btn btn-primary waves-effect waves-light form-control"><i class="fas fa-search"></i></button>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>*@
                                                         <br />
                                                         <div class="row">
                                                             <div class="col-lg-12">
@@ -310,7 +310,7 @@
                                         <input type="hidden" id="selectedTreeCN" />
                                     </div>
                                     <div class="col-lg-8">
-                                        <div class="row">
+                                        @*<div class="row">
                                             <div class="col-lg-10">
                                                 <div class="form-group">
                                                     <input type="text" id="txtCaNhanSearch" name="txtCaNhanSearch" class="form-control" placeholder="Tìm kiếm" />
@@ -321,7 +321,7 @@
                                                     <button type="button" id="btnSearchCN" class="btn btn-primary waves-effect waves-light form-control"><i class="fas fa-search"></i></button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>*@
                                         <br />
                                         <div class="row">
                                             <div class="col-lg-12">
@@ -762,7 +762,8 @@
     function getIsCheck(stt) {
         console.log(stt);
         if (stt) {
-            return "checked"
+            var x = document.getElementById(stt).checked;
+            return x;
         }
         else {
             return "";
@@ -969,8 +970,9 @@
                     tr.append("<td width='20%'>" + response[i].TenDonVi + "</td>");
                     tr.append("<td width='25%'>" + response[i].tenChucDanh + "</td>");
                     $('#tblThongTinCaNhan').append(tr);
-                    getIsCheck(response[i].idNguoiDung);
                 }
+                getIsCheck(treeValue);
+
             },
         });
     });

@@ -276,13 +276,13 @@
         loadThongKeDanhHieuTapThe();
     });
     function loadThongKeDanhHieuTapThe() {
-        var revenueData = 0;
-        var myChart = "";
-        $.get("/Home/getThongKeBaoCao", { kieuDanhHieu: 0, namDanhHieu: $("#cbxNam").val() }, function (data) {
+        var dataTT = 0;
+        var dataCN = 0;
+        $.get("/Home/getThongKeBaoCaoTT", { kieuDanhHieu: 0, namDanhHieu: $("#cbxNam").val() }, function (data) {
             console.log(data.data);
             if (data.data.length > 0) {
 
-                revenueData = data.data[0].danhHieuTapThe;
+                dataTT = data.data[0].danhHieuTapThe;
 
 
 
@@ -292,13 +292,13 @@
             if (Chart.getChart("bieuDoDanhHieuTT")) {
                 Chart.getChart("bieuDoDanhHieuTT").destroy();
             }
-            myChart = new Chart(ctx, {
+            var myChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: ['Danh Hiệu Tập Thể'],
                     datasets: [
                         {
-                            data: [revenueData],
+                            data: [dataTT],
                             backgroundColor: ['rgba(255, 99, 132, 0.2)'],
                             borderColor: ['rgba(255, 99, 132, 1)'],
                             borderWidth: 1
@@ -308,12 +308,11 @@
                 options: {}
             });
         })
-        var ChartDHCN = null;
-        $.get("/Home/getThongKeBaoCao", { kieuDanhHieu: 1, namDanhHieu: $("#cbxNam").val() }, function (data) {
+        $.get("/Home/getThongKeBaoCaoCN", { kieuDanhHieu: 1, namDanhHieu: $("#cbxNam").val() }, function (data) {
             console.log(data.data);
             if (data.data.length > 0) {
 
-                revenueData = data.data[0].danhHieuCaNhan;
+                dataCN = data.data[0].danhHieuCaNhan;
 
 
 
@@ -323,13 +322,13 @@
             if (Chart.getChart("bieuDoDanhHieuCN")) {
                 Chart.getChart("bieuDoDanhHieuCN").destroy();
             }
-            ChartDHCN = new Chart(ctx, {
+            var ChartDHCN = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: ['Danh Hiệu Cá Nhân'],
                     datasets: [
                         {
-                            data: [revenueData],
+                            data: [dataCN],
                             backgroundColor: ['rgba(255, 99, 132, 0.2)'],
                             borderColor: ['rgba(255, 99, 132, 1)'],
                             borderWidth: 1

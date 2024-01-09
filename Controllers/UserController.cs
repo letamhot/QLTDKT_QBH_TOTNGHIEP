@@ -75,6 +75,7 @@ namespace QLTDKT.Controllers
                     if (_update != null)
                     {
                         _update.tenDangNhap = _objUser.tenDangNhap;
+                        _update.matKhau = _objUser.matKhau;
                         _update.ngayCapNhat = DateTime.Now;
                     }
                     qltdkt_userbygroup _usUd = _entities.qltdkt_userbygroup.FirstOrDefault(x => x.userId == _objUser.id);

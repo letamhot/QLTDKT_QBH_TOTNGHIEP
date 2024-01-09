@@ -23,7 +23,7 @@ namespace QLTDKT.Models.Service.thiDuaService
                     result.tenThiDua = _entities.qltdkt_dm_thidua.Find(_thiDua.idDmThiDua).tenThiDua;
                     result.soHieu = _thiDua.soHieu;
                     result.kieuThiDua = Util.getKieuThiDua(_thiDua.kieuThiDua);
-                    result.ngayPhatDong = _thiDua.ngayPhatDong.ToString();
+                    result.ngayPhatDong = ((DateTime)_thiDua.ngayPhatDong).ToString("dd/MM/yyyy");
                     result.dsDangKy = _thiDuaService.getChiTietBaoCaoTT(idThiDua);
                 }
             }
@@ -48,7 +48,7 @@ namespace QLTDKT.Models.Service.thiDuaService
                     result.soHieu = _thiDua.soHieu;
                     result.kieuThiDua = Util.getKieuThiDua(_thiDua.kieuThiDua);
                     result.idKieuThiDua = _thiDua.kieuThiDua;
-                    result.ngayPhatDong = _thiDua.ngayPhatDong.ToString();
+                    result.ngayPhatDong = ((DateTime)_thiDua.ngayPhatDong).ToString("dd/MM/yyyy");
                     List<lsDonViCaNhan> _lsDonViCaNhan = new List<lsDonViCaNhan>();
                     List<KeyValuePair<string, string>> lsFileBaoCao = new List<KeyValuePair<string, string>>();
                     for (int i = 0; i < lsBaoCaoThiDua.Count; i++)

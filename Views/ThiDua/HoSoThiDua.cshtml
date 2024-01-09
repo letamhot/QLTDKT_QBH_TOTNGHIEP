@@ -549,12 +549,7 @@
                     $("#cbxHoSoKhenThuong").html('<option value = ' + data.data.idKieuThiDua + '>' + data.data.kieuThiDua + '</option>');
                     $("#cbxHoSoKhenThuong").prop("disabled", "disabled");
 
-                    $("#txtNgayPhatDong").datepicker({
-                        autoclose: true,
-                        setDate: new Date(),
-                        todayHighlight: true,
-                        orientation: 'bottom'
-                    }).datepicker('update', data.data.ngayPhatDong.split(" ")[0]);
+                    $("#txtNgayPhatDong").val(data.data.ngayPhatDong);
                     $("#txtNgayPhatDong").prop("disabled", "disabled");
 
                     var dsDonViCaNhan = data.data.dsDonViCaNhan;

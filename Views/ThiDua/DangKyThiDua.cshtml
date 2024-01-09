@@ -183,7 +183,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" id="btnCapNhatDonViDangKy"></button>
+                <button class="btn btn-primary" id="btnCapNhatDonViDangKy">Cập nhật</button>
                 <button class="btn btn-danger" data-dismiss="modal"><i class="fa fa-window-close"></i> Đóng lại</button>
             </div>
         </div>
@@ -322,7 +322,7 @@
                     $("#linkFileDinhKem").html("<a href='#' onclick='downloadfile(\"" + spl + "\", \"" + spl[spl.length - 1] + "\", \"" + objFile[0].Value + "\")'><i class='fa fa-download'></i> Tải file đính kèm</a>");
                 }
                 $("#idDangKyThiDua").val(data.data.id);
-                $("#dtNgayDangKy").val(convertDate(data.data.ngayDangKy));
+                $("#dtNgayDangKy").val(data.data.ngayDangKy);
                 CKEDITOR.instances['taNoiDungDangKy'].setData(data.data.noiDungDangKy);
                 CKEDITOR.instances['taNhanXetChung'].setData(data.data.nhanXetChung);
                 CKEDITOR.instances['taNguoiKyDanhGia'].setData(data.data.nguoiKyDanhGia);
@@ -456,6 +456,9 @@
                 }
                 else if (data == -1) {
                     showToast("error", "Lỗi khi upload file đính kèm!", "Thông báo lỗi")
+                }
+                else if (data == -2) {
+                    showToast("error", "Lỗi ngày đăng ký lớn hơn ngày kết thúc!", "Thông báo lỗi")
                 }
                 else if (data == 2) {
                     showToast("success", "Cập nhật đăng ký thi đua thành công!", "Thông báo")

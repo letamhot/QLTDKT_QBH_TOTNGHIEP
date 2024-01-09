@@ -3026,7 +3026,7 @@ namespace QLTDKT.Models.Service.baoCaoThongKeService
                     {
                         if (xxx.loaiKT == 0)
                         {
-
+                            
                             dh.tenDonVi_CaNhan = xxx.tenCaNhanTapThe;
                             dh.donVi = xxx.donVi;
                             dh.tienthuong = xxx.tienThuong;
@@ -3312,7 +3312,7 @@ namespace QLTDKT.Models.Service.baoCaoThongKeService
                                 {
                                     if (xxx.loaiKT == 1)
                                     {
-
+                                       
                                         dh.stt = i;
                                         dh.tenDonVi_CaNhan = xxx.tenCaNhanTapThe;
                                         dh.tienthuong = xxx.tienThuong;
@@ -4416,13 +4416,21 @@ namespace QLTDKT.Models.Service.baoCaoThongKeService
             }
         }
 
-        public List<BaoCaoTrangChu> getThongKeTrangChuTT(int kieuDanhHieu, int namDanhHieu)
+        public List<BaoCaoTrangChu> getThongKeTrangChu(int kieuDanhHieu, int namDanhHieu)
         {
             List<BaoCaoTrangChu> result = new List<BaoCaoTrangChu>();
             string sql = "";
-            sql = "SELECT namDanhHieu,count(kieuDanhHieu) as 'tongDanhHieuTapThe' " +
-                        "FROM qltdkt_danhhieu WHERE namDanhHieu = " + namDanhHieu + " and kieuDanhHieu =" + kieuDanhHieu + " and daXoa= 'false'  GROUP BY namDanhHieu";
+            if (kieuDanhHieu == 0) //Tập thể
+            {
+                sql = "SELECT YEAR(ngayDanhHieu) as 'ngayDanhHieu',sum(kieuDanhHieu) as 'tongDanhHieuTapThe' " +
+                         "FROM qltdkt_danhhieu WHERE YEAR(ngayDanhHieu) = "+namDanhHieu+" GROUP BY YEAR(ngayDanhHieu)";
 
+            }
+            if (kieuDanhHieu == 1) //Cá nhân
+            {
+                sql = "SELECT YEAR(ngayDanhHieu) as 'ngayDanhHieu',sum(kieuDanhHieu) as 'tongDanhHieuCaNhan'" +
+                    "FROM qltdkt_danhhieu WHERE YEAR(ngayDanhHieu) = "+namDanhHieu+" GROUP BY YEAR(ngayDanhHieu)";
+            }
 
             DataTable dt = new DataTable();
             try
@@ -4432,48 +4440,30 @@ namespace QLTDKT.Models.Service.baoCaoThongKeService
                 {
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        BaoCaoTrangChu bcObj = new BaoCaoTrangChu
+                        if (kieuDanhHieu == 0)
                         {
-                            namDanhHieu = dt.Rows[i]["namDanhHieu"].ToString() != "" ? int.Parse(dt.Rows[i]["namDanhHieu"].ToString()) : 0,
-                            danhHieuTapThe = dt.Rows[i]["tongDanhHieuTapThe"].ToString() != "" ? int.Parse(dt.Rows[i]["tongDanhHieuTapThe"].ToString()) : 0,
-                            kieuDanhHieu = kieuDanhHieu
-                            //loiNhuan = dt.Rows[i]["tongLoiNhuan"] != null ? double.Parse(dt.Rows[i]["tongLoiNhuan"].ToString()) : 0
-                        };
-                        result.Add(bcObj);
+                            BaoCaoTrangChu bcObj = new BaoCaoTrangChu
+                            {
+                                namDanhHieu = dt.Rows[i]["ngayDanhHieu"].ToString() != "" ? int.Parse(dt.Rows[i]["ngayDanhHieu"].ToString()) : 0,
+                                danhHieuTapThe = dt.Rows[i]["tongDanhHieuTapThe"].ToString() != "" ? int.Parse(dt.Rows[i]["tongDanhHieuTapThe"].ToString()) : 0,
+                                kieuDanhHieu = kieuDanhHieu
+                                //loiNhuan = dt.Rows[i]["tongLoiNhuan"] != null ? double.Parse(dt.Rows[i]["tongLoiNhuan"].ToString()) : 0
+                            };
+                            result.Add(bcObj);
 
-
-                    }
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return result;
-        }
-        public List<BaoCaoTrangChu> getThongKeTrangChuCN(int kieuDanhHieu, int namDanhHieu)
-        {
-            List<BaoCaoTrangChu> result = new List<BaoCaoTrangChu>();
-            string sql = "";
-            sql = "SELECT namDanhHieu,count(kieuDanhHieu) as 'tongDanhHieuCaNhan' " +
-                        "FROM qltdkt_danhhieu WHERE namDanhHieu = " + namDanhHieu + " and kieuDanhHieu=" + kieuDanhHieu + " and daXoa= 'false' GROUP BY namDanhHieu";
-            DataTable dt = new DataTable();
-            try
-            {
-                dt = _sqlAccess.getDataFromSql(sql.ToString(), "").Tables[0];
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        BaoCaoTrangChu bcObj = new BaoCaoTrangChu
+                        }
+                        else
                         {
-                            namDanhHieu = dt.Rows[i]["namDanhHieu"].ToString() != "" ? int.Parse(dt.Rows[i]["namDanhHieu"].ToString()) : 0,
-                            danhHieuCaNhan = dt.Rows[i]["tongDanhHieuCaNhan"].ToString() != "" ? int.Parse(dt.Rows[i]["tongDanhHieuCaNhan"].ToString()) : 0,
-                            kieuDanhHieu = kieuDanhHieu
-                            //loiNhuan = dt.Rows[i]["tongLoiNhuan"] != null ? double.Parse(dt.Rows[i]["tongLoiNhuan"].ToString()) : 0
-                        };
-                        result.Add(bcObj);
+                            BaoCaoTrangChu bcObj = new BaoCaoTrangChu
+                            {
+                                namDanhHieu = dt.Rows[i]["ngayDanhHieu"].ToString() != "" ? int.Parse(dt.Rows[i]["ngayDanhHieu"].ToString()) : 0,
+                                danhHieuCaNhan = dt.Rows[i]["tongDanhHieuCaNhan"].ToString() != "" ? int.Parse(dt.Rows[i]["tongDanhHieuCaNhan"].ToString()) : 0,
+                                kieuDanhHieu = kieuDanhHieu
+                                //loiNhuan = dt.Rows[i]["tongLoiNhuan"] != null ? double.Parse(dt.Rows[i]["tongLoiNhuan"].ToString()) : 0
+                            };
+                            result.Add(bcObj);
+
+                        }
 
                     }
                 }
