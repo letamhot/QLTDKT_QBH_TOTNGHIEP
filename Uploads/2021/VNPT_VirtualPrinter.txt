@@ -1,0 +1,67 @@
+4/13/2021 11:32:01 AM - Install Started.
+4/13/2021 11:32:01 AM - PrinterName: VNPT Printer
+4/13/2021 11:32:01 AM - Setting Driver Path and Files.
+4/13/2021 11:32:01 AM - Copy Port Driver File
+4/13/2021 11:32:01 AM - Copying Printer Driver Files.
+4/13/2021 11:32:01 AM - Adding Printer Monitor.
+4/13/2021 11:32:01 AM - Adding Printer Port.
+4/13/2021 11:32:01 AM - Adding Printer Driver.
+4/13/2021 11:32:01 AM - Adding Printer
+4/13/2021 11:32:01 AM - Configuring Virtual Port
+4/13/2021 11:32:01 AM - Restarting Spool Service
+4/13/2021 11:32:01 AM - AddVPrinter Success
+4/13/2021 11:32:01 AM - Install Finished.
+5/7/2021 10:39:56 AM - Uninstall Started
+5/7/2021 10:39:56 AM - Delete Printer
+5/7/2021 10:39:56 AM - Delete Printer Driver
+5/7/2021 10:39:56 AM - Delete Port From Registry
+5/7/2021 10:39:56 AM - Restart Spool Service
+5/7/2021 10:40:44 AM - Install Started.
+5/7/2021 10:40:44 AM - PrinterName: VNPT Printer
+5/7/2021 10:40:44 AM - Setting Driver Path and Files.
+5/7/2021 10:42:56 AM - Copy Port Driver File
+5/7/2021 10:42:56 AM - Copying Printer Driver Files.
+5/7/2021 10:42:56 AM - Adding Printer Monitor.
+5/7/2021 10:42:56 AM - Exception: The RPC server is unavailable
+5/7/2021 10:42:56 AM - Source: AddVPrinter
+Message: The RPC server is unavailable
+InnerException: System.ComponentModel.Win32Exception (0x80004005): The RPC server is unavailable
+   at XReader.Common.InstallHelper.AddVPrinter(String printerName, String key)
+5/7/2021 10:42:56 AM - Install Finished.
+5/7/2021 10:44:37 AM - Uninstall Started
+5/7/2021 10:44:37 AM - Delete Printer
+5/7/2021 10:44:37 AM - Source: DeletePrinter
+Message: The printer name is invalid
+InnerException: System.ComponentModel.Win32Exception (0x80004005): The printer name is invalid
+   at XReader.Common.UninstallHelper.DeletePrinter()
+5/7/2021 10:44:42 AM - Install Started.
+5/7/2021 10:44:42 AM - PrinterName: VNPT Printer
+5/7/2021 10:44:42 AM - Setting Driver Path and Files.
+5/7/2021 10:44:42 AM - Copy Port Driver File
+5/7/2021 10:44:42 AM - Copying Printer Driver Files.
+5/7/2021 10:44:42 AM - Adding Printer Monitor.
+5/7/2021 10:44:42 AM - Adding Printer Port.
+5/7/2021 10:44:42 AM - Adding Printer Driver.
+5/7/2021 10:44:43 AM - Adding Printer
+5/7/2021 10:44:43 AM - Configuring Virtual Port
+5/7/2021 10:44:43 AM - Restarting Spool Service
+5/7/2021 10:44:43 AM - AddVPrinter Success
+5/7/2021 10:44:43 AM - Install Finished.
+5/7/2021 2:55:05 PM - Uninstall Started
+5/7/2021 2:55:05 PM - Delete Printer
+5/7/2021 2:55:05 PM - Delete Printer Driver
+5/7/2021 2:55:05 PM - Delete Port From Registry
+5/7/2021 2:55:05 PM - Restart Spool Service
+5/7/2021 2:55:51 PM - Install Started.
+5/7/2021 2:55:51 PM - PrinterName: VNPT Printer
+5/7/2021 2:55:51 PM - Setting Driver Path and Files.
+5/7/2021 2:55:51 PM - Copy Port Driver File
+5/7/2021 2:55:51 PM - Copying Printer Driver Files.
+5/7/2021 2:55:52 PM - Adding Printer Monitor.
+5/7/2021 2:55:52 PM - Adding Printer Port.
+5/7/2021 2:55:52 PM - Adding Printer Driver.
+5/7/2021 2:55:52 PM - Adding Printer
+5/7/2021 2:55:52 PM - Configuring Virtual Port
+5/7/2021 2:55:52 PM - Restarting Spool Service
+5/7/2021 2:55:52 PM - AddVPrinter Success
+5/7/2021 2:55:52 PM - Install Finished.

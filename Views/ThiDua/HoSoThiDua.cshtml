@@ -855,7 +855,7 @@
             fileData.append('soHieu', $("#txtSoHieu").val());
 
             fileData.append('tenHoSoThiDua', $("#txtTenHoSoThiDua").val());
-            fileData.append('fileDinhKem', $("#cbxHoso").val() == "" ? $("#cbxTemp").val() : $("#cbxHoso").val());
+            fileData.append('fileDinhKem', $("#cbxHoso").val() == "" ? "" : $("#cbxHoso").val());
             fileData.append('kieuHoSo', $("#cbxHoSoKhenThuong").val());
             fileData.append('lsTT', id_tt.join(";"));
             fileData.append('lsCN', id_cn_send.join(";"));
@@ -910,7 +910,7 @@
                 fileData.append('soHieu', $("#txtSoHieu").val());
 
                 fileData.append('tenHoSoThiDua', $("#txtTenHoSoThiDua").val());
-                fileData.append('fileDinhKem', $("#cbxHoso").val() == "" ? $("#cbxTemp").val() : $("#cbxHoso").val());
+                fileData.append('fileDinhKem', $("#cbxHoso").val() == "" ? "" : $("#cbxHoso").val());
                 fileData.append('kieuHoSo', $("#cbxHoSoKhenThuong").val());
                 fileData.append('lsTT', id_tt.join(";"));
                 fileData.append('lsCN', id_cn_send.join(";"));

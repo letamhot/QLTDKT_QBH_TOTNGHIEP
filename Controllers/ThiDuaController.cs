@@ -972,7 +972,7 @@ namespace QLTDKT.Controllers
             string tenHoSoThiDua = Request.Form.Get("tenHoSoThiDua");
             string tenThiDua = Request.Form.Get("tenThiDua");
             string soHieu = Request.Form.Get("soHieu");
-            DateTime ngayPhatDong = DateTime.Parse(Request.Form.Get("ngayPhatDong"));
+            string ngayPhatDong = Request.Form.Get("ngayPhatDong");
 
 
             string lsCN = Request.Form.Get("lsCN");
@@ -1095,14 +1095,14 @@ namespace QLTDKT.Controllers
                         {
                             thiDuaId = 0,
                             tenThiDua = tenThiDua,
-                            ngayPhatDong = ngayPhatDong,
+                            ngayPhatDong = DateTime.ParseExact(ngayPhatDong, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                             soHieu = soHieu,
                             tenHoSoThiDua = tenHoSoThiDua,
                             kieuThiDua = kieuHoSo,
-                            fileDinhKem = JsonConvert.SerializeObject(lsDsVB),
+                            fileDinhKem = (lsDsVB != null ?JsonConvert.SerializeObject(lsDsVB):""),
                             chiTietBaoCaoThanhTich = JsonConvert.SerializeObject(_lsDonViCaNhan),
                             daXoa = false,
-                            toTrinh = "Son nguyen da code!",
+                            toTrinh = "Tám da code!",
                             ngayTao = DateTime.Now,
                             fileBaoCaoThanhTich = output_filedinhkem
                         };
@@ -1133,8 +1133,8 @@ namespace QLTDKT.Controllers
                             soHieu = _objThiDua.soHieu,
                             ngayPhatDong = _objThiDua.ngayPhatDong,
                             kieuThiDua = (byte)_objThiDua.kieuThiDua,
-                            toTrinh = "Son nguyen da code!",
-                            fileDinhKem = JsonConvert.SerializeObject(lsDsVB),
+                            toTrinh = "Tám da code!",
+                            fileDinhKem = (lsDsVB != null ? JsonConvert.SerializeObject(lsDsVB) : ""),
                             fileBaoCaoThanhTich = _chiTietBaoCao.lsFileBaoCao,
                             chiTietBaoCaoThanhTich = JsonConvert.SerializeObject(_chiTietBaoCao.dsDonViCaNhan)
                         };

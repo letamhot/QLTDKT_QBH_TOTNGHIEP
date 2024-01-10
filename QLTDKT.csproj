@@ -198,6 +198,8 @@
     <Content Include="assets\images\d3f5f6a6ffbe09e050af.jpg" />
     <Content Include="assets\images\vnpt.jpg" />
     <Content Include="assets\js\initToast.js" />
+	<Content Include="Uploads\avatarcanhan.jpg" />
+	<Content Include="Uploads\avatartapthe.jpg" />
     <Content Include="assets\libs\bootstrap-validator\dist\css\bootstrapValidator.css" />
     <Content Include="assets\libs\bootstrap-validator\dist\css\bootstrapValidator.min.css" />
     <Content Include="assets\libs\bootstrap-validator\dist\js\bootstrapValidator.js" />
